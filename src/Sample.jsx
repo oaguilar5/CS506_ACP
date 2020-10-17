@@ -19,6 +19,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 //Firebase Web SDK
 import firebase from "firebase/app";
 import "firebase/firestore";
+import 'firebase/auth'
 
 
 //Reactstrap library (with a few sample components)
@@ -73,6 +74,7 @@ class Sample extends Component {
     //This lifecycle function runs code after the component has successfully rendered
     //Useful for creating subscription and fetching data
     componentDidMount() {
+
         //initial check on firebase to see if there are any existing user records
         this.checkForRecords()
 
@@ -126,7 +128,7 @@ class Sample extends Component {
       checkForRecords = () => {
           try {
             let userRecords = [];
-            firebase.firestore().collection('demo').get()
+            firebase.firestore().collection('bunnies').get()
                 .then(query => {
                     //since forEach is async, keep count and update state once all have been traversed
                     let count = 0;
@@ -304,7 +306,7 @@ class Sample extends Component {
                <Card className="sample-card">
                     <CardHeader>Card Header</CardHeader>
                     <CardBody className="add-scrollbar">
-                        <CardTitle><b>Welcome ACP Team!</b></CardTitle>
+                        <CardTitle><b>Welcome ACP Team!!</b></CardTitle>
                         <CardText>
                             This is a sample React page (using JSX) to demonstrate some basic functionality. Feel free to use this page as a template when creating other 
                             views and components.

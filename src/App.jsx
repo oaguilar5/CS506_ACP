@@ -17,14 +17,14 @@ class App extends React.Component {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Learn React Now or Never
           </a>
           <a
             className="App-link"
             href="/sample"
             
           >
-            ACP Sample Page
+            ACP Sample Page slkdjflkds
           </a>
         </header>
       </div>

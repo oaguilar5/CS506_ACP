@@ -14,7 +14,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 //ROUTE COMPONENTS
 import App from './App.jsx';
+import Login from './Login.jsx'
 import Sample from './Sample.jsx'
+import Home from './Home.jsx'
+import TOS from './TOS.jsx'
+import PP from './PP.jsx'
 import * as serviceWorker from './serviceWorker';
 
 //Firebase Web SDK
@@ -42,9 +46,12 @@ const hist = createBrowserHistory();
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
-      <Route path="/app" render={props => <App {...props}  />} />
+      <Route path="/login" render={props => <Login {...props}  />} />
       <Route path="/sample" render={props => <Sample {...props}  />} />
-      <Redirect from="/" to="/app"/>
+      <Route path="/home" render={props => <Home {...props}  />} />
+      <Route path="/terms-of-service" render={props => <TOS {...props}/>}/>
+      <Route path="/privacy-policy" render={props => <PP {...props}/>}/>
+      <Redirect from="/" to="/login"/>
     </Switch>
   </Router>,
   document.getElementById("root")
@@ -54,3 +61,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+
