@@ -107,7 +107,7 @@ class MainLogin extends React.Component {
       //check to see that the passwords match
       let email = this.state.newEmail;
       //check if email exists
-      let userDoc = await firebase.firestore().collection('users').doc(email).get();
+      let userDoc = await firebase.firestore().collection('acp_users').doc(email).get();
       if (!userDoc.exists) {
         let pass1 = this.state.newPass1;
         let pass2 = this.state.newPass2;
@@ -115,20 +115,16 @@ class MainLogin extends React.Component {
           //create a new blank user doc
           let newUser = {
             email: email,
-            first: "",
-            last: "",
             display_name: "",
-            phone: 0,
-            profile_pic: "std-avatar.jpg",
-            alerts: {
+            profile_pic: "student-user.png",
+            alert_settings: {
               alerts_on: true,
               comments: true,
               files: true,
-              assignments: true,
               tasks: true
             }
-          }
-          firebase.firestore().collection('users').doc(email).set(newUser);
+        }
+          firebase.firestore().collection('acp_users').doc(email).set(newUser);
           //create the new user in auth
           firebase.auth().createUserWithEmailAndPassword(email, pass1).catch(function(error) {
                 // Handle Errors here.

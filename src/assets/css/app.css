@@ -3,6 +3,66 @@
   padding: 2%;
 }
 
+.account-link {
+  position: absolute;
+  right: 1%;
+  top: 1%;
+  font-size: 20px;
+  background-color: inherit;
+  text-align: right;
+}
+
+
+.user-photo {
+  display: inline-block;
+  vertical-align: middle;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  overflow: hidden; 
+  border: 1px solid darkgrey;
+}
+
+.update-photo {
+  height: 80px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.profile-photo {
+  height: 130px;
+  width: 130px;
+  cursor: pointer;
+}
+
+.user-photo img {
+  width: 100%;
+}
+
+.upload-spinner {
+  margin-left: 40%;
+  margin-top: 40%;
+}
+
+.logo {
+  margin-left: 1%;
+}
+
+.logo img {
+  height: 5rem;
+  
+}
+
+.App .account-link h5 {
+  color: white;
+}
+
+.App .account-link a,
+.demo-sample .account-link a {
+  position: absolute;
+  right: 0;
+}
+
 
 .demo-sample {
     height: 100%;
@@ -44,6 +104,92 @@
 }
 
 
+
+/* HOME PAGE */
+
+.q1-label {
+  margin-left: 10%;
+}
+
+.open-assignments {
+  width: 80%;
+  height: 23rem;
+  margin-left: 10%;
+  margin-right: 10%;
+  box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.1) inset;
+  position: relative;
+  display: inline-flex;
+}
+
+.select-assignments {
+  width: 67%;
+  height: 90%;
+  margin-right: 1%;
+  position: relative;
+  display: inline-flex;
+  overflow-x: hidden;
+}
+
+.select-next, .select-previous {
+  font-size: 80px;
+  margin-left: 1%;
+  color: #5e72e4;
+  position: relative;
+  top: 20%;
+  cursor: pointer;
+  -webkit-user-select: none; /* Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+  transition: top ease 0.5s, color ease 1s;
+}
+
+.select-next:hover, .select-previous:hover {
+  top: 19%;
+  color: #e14eca;
+}
+
+.assignment-card {
+  position: relative;
+  display: inline-flex !important;
+  height: 17rem;
+  width: 20rem !important;
+  min-width: auto !important;
+  margin-top: 3%; 
+  margin-left: 5%;
+  top: 0;
+  box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: top ease 0.5s, box-shadow ease 0.5s;
+}
+
+.assignment-card .card-body {
+  width: inherit;
+}
+
+.assignment-card:hover {
+  top: -10px;
+  box-shadow: 15px 15px 15px  rgba(0,0,0,0.2);
+}
+
+.new-assignment {
+  display: inline-flex;
+  height: 100%;
+  margin-top: 2%;
+}
+
+.create-new {
+  text-align: center;
+  font: small-caps bold 14px/30px Arial, sans-serif;
+  margin-left: 2%;
+  
+}
+
+
+.create-new img {
+  height: 75%;
+  width: 100%;
+}
 
 
 /* CUSTOM SECTION - LOGIN PAGE */
