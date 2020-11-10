@@ -165,10 +165,10 @@ class MainLogin extends React.Component {
             </ModalFooter>
         </Modal>
           <div className="login-form">
-            <div className="login-logo">
+            {/* <div className="login-logo">
               <a href="/login"><img src="/images/logo_1.png" alt="Company Logo" /></a>
 
-            </div>
+            </div> */}
             <div className="login-options">
               <a  href="!#" onClick={e => this.updateLoginOptions(e)}>
                       {this.state.optionText}
