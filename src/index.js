@@ -15,6 +15,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //ROUTE COMPONENTS
 import App from './App.jsx';
 import Login from './Login.jsx'
+import Search from './Search.jsx'
 import Sample from './Sample.jsx'
 import Home from './Home.jsx'
 import TOS from './TOS.jsx'
@@ -51,6 +52,7 @@ ReactDOM.render(
       <Route path="/home" render={props => <Home {...props}  />} />
       <Route path="/terms-of-service" render={props => <TOS {...props}/>}/>
       <Route path="/privacy-policy" render={props => <PP {...props}/>}/>
+      <Route path="/search" render={props => <Search {...props}/>}/>
       <Redirect from="/" to="/login"/>
     </Switch>
   </Router>,

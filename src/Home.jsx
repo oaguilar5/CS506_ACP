@@ -214,10 +214,7 @@ class Home extends React.Component {
                   <NavLink href="">Collaborators</NavLink>
                 </NavItem>
                 <NavItem>
-                  <Form inline>
-                    <input type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-success">Search</Button>
-                  </Form>
+                  <NavLink href="/search/">Search</NavLink>
                 </NavItem>
 
               </Nav>
