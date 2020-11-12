@@ -36,6 +36,7 @@ class Search extends React.Component {
     componentDidMount() {
         //initial auth check
         firebase.auth().onAuthStateChanged(user => {
+            
           if (user) {
             user.updateProfile({
               photoURL: "student-user.png"
@@ -66,6 +67,49 @@ class Search extends React.Component {
           }
         });
     
+    }
+    
+    checkForAssignments = user => {
+        try {
+          let assignments = [];
+          firebase.firestore().collection('acp_users').doc(user).collection('assignments').orderBy('create_date', 'desc').get()
+            .then(query => {
+              //since forEach is async, keep count and update state once all have been traversed
+              let count = 0;
+              query.forEach(doc => {
+                count++;
+                let title = doc.get('title');
+                let dueDate = doc.get('due_date').toDate().toString();
+                let description = doc.get('description');
+                let status = doc.get('status')
+                let createdBy = doc.get('created_by');
+                let thisObj = {
+                  id: doc.id,
+                  title: title,
+                  dueDate: dueDate,
+                  description: description,
+                  status: status,
+                  createdBy: createdBy
+                };
+                assignments.push(thisObj)
+                if (count >= query.size) {
+                  this.setState({ assignments })
+                }
+              })
+            });
+        } catch (err) {
+          console.log("Caught exception in checkForAssignments(): " + err)
+        }
+      }
+
+    userLogout = () => {
+        firebase.auth().signOut().then(function () {
+          console.log("successfully logged out")
+        }).catch(function (error) {
+          // An error happened.
+          console.log("error logging out: " + error)
+          this.setState({ modal: true, infoMsg: "Error signing out" });
+        });
       }
 
     render() {
@@ -113,6 +157,9 @@ class Search extends React.Component {
                             </div>
                         </Collapse>
                     </Navbar>
+                </div>
+                <div style={{ textAlign: "center", paddingTop:'5%' }}>
+                    <Button color="primary">My Assignments</Button>
                 </div>
                 <div style={{ textAlign: "center", paddingTop:'5%' }}>
                     <Form>
