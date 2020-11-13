@@ -226,7 +226,7 @@ class Home extends React.Component {
                   <NavLink href="">Collaborators</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="">Search</NavLink>
+                  <NavLink href="/search/">Search</NavLink>
                 </NavItem>
 
               </Nav>

@@ -20,6 +20,7 @@ import Home from './Home.jsx'
 import Assignment from './Assignment.jsx'
 import TOS from './TOS.jsx'
 import PP from './PP.jsx'
+import Search from './Search.jsx'
 import * as serviceWorker from './serviceWorker';
 
 //Firebase Web SDK
@@ -62,6 +63,7 @@ ReactDOM.render(
       <Route path="/terms-of-service" render={props => <TOS {...props}/>}/>
       <Route path="/privacy-policy" render={props => <PP {...props}/>}/>
       <Route path="/assignment" render={props => <Assignment {...props} assignmentId={assignmentId} user={user} updateGlobals={updateGlobals}  />} />
+      <Route path="/search" render={props => <Search {...props} updateGlobals={updateGlobals}/>}/>
       <Redirect from="/" to="/login"/>
     </Switch>
   </Router>,
