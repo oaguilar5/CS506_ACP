@@ -159,6 +159,10 @@
   margin-left: 5%;
   top: 0;
   box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.2);
+  color: green;
+  background-color: cadetblue;
+  border-color: chartreuse;
+  outline-color: darkblue;
   cursor: pointer;
   transition: top ease 0.5s, box-shadow ease 0.5s;
 }
