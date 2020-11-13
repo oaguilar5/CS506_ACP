@@ -61,6 +61,8 @@ class Home extends React.Component {
           photoURL: "student-user.png"
         })
         let email = user.email;
+        //update index.js global email
+        this.props.updateGlobals(null, email);
         let profilePic = user.photoURL;
         this.checkForAssignments(email);
         this.setState({ user: email, isAuthenticated: true })
@@ -112,7 +114,7 @@ class Home extends React.Component {
   checkForAssignments = user => {
     try {
       let assignments = [];
-      firebase.firestore().collection('acp_users').doc(user).collection('assignments').orderBy('create_date', 'desc').get()
+      firebase.firestore().collection('assignments').where('created_by', '==', user).where('is_complete', '==', false).orderBy('create_date', 'desc').get()
         .then(query => {
           //since forEach is async, keep count and update state once all have been traversed
           let count = 0;
@@ -156,7 +158,7 @@ class Home extends React.Component {
     pane.scrollLeft += amount;
   }
 
-  createNewAssignment = evt => {
+  createNewAssignment = async evt => {
     evt.preventDefault();
     let title = evt.target.elements.namedItem("title").value;
     let description = evt.target.elements.namedItem("description").value;
@@ -179,9 +181,15 @@ class Home extends React.Component {
       progress: 0,
       status: "Pending",
     }
-    firebase.firestore().collection('acp_users').doc(creator).collection('assignments').add(body);
-    let modal = this.state.modal;
-    this.setState({ modal: !modal });
+    let doc = await firebase.firestore().collection('assignments').add(body);
+    this.selectAssignment(doc.id);
+  }
+
+  selectAssignment = id => {
+    //first update the index.js global var for assignmentId
+    this.props.updateGlobals(id, null);
+    //then redirect the user to the assignment page
+    this.props.history.push("/assignment");
   }
 
 
@@ -198,11 +206,15 @@ class Home extends React.Component {
   render() {
     return (
       <>
+        
+        <div className="home-page" ref="mainPanel">
         <div>
           <Navbar color="light" light expand="lg">
-            <NavbarBrand href="/">reactstrap</NavbarBrand>
-            <NavbarToggler onClick="" />
-            <Collapse isOpen="" navbar>
+          <div className="logo">
+            <a href="/home"><img src="/images/logo_1.png" alt="ACP" /></a>
+          </div>
+            <NavbarToggler />
+            <Collapse navbar>
               <Nav className="mr-auto" navbar>
                 <NavItem>
                   <NavLink href="/components/">Home</NavLink>
@@ -214,10 +226,7 @@ class Home extends React.Component {
                   <NavLink href="">Collaborators</NavLink>
                 </NavItem>
                 <NavItem>
-                  <Form inline>
-                    <input type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-success">Search</Button>
-                  </Form>
+                  <NavLink href="/search/">Search</NavLink>
                 </NavItem>
 
               </Nav>
@@ -245,10 +254,6 @@ class Home extends React.Component {
             </Collapse>
           </Navbar>
         </div>
-        <div className="home-page" ref="mainPanel">
-          <div className="logo">
-            <a href="/home"><img src="/images/logo_1.png" alt="ACP" /></a>
-          </div>
 
 
           <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
@@ -314,7 +319,7 @@ class Home extends React.Component {
           <div className="open-assignments">
             <div id="select-assignments" className="select-assignments">
               {[...this.state.assignments].map(item => (
-                <Card key={item.id} className="assignment-card">
+                <Card key={item.id} className="assignment-card" onClick={() => this.selectAssignment(item.id)}>
                   <CardHeader><h5>{item.title}</h5></CardHeader>
                   <CardBody>
                     <p><b>Due Date:</b> {item.dueDate}</p>

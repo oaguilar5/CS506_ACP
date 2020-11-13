@@ -17,8 +17,10 @@ import App from './App.jsx';
 import Login from './Login.jsx'
 import Sample from './Sample.jsx'
 import Home from './Home.jsx'
+import Assignment from './Assignment.jsx'
 import TOS from './TOS.jsx'
 import PP from './PP.jsx'
+import Search from './Search.jsx'
 import * as serviceWorker from './serviceWorker';
 
 //Firebase Web SDK
@@ -39,18 +41,29 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-
-
 const hist = createBrowserHistory();
+
+//GLOBAL PROPS
+var assignmentId;
+var user;
+
+
+//function to update our global props
+function updateGlobals (id, email) {
+  if (id !== null) assignmentId = id;
+  if (email !== null) user = email;
+}
 
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/login" render={props => <Login {...props}  />} />
       <Route path="/sample" render={props => <Sample {...props}  />} />
-      <Route path="/home" render={props => <Home {...props}  />} />
+      <Route path="/home" render={props => <Home {...props} updateGlobals={updateGlobals}  />} />
       <Route path="/terms-of-service" render={props => <TOS {...props}/>}/>
       <Route path="/privacy-policy" render={props => <PP {...props}/>}/>
+      <Route path="/assignment" render={props => <Assignment {...props} assignmentId={assignmentId} user={user} updateGlobals={updateGlobals}  />} />
+      <Route path="/search" render={props => <Search {...props} updateGlobals={updateGlobals}/>}/>
       <Redirect from="/" to="/login"/>
     </Switch>
   </Router>,
