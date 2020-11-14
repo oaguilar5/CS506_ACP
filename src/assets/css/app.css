@@ -245,6 +245,7 @@
   margin-bottom: 5%;
 }
 
+
 /* HOME PAGE */
 
 .q1-label {
@@ -299,6 +300,11 @@
   margin-left: 5%;
   top: 0;
   box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.2);
+  color: white;
+  background: #3ECE90;
+  background: -moz-linear-gradient(top, #3ECE90 0%, #0F56A5 100%);
+  background: -webkit-linear-gradient(top, #3ECE90 0%, #0F56A5 100%);
+  background: linear-gradient(to bottom, #3ECE90 0%, #0F56A5 100%);
   cursor: pointer;
   transition: top ease 0.5s, box-shadow ease 0.5s;
 }
