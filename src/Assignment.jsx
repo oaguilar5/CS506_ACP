@@ -1,11 +1,12 @@
 import React from 'react';
-import './App.css';
 import firebase from "firebase/app";
+import 'firebase/auth'
 import "firebase/firestore";
 import "firebase/storage";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import classnames from 'classnames';
+import SimpleStorage from "react-simple-storage";
 
 //Reactstrap library (with a few sample components)
 //https://reactstrap.github.io/components/
@@ -53,7 +54,10 @@ class Assignment extends React.Component {
         this.state = {
             avatar: "",
             user: "",
-            modal: false,
+            assignmentId: this.props.assignmentId,
+            infoModal: false,
+            assignmentModal: false,
+            subModal: false,
             infoMsg: "",
             buttonColor: "primary",
             activeTab: '1',
@@ -61,15 +65,23 @@ class Assignment extends React.Component {
             subtaskVisible: "block",
             collabVisible: "block",
             assignments: [],
+            subtasks: [],
+            subtasksComplete: 0,
+            assignmentTitle: "",
             title: "",
-            dueDate: "",
-            isPrivate: false,
+            due_date: "",
+            is_private: false,
             dod: "",
             description: "",
             status: "",
-            isComplete: false,
+            is_complete: false,
+            assignmentProgress: 0,
             progress: 0,
-            infoDisabled: true
+            infoDisabled: true,
+            oldValue: null,
+            assignmentView: true,
+            subtaskId: "",
+            progressLocked: false
         }
     }
 
@@ -85,6 +97,7 @@ class Assignment extends React.Component {
                 //update index.js global email
                 this.props.updateGlobals(null, email);
                 let profilePic = user.photoURL;
+                this.checkForAssignments(email);
                 this.setState({user: email, isAuthenticated: true})
                 //DEBUG
                 console.log("profile pic: " + profilePic);
@@ -100,7 +113,7 @@ class Assignment extends React.Component {
                 //check if an assignment was passed down as a prop
                 let assignmentId = this.props.assignmentId;
                 if (typeof assignmentId !== 'undefined') {
-                    this.retrieveAssignmentDetails(assignmentId);
+                    this.selectAssignment(assignmentId);
                 }
             } else {
                 //redirect to home page
@@ -142,17 +155,188 @@ class Assignment extends React.Component {
         firebase.firestore().collection('assignments').doc(id).get()
             .then(doc =>{
                 let title = doc.get('title');
-                let dueDate = doc.get('due_date').toDate().toString();
+                let due_date = doc.get('due_date').toDate().toLocaleString();
                 let description = doc.get('description');
                 let status = doc.get('status')
-                let isPrivate =  doc.get('is_private');
+                let is_private =  doc.get('is_private');
                 let dod =  doc.get('dod');
-                let isComplete =  doc.get('is_complete');
+                let is_complete =  doc.get('is_complete');
                 let progress =  doc.get('progress');
                 let infoDisabled =  false;
-                this.setState({title, dueDate, description, status, isPrivate, dod, isComplete, progress, infoDisabled})
+                this.setState({assignmentTitle: title, title, due_date, description, status, is_private, dod, is_complete, progress, assignmentProgress: progress, infoDisabled})
             })
       }
+
+
+      retrieveSubtaskDetails = id => {
+        let assignmentId = this.state.assignmentId;
+        firebase.firestore().collection('assignments').doc(assignmentId).collection('subtasks').doc(id).get()
+            .then(doc =>{
+                let title = doc.get('sub_title');
+                let due_date = doc.get('sub_due_date').toDate().toLocaleString();
+                let description = doc.get('sub_description');
+                let status = doc.get('sub_status')
+                let dod =  doc.get('sub_dod');
+                let is_complete =  doc.get('sub_is_complete');
+                let progress =  doc.get('sub_progress');
+                let infoDisabled =  false;
+                this.setState({assignmentView: false, subtaskId: id, title, due_date, description, status, dod, is_complete, progress, infoDisabled})
+            })
+      }
+
+
+      checkForAssignments = user => {
+        try {
+          let assignments = [];
+          firebase.firestore().collection('assignments').where('created_by', '==', user).where('is_complete', '==', false).orderBy('create_date', 'desc').get()
+            .then(query => {
+              //since forEach is async, keep count and update state once all have been traversed
+              let count = 0;
+              query.forEach(doc => {
+                count++;
+                let title = doc.get('title');
+                let dueDate = doc.get('due_date').toDate().toLocaleString();
+                let status = doc.get('status')
+                let thisObj = {
+                  id: doc.id,
+                  title: title,
+                  dueDate: dueDate,
+                  status: status,
+                };
+                assignments.push(thisObj)
+                if (count >= query.size) {
+                  this.setState({ assignments })
+                }
+              })
+            });
+        } catch (err) {
+          console.log("Caught exception in checkForAssignments(): " + err)
+        }
+      }
+
+      checkForSubtasks = id => {
+          try {
+            let subtasks = [];
+            let subtasksComplete = 0;
+            firebase.firestore().collection('assignments').doc(id).collection('subtasks').get()
+                .then(query =>{
+                    //since forEach is async, keep count and update state once all have been traversed
+                    let count = 0;
+                    query.forEach(doc => {
+                        count++;
+                        let sub_title = doc.get('sub_title');
+                        let sub_due_date = doc.get('sub_due_date').toDate().toLocaleString();
+                        let sub_status = doc.get('sub_status');
+                        let subComplete = doc.get('sub_is_complete');
+                        let thisObj = {
+                            id: doc.id,
+                            title: sub_title,
+                            dueDate: sub_due_date,
+                            status: sub_status,
+                            isComplete: subComplete
+                          };
+                        
+                        if (subComplete)
+                            subtasksComplete++
+                        subtasks.push(thisObj)
+                        if (count >= query.size) {
+                            this.setState({ subtasks, subtasksComplete })
+                        }
+                    });
+                    
+                });
+          } catch(err) {
+            console.log("Caught exception in checkForSubtasks(): " + err)
+          }
+         
+      }
+
+      createNewAssignment = async evt => {
+        evt.preventDefault();
+        try {
+            let title = evt.target.elements.namedItem("title").value;
+            let description = evt.target.elements.namedItem("description").value;
+            let dod = evt.target.elements.namedItem("dod").value;
+            let dueDate = new Date(evt.target.elements.namedItem("dueDate").value);
+            let isPrivate = evt.target.elements.namedItem("isPrivate").checked;
+            let creator = this.state.user;
+            let createDate = new Date();
+            console.log(dueDate)
+            let body = {
+              title: title,
+              description: description,
+              dod: dod,
+              due_date: dueDate,
+              is_private: isPrivate,
+              create_date: createDate,
+              created_by: creator,
+              collaborators: [],
+              is_complete: false,
+              progress: 0,
+              status: "Pending",
+            }
+            let doc = await firebase.firestore().collection('assignments').add(body);
+            this.selectAssignment(doc.id);
+            this.toggleModal('assignmentModal');
+            let user = this.state.user;
+            this.checkForAssignments(user);
+            this.setState({infoModal: true, infoMsg: "Successfully created Assignment!"})
+        } catch (err) {
+            console.log("Caught exception in createNewAssignment(): " + err);
+            this.setState({assignmentModal: false, infoModal: true, infoMsg: "Failed to create new assignment. Please try again later."})
+        }
+      }
+
+      createNewSubtask = async evt => {
+        evt.preventDefault();
+        try {
+            let title = evt.target.elements.namedItem("sub_title").value;
+            let description = evt.target.elements.namedItem("sub_description").value;
+            let dod = evt.target.elements.namedItem("sub_dod").value;
+            let dueDate = new Date(evt.target.elements.namedItem("sub_dueDate").value);
+            let assignee = evt.target.elements.namedItem("sub_assignee").value;
+            let creator = this.state.user;
+            let createDate = new Date();
+            console.log(dueDate)
+            let body = {
+              sub_title: title,
+              sub_description: description,
+              sub_dod: dod,
+              sub_status: "Pending",
+              sub_due_date: dueDate,
+              sub_create_date: createDate,
+              sub_created_by: creator,
+              sub_assignee: assignee,
+              sub_is_complete: false,
+              sub_progress: 0
+            }
+            let id = this.state.assignmentId;
+            let doc = await firebase.firestore().collection('assignments').doc(id).collection('subtasks').add(body);
+            this.toggleModal('subModal');
+            this.retrieveSubtaskDetails(doc.id);
+            let assignmentId = this.state.assignmentId;
+            this.checkForSubtasks(assignmentId);
+            this.setState({infoModal: true, infoMsg: "Successfully created Subtask!"})
+        } catch(err) {
+            console.log("Caught exception in createNewSubtask(): " + err);
+            this.setState({subModal: false, infoModal: true, infoMsg: "Failed to create new subtask. Please try again later."})
+        }
+      }
+
+      selectAssignment = id => {
+        //update the index.js global var for assignmentId which will push down the prop
+        this.props.updateGlobals(id, null);
+        this.setState({assignmentView: true, assignmentId: id, subtasks: []})
+        //reload the assignment page
+        this.retrieveAssignmentDetails(id);
+        this.checkForSubtasks(id);
+        
+      }
+
+    //set modal to its negated value
+    toggleModal = type => {
+        this.setState(prevState => { return { [type]: !prevState[type] } })
+    }
 
     toggle = tab => {
         if(this.state.activeTab !== tab) {
@@ -162,16 +346,140 @@ class Assignment extends React.Component {
 
       toggleInfoCards = card => {
         let newState = "block";
-        if (this.state.[card] === "block") {
+        if (this.state[card] === "block") {
             newState = "none";
         }
         this.setState({[card]: newState})
       }
 
+      //function to capture the old value
+    inputOnFocus = evt => {
+        try {
+            let value = evt.target.value;
+            this.setState({ oldValue: value })
+        } catch (err) {
+            console.log("Caught exception in inputOnFocus(): " + err)
+        }
+    }
+
+    //lightweight function to update input value
+    inputOnChange = evt => {
+        try {
+            let value = evt.target.value;
+            let dataType = evt.target.type;
+            //sanitize the value if number type
+            if (dataType === 'number')
+                value = parseInt(value);
+
+            let id = evt.target.id;
+            this.setState({ [id]: value })
+        } catch (err) {
+            console.log("Caught exception in inputOnChange(): " + err)
+        }
+    }
+
+    //function to compare new value to old and save to firebase
+    inputOnBlur = evt => {
+        try {
+            let newVal = evt.target.value;
+            let oldVal = this.state.oldValue;
+            if (oldVal !== null && newVal !== oldVal) {
+                let dataType = evt.target.type;
+                //sanitize the value if number type
+                if (dataType === 'number')
+                newVal = parseInt(newVal);
+                //create a reference to the assignment doc
+                let id = this.state.assignmentId;
+                let doc =  firebase.firestore().collection('assignments').doc(id);
+                let fieldId = evt.target.id;
+                //check if we're saving to the assignment or subtask
+                if (this.state.assignmentView) {
+                    doc.update({[fieldId]: newVal});
+                } else {
+                    //retrieve the subtask field name and save to subtask
+                    fieldId = subtaskFields(fieldId);
+                    let subtaskId = this.state.subtaskId;
+                    doc.collection('subtasks').doc(subtaskId).update({[fieldId]: newVal});
+                }
+               
+            }
+        } catch (err) {
+            console.log("Caught exception in inputOnBlur(): " + err)
+        }
+
+        function subtaskFields (name) {
+            let field = null;
+            switch(name) {
+                case 'title':
+                    field = 'sub_title';
+                    break;
+                case 'due_date':
+                    field = 'sub_due_date';
+                    break;
+                case 'dod':
+                    field = 'sub_dod';
+                    break;
+                case 'description':
+                    field = 'sub_description';
+                    break;
+                case 'status':
+                    field = 'sub_status';
+                    break;
+                default:
+                    break
+            }
+            return field;
+        }
+    }
+
+
+
+    markComplete = () => {
+        //construct the parent doc
+        let assignmentId = this.state.assignmentId;
+        let doc = firebase.firestore().collection('assignments').doc(assignmentId);
+        //check if we're dealing with the assignment or subtask
+        if (this.state.assignmentView) {
+            doc.update({is_complete: true, status: "Done", progress: 100});
+            //refresh the assignment sidebar
+            let user = this.state.user;
+            this.checkForAssignments(user);
+        } else {
+            let subtaskId = this.state.subtaskId;
+            doc.collection('subtasks').doc(subtaskId).update({sub_is_complete: true, sub_status: "Done", sub_progress: 100});
+            this.calculateProgressPercent();
+            //refresh the subtask sidebar
+            this.checkForSubtasks(assignmentId);
+        }
+        //mark our state var complete
+        this.setState({is_complete: true, status: "Done", progress: 100})
+    }
+
+    //TODO: add calculation for when a new subtask is created to recalculate the percent which would be greater
+    calculateProgressPercent = () => {
+        //only proceed to calculate if progress not manually set by the user
+        if (!this.state.progressLocked) {
+            //check to see if the progress was indicative of tasks completed or was set by the user
+            let assignmentProgress = this.state.assignmentProgress;
+            let subtaskCount = this.state.subtasks.length;
+            let subtasksComplete = this.state.subtasksComplete;
+            let previousCalc = (subtasksComplete/subtaskCount)*100;
+            if (assignmentProgress === previousCalc) {
+                //since these are equal, the user has not set the progress manually. Continue to update
+                let actualCalc = ((subtasksComplete+1)/subtaskCount)*100;
+                let assignmentId = this.state.assignmentId;
+                firebase.firestore().collection('assignments').doc(assignmentId).update({progress: actualCalc});
+                this.setState({assignmentProgress: actualCalc})
+            }
+        }
+        
+        
+    }
+
     userLogout = () => {
-        firebase.auth().signOut().then(function () {
+        firebase.auth().signOut().then(() => {
             console.log("successfully logged out")
-        }).catch(function (error) {
+        }).catch(error => {
             // An error happened.
             console.log("error logging out: " + error)
             this.setState({ modal: true, infoMsg: "Error signing out" });
@@ -181,7 +489,10 @@ class Assignment extends React.Component {
     render() {
         return (
             <>
-
+                <SimpleStorage
+                    parent={this}
+                    prefix={ 'assignment-page_' }
+                />
                 <div className="assignment-page" ref="mainPanel">
                     <div>
                         <Navbar color="light" light expand="lg">
@@ -229,69 +540,226 @@ class Assignment extends React.Component {
                             </Collapse>
                         </Navbar>
                     </div>
+                    <Modal isOpen={this.state.infoModal} toggle={() => this.toggleModal('infoModal')}>
+                        <ModalHeader toggle={() => this.toggleModal('infoModal')}>Notice</ModalHeader>
+                        <ModalBody>
+                            {this.state.infoMsg}
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color={this.state.buttonColor} onClick={() => this.toggleModal('infoModal')}>Ok</Button>{' '}
+                        </ModalFooter>
+                    </Modal>
+                    <Modal isOpen={this.state.assignmentModal} toggle={() => this.toggleModal('assignmentModal')}>
+                        <Form onSubmit={this.createNewAssignment}>
+                        <ModalHeader toggle={() => this.toggleModal('assignmentModal')}>Create New Assignment</ModalHeader>
+                        <ModalBody>
+
+                            <Row>
+                            <Col md="12">
+                                <Label>Title</Label>
+                                <Input name="title" type="text" required />
+                            </Col>
+                            </Row>
+                            <Row>
+                            <Col md="12">
+                                <Label>Description</Label>
+                                <Input name="description" type="textarea" />
+                            </Col>
+                            </Row>
+                            <Row>
+                            <Col md="12">
+                                <Label>Definition of Done</Label>
+                                <Input name="dod" type="textarea" />
+                            </Col>
+                            </Row>
+                            <Row>
+                            <Col md="12">
+                                <Label>Due Date</Label>
+                                <Input name="dueDate" type="datetime-local" required />
+                            </Col>
+                            </Row>
+                            <Row style={{ marginTop: '5%', marginBottom: '5%' }}>
+                            <Col sm="12" md={{ size: 6, offset: 3 }}>
+                                <Label>Make my Assignment Private</Label>
+                            </Col>
+                            <Col md="2">
+                                <Input name="isPrivate" type="checkbox" />
+                            </Col>
+                            </Row>
+                            <Row>
+                            <Col md="6">
+                                <Label>Created By</Label>
+                                <Input name="creator" type="text" disabled value={this.state.user} />
+                            </Col>
+                            <Col md="6">
+                                <Label>Create Date</Label>
+                                <Input name="createDate" type="datetime-locale" disabled value={new Date().toLocaleDateString()} />
+                            </Col>
+                            </Row>
+
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button type="submit" color={this.state.buttonColor}>Ok</Button>{' '}
+                            <Button color={this.state.buttonColor} onClick={() => this.toggleModal('assignmentModal')}>Cancel</Button>{' '}
+                        </ModalFooter>
+                        </Form>
+                    </Modal>
+                    <Modal isOpen={this.state.subModal} toggle={() => this.toggleModal('subModal')}>
+                        <Form onSubmit={this.createNewSubtask}>
+                        <ModalHeader toggle={() => this.toggleModal('subModal')}>Create New Subtask</ModalHeader>
+                        <ModalBody>
+
+                            <Row>
+                            <Col md="12">
+                                <Label>Title</Label>
+                                <Input name="sub_title" type="text" required />
+                            </Col>
+                            </Row>
+                            <Row>
+                            <Col md="12">
+                                <Label>Description</Label>
+                                <Input name="sub_description" type="textarea" />
+                            </Col>
+                            </Row>
+                            <Row>
+                            <Col md="12">
+                                <Label>Definition of Done</Label>
+                                <Input name="sub_dod" type="textarea" />
+                            </Col>
+                            </Row>
+                            <Row>
+                            <Col md="12">
+                                <Label>Due Date</Label>
+                                <Input name="sub_dueDate" type="datetime-local" required />
+                            </Col>
+                            </Row>
+                            <Row>
+                                <Col md="8">
+                                    <Label>Assignee</Label>
+                                    <Input name="sub_assignee" type="select" />
+                                </Col>
+                            </Row>
+                            <Row>
+                            <Col md="6">
+                                <Label>Created By</Label>
+                                <Input name="sub_creator" type="text" disabled value={this.state.user} />
+                            </Col>
+                            <Col md="6">
+                                <Label>Create Date</Label>
+                                <Input name="sub_createDate" type="datetime-locale" disabled value={new Date().toLocaleDateString()} />
+                            </Col>
+                            </Row>
+
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button type="submit" color={this.state.buttonColor}>Ok</Button>{' '}
+                            <Button color={this.state.buttonColor} onClick={() => this.toggleModal('subModal')}>Cancel</Button>{' '}
+                        </ModalFooter>
+                        </Form>
+                    </Modal>
                     <div className="assignment-content">
                         <div className="assignment-sidebar">
                             <Card>
                                 <CardHeader>My Open Assignments</CardHeader>
                                 <CardBody>
-                                    <Row>
-                                        <Col sm="12" md={{ size: 6, offset: 3 }}>
-                                            <Button
-                                                type="submit"
-                                                color={this.state.buttonColor}
-                                                >
-                                                Create Assignment
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                    <Card className="sidebar-card">
-                                        <CardHeader>Assignment Test</CardHeader>
-                                        <CardBody>
-                                            <p><b>Due Date: </b>12/24/2020 </p>
-                                            <p><b>Status: </b>Pending </p>
-                                        </CardBody>
-                                    </Card>
-                                    <Card className="sidebar-card">
-                                        <CardHeader>Assignment Test # 2</CardHeader>
-                                        <CardBody>
-                                            <p><b>Due Date: </b>12/28/2020 </p>
-                                            <p><b>Status: </b>In-Progress </p>
-                                        </CardBody>
-                                    </Card>
+                                    <div className="scroll-area">
+                                        <Row>
+                                            <Col sm="12" md={{ size: 6, offset: 3 }}>
+                                                <Button
+                                                    type="submit"
+                                                    color={this.state.buttonColor}
+                                                    onClick={() => this.toggleModal('assignmentModal')}
+                                                    >
+                                                    Create Assignment
+                                                </Button>
+                                            </Col>
+                                        </Row>
+                                        {[...this.state.assignments].map(item => (
+                                            <Card key={item.id} className="sidebar-card" onClick={() => this.selectAssignment(item.id)}>
+                                            <CardHeader><b>{item.title}</b></CardHeader>
+                                            <CardBody>
+                                                <p><b>Due Date:</b> {item.dueDate}</p>
+                                                <p><b>Status:</b> {item.status}</p>
+                                            </CardBody>
+                                            </Card>
+                                        ))}
+                                    </div>
                                 </CardBody>
                                 <CardFooter></CardFooter>
                             </Card>
+                            
                         </div>
                         <div className="assignment-middle">
-                            <h5>Assignment</h5>
+                            
+                                {this.state.assignmentView && <h5>Assignment</h5>}
+                                {!this.state.assignmentView && 
+                                    <h5><a href="#!" onClick={() => {this.selectAssignment(this.state.assignmentId)}}>{this.state.assignmentTitle}</a><span> / Subtask</span></h5>
+                                }
+                            
                             <div className="assignment-general">
                                 <Row>
                                     <Col md="12">
                                         <Label>Title</Label>
-                                        <Input type="text" value={this.state.title} disabled={this.state.infoDisabled}/>
+                                        <Input 
+                                            type="text" 
+                                            id="title" 
+                                            value={this.state.title} 
+                                            onChange={this.inputOnChange} 
+                                            onFocus={this.inputOnFocus}
+                                            onBlur={this.inputOnBlur}
+                                            disabled={this.state.infoDisabled}/>
                                     </Col>
                                     
                                 </Row>
                                 <Row>
                                     <Col md="8">
                                         <Label>Due Date</Label>
-                                        <Input name="dueDate" type="datetime-local" value={this.state.dueDate} disabled={this.state.infoDisabled}/>
+                                        <Input 
+                                            type="datetime-local" 
+                                            id="due_date"  
+                                            value={this.state.due_date} 
+                                            onChange={this.inputOnChange} 
+                                            onFocus={this.inputOnFocus}
+                                            onBlur={this.inputOnBlur}
+                                            disabled={this.state.infoDisabled}/>
                                     </Col>
                                     <Col md="4">
-                                        <CustomInput id="isPrivate" type="switch" label="Private" checked={this.state.isPrivate} disabled={this.state.infoDisabled}/>
+                                        <CustomInput 
+                                            type="switch" 
+                                            id="is_private"  
+                                            label="Private" 
+                                            checked={this.state.is_private} 
+                                            onChange={this.inputOnChange} 
+                                            onFocus={this.inputOnFocus}
+                                            onBlur={this.inputOnBlur}
+                                            disabled={this.state.infoDisabled}/>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col md="12">
                                         <Label>Definition of Done</Label>
-                                        <Input type="textarea" value={this.state.dod} disabled={this.state.infoDisabled}/>
+                                        <Input 
+                                            type="textarea" 
+                                            id="dod" 
+                                            value={this.state.dod} 
+                                            onChange={this.inputOnChange} 
+                                            onFocus={this.inputOnFocus}
+                                            onBlur={this.inputOnBlur} 
+                                            disabled={this.state.infoDisabled}/>
                                     </Col>
                                     
                                 </Row>
                                 <Row>
                                     <Col md="12">
                                         <Label>Description</Label>
-                                        <Input type="textarea" value={this.state.description} disabled={this.state.infoDisabled}/>
+                                        <Input 
+                                            type="textarea" 
+                                            id="description" 
+                                            value={this.state.description} 
+                                            onChange={this.inputOnChange} 
+                                            onFocus={this.inputOnFocus}
+                                            onBlur={this.inputOnBlur} 
+                                            disabled={this.state.infoDisabled}/>
                                     </Col>
                                     
                                 </Row>
@@ -350,29 +818,44 @@ class Assignment extends React.Component {
                                         <Row>
                                             <Col md="2"><Label>Status</Label></Col>
                                             <Col md="10">
-                                                <Input type="text" value={this.state.status} disabled={this.state.infoDisabled}/>
+                                                <Input 
+                                                    type="select" 
+                                                    id="status" 
+                                                    value={this.state.status} 
+                                                    onChange={this.inputOnChange} 
+                                                    onFocus={this.inputOnFocus}
+                                                    onBlur={this.inputOnBlur} 
+                                                    disabled={this.state.infoDisabled}>
+
+                                                    <option>Pending</option>
+                                                    <option>In-Progress</option>
+                                                    <option>Review</option>
+                                                    <option>Done</option>
+                                                </Input>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col md="2"><Label style={{position: 'relative', top: '40%'}}>Complete</Label></Col>
                                             <Col md="4">
-                                            <CustomInput id="isComplete" type="switch" label="" checked={this.state.isComplete} disabled={this.state.infoDisabled}/>
+                                            <CustomInput id="is_complete" type="switch" label="" checked={this.state.is_complete} disabled={this.state.infoDisabled}/>
                                             </Col>
                                             <Col md="5">
                                                 <Button
                                                     type="submit"
                                                     color={this.state.buttonColor}
                                                     size="sm"
-                                                    disabled={this.state.infoDisabled}
+                                                    disabled={this.state.infoDisabled || this.state.is_complete}
+                                                    onClick={() => this.markComplete()}
                                                     >
-                                                        Complete Assignment
+                                                        {this.state.assignmentView && 'Complete Assignment'}
+                                                        {!this.state.assignmentView && 'Complete Subtask'}
                                                     </Button>
                                             </Col>
                                         </Row>
                                         <Row>
                                             <Col md="12">
                                                 <Label>Progress</Label>
-                                                <Progress animated color="success" value={this.state.progress}>{this.state.progress}%</Progress>
+                                                <Progress animated color="success" value={this.state.progress}>{Math.round(this.state.progress)}%</Progress>
                                             </Col>
                                         </Row>
                                     </CardBody>
@@ -385,17 +868,33 @@ class Assignment extends React.Component {
                                                 <Button
                                                     type="submit"
                                                     color={this.state.buttonColor}
-                                                    disabled={this.state.infoDisabled}
+                                                    disabled={this.state.infoDisabled || !this.state.assignmentView}
+                                                    onClick={() => this.toggleModal('subModal')}
                                                     >
                                                     Create Subtask
                                                 </Button>
                                             </Col>
                                         </Row>
-                                        <Row>
-                                            <Col sm="12" md={{ size: 8, offset: 3 }}>
-                                                <p className="text-muted">No Subtasks for this Assignment</p>
-                                            </Col>
-                                        </Row>
+                                        
+                                                {Object.keys(this.state.subtasks).length === 0 && 
+                                                    <Row>
+                                                        <Col sm="12" md={{ size: 8, offset: 3 }}>
+                                                        <p className="text-muted">No Subtasks for this Assignment</p>
+                                                        </Col>
+                                                    </Row>
+                                                }
+                                                {Object.keys(this.state.subtasks).length > 0 && 
+                                                    [...this.state.subtasks].map(item => (
+                                                        <Card key={item.id} className="subtask-item" onClick={() => this.retrieveSubtaskDetails(item.id)}>
+                                                        <CardHeader><b>{item.title}</b></CardHeader>
+                                                        <CardBody>
+                                                            <p><b>Due Date:</b> {item.dueDate}</p>
+                                                            <p><b>Status:</b> {item.status}</p>
+                                                        </CardBody>
+                                                        </Card>
+                                                    ))
+                                                }
+                                            
                                     </CardBody>
                                 </Card>
                                 <Card className="collaborator-card">

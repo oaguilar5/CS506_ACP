@@ -1,6 +1,6 @@
 import React from 'react';
-import './App.css';
 import firebase from "firebase/app";
+import 'firebase/auth'
 import "firebase/firestore";
 import "firebase/storage";
 
@@ -121,7 +121,7 @@ class Home extends React.Component {
           query.forEach(doc => {
             count++;
             let title = doc.get('title');
-            let dueDate = doc.get('due_date').toDate().toString();
+            let dueDate = doc.get('due_date').toDate().toLocaleString();
             let description = doc.get('description');
             let status = doc.get('status')
             let createdBy = doc.get('created_by');

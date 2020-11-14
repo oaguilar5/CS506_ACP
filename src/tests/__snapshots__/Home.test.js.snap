@@ -1,0 +1,705 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test Home component 1`] = `
+<Fragment>
+  <div
+    className="home-page"
+  >
+    <div>
+      <Navbar
+        color="light"
+        expand="lg"
+        light={true}
+        tag="nav"
+      >
+        <div
+          className="logo"
+        >
+          <a
+            href="/home"
+          >
+            <img
+              alt="ACP"
+              src="/images/logo_1.png"
+            />
+          </a>
+        </div>
+        <NavbarToggler
+          tag="button"
+          type="button"
+        />
+        <Collapse
+          appear={false}
+          enter={true}
+          exit={true}
+          in={false}
+          isOpen={false}
+          mountOnEnter={false}
+          navbar={true}
+          onEnter={[Function]}
+          onEntered={[Function]}
+          onEntering={[Function]}
+          onExit={[Function]}
+          onExited={[Function]}
+          onExiting={[Function]}
+          tag="div"
+          timeout={350}
+          unmountOnExit={false}
+        >
+          <Nav
+            className="mr-auto"
+            navbar={true}
+            tag="ul"
+            vertical={false}
+          >
+            <NavItem
+              tag="li"
+            >
+              <NavLink
+                href="/components/"
+                tag="a"
+              >
+                Home
+              </NavLink>
+            </NavItem>
+            <NavItem
+              tag="li"
+            >
+              <NavLink
+                href=""
+                tag="a"
+              >
+                Assignments
+              </NavLink>
+            </NavItem>
+            <NavItem
+              tag="li"
+            >
+              <NavLink
+                href=""
+                tag="a"
+              >
+                Collaborators
+              </NavLink>
+            </NavItem>
+            <NavItem
+              tag="li"
+            >
+              <NavLink
+                href=""
+                tag="a"
+              >
+                Search
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <div
+            className="account-link"
+          >
+            <UncontrolledDropdown>
+              <DropdownToggle
+                aria-haspopup={true}
+                caret={true}
+                color="default"
+                data-toggle="dropdown"
+              >
+                <div
+                  className="user-photo"
+                >
+                  <img
+                    alt="..."
+                    src=""
+                  />
+                </div>
+                <p
+                  className="d-lg-none"
+                >
+                  Log out
+                </p>
+              </DropdownToggle>
+              <DropdownMenu
+                className="dropdown-navbar"
+                flip={true}
+                right={true}
+                tag="ul"
+              >
+                <DropdownItem
+                  header={true}
+                  tag="button"
+                  toggle={true}
+                />
+                <DropdownItem
+                  divider={true}
+                  tag="li"
+                  toggle={true}
+                />
+                <NavLink
+                  tag="li"
+                >
+                  <DropdownItem
+                    className="nav-item"
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    Log out
+                  </DropdownItem>
+                </NavLink>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+        </Collapse>
+      </Navbar>
+    </div>
+    <Modal
+      autoFocus={true}
+      backdrop={true}
+      backdropTransition={
+        Object {
+          "mountOnEnter": true,
+          "timeout": 150,
+        }
+      }
+      centered={false}
+      container="body"
+      fade={true}
+      isOpen={false}
+      keyboard={true}
+      modalTransition={
+        Object {
+          "timeout": 300,
+        }
+      }
+      onClosed={[Function]}
+      onOpened={[Function]}
+      returnFocusAfterClose={true}
+      role="dialog"
+      scrollable={false}
+      toggle={[Function]}
+      unmountOnClose={true}
+      zIndex={1050}
+    >
+      <Form
+        onSubmit={[Function]}
+        tag="form"
+      >
+        <ModalHeader
+          charCode={215}
+          closeAriaLabel="Close"
+          tag="h5"
+          toggle={[Function]}
+          wrapTag="div"
+        >
+          Create New
+        </ModalHeader>
+        <ModalBody
+          tag="div"
+        >
+          <Row
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <Col
+              md="12"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Label
+                tag="label"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                Title
+              </Label>
+              <Input
+                name="title"
+                required={true}
+                type="text"
+              />
+            </Col>
+          </Row>
+          <Row
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <Col
+              md="12"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Label
+                tag="label"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                Description
+              </Label>
+              <Input
+                name="description"
+                type="textarea"
+              />
+            </Col>
+          </Row>
+          <Row
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <Col
+              md="12"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Label
+                tag="label"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                Definition of Done
+              </Label>
+              <Input
+                name="dod"
+                type="textarea"
+              />
+            </Col>
+          </Row>
+          <Row
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <Col
+              md="12"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Label
+                tag="label"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                Due Date
+              </Label>
+              <Input
+                name="dueDate"
+                required={true}
+                type="datetime-local"
+              />
+            </Col>
+          </Row>
+          <Row
+            style={
+              Object {
+                "marginBottom": "5%",
+                "marginTop": "5%",
+              }
+            }
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <Col
+              md={
+                Object {
+                  "offset": 3,
+                  "size": 6,
+                }
+              }
+              sm="12"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Label
+                tag="label"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                Make my Assignment Private
+              </Label>
+            </Col>
+            <Col
+              md="2"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Input
+                name="isPrivate"
+                type="checkbox"
+              />
+            </Col>
+          </Row>
+          <Row
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <Col
+              md="6"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Label
+                tag="label"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                Created By
+              </Label>
+              <Input
+                disabled={true}
+                name="creator"
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              md="6"
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Label
+                tag="label"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                Create Date
+              </Label>
+              <Input
+                disabled={true}
+                name="createDate"
+                type="datetime-locale"
+                value="11/13/2020"
+              />
+            </Col>
+          </Row>
+        </ModalBody>
+        <ModalFooter
+          tag="div"
+        >
+          <Button
+            color="primary"
+            tag="button"
+            type="submit"
+          >
+            Ok
+          </Button>
+           
+          <Button
+            color="primary"
+            onClick={[Function]}
+            tag="button"
+          >
+            Cancel
+          </Button>
+           
+        </ModalFooter>
+      </Form>
+    </Modal>
+    <Row
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Col
+        className="q1-label"
+        md="6"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <h2>
+          My Open Assignments
+        </h2>
+      </Col>
+    </Row>
+    <div
+      className="open-assignments"
+    >
+      <div
+        className="select-assignments"
+        id="select-assignments"
+      />
+      <div
+        className="new-assignment"
+      >
+        <span
+          className="select-previous"
+          onClick={[Function]}
+        >
+          ‹
+        </span>
+        <span
+          className="select-next"
+          onClick={[Function]}
+        >
+          ›
+        </span>
+        <Card
+          className="assignment-card create-new"
+          onClick={[Function]}
+          tag="div"
+        >
+          <CardBody
+            tag="div"
+          >
+            Create New
+            <img
+              src="/images/plus-sign.jpg"
+            />
+          </CardBody>
+        </Card>
+      </div>
+    </div>
+    <div
+      style={
+        Object {
+          "paddingLeft": "5%",
+          "paddingRight": "5%",
+          "paddingTop": "5%",
+        }
+      }
+    >
+      <Jumbotron
+        tag="div"
+      >
+        <Container
+          fluid={true}
+          style={
+            Object {
+              "paddingBottom": "2%",
+              "textAlign": "left",
+            }
+          }
+          tag="div"
+        >
+          <h1>
+            User Statistics
+          </h1>
+        </Container>
+        <Container
+          fluid={true}
+          style={
+            Object {
+              "display": "inline-block",
+              "textAlign": "left",
+            }
+          }
+          tag="div"
+        >
+          <h5>
+            Number of Open Assignments
+          </h5>
+          <h6>
+            1
+          </h6>
+        </Container>
+        <Container
+          fluid={true}
+          style={
+            Object {
+              "display": "inline-block",
+              "textAlign": "center",
+            }
+          }
+          tag="div"
+        >
+          <h5>
+            Number of Completed Assignments
+          </h5>
+          <h6>
+            0
+          </h6>
+        </Container>
+        <Container
+          fluid={true}
+          style={
+            Object {
+              "display": "inline-block",
+              "textAlign": "right",
+            }
+          }
+          tag="div"
+        >
+          <h5>
+            Average Collaborators
+          </h5>
+          <h6>
+            0
+          </h6>
+        </Container>
+      </Jumbotron>
+    </div>
+  </div>
+</Fragment>
+`;

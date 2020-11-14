@@ -13,14 +13,11 @@ import './assets/css/app.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //ROUTE COMPONENTS
-import App from './App.jsx';
 import Login from './Login.jsx'
-import Sample from './Sample.jsx'
 import Home from './Home.jsx'
 import Assignment from './Assignment.jsx'
 import TOS from './TOS.jsx'
 import PP from './PP.jsx'
-import * as serviceWorker from './serviceWorker';
 
 //Firebase Web SDK
 import firebase from "firebase/app";
@@ -46,7 +43,6 @@ const hist = createBrowserHistory();
 var assignmentId;
 var user;
 
-
 //function to update our global props
 function updateGlobals (id, email) {
   if (id !== null) assignmentId = id;
@@ -57,7 +53,6 @@ ReactDOM.render(
   <Router history={hist}>
     <Switch>
       <Route path="/login" render={props => <Login {...props}  />} />
-      <Route path="/sample" render={props => <Sample {...props}  />} />
       <Route path="/home" render={props => <Home {...props} updateGlobals={updateGlobals}  />} />
       <Route path="/terms-of-service" render={props => <TOS {...props}/>}/>
       <Route path="/privacy-policy" render={props => <PP {...props}/>}/>
@@ -65,12 +60,12 @@ ReactDOM.render(
       <Redirect from="/" to="/login"/>
     </Switch>
   </Router>,
-  document.getElementById("root")
+  document.getElementById("root") || document.createElement('div')
 );
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+//serviceWorker.unregister();
 
 

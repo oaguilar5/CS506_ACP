@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test Login component 1`] = `
+<Fragment>
+  <div
+    className="main-login"
+  >
+    <Modal
+      autoFocus={true}
+      backdrop={true}
+      backdropTransition={
+        Object {
+          "mountOnEnter": true,
+          "timeout": 150,
+        }
+      }
+      centered={false}
+      container="body"
+      fade={true}
+      isOpen={false}
+      keyboard={true}
+      modalTransition={
+        Object {
+          "timeout": 300,
+        }
+      }
+      onClosed={[Function]}
+      onOpened={[Function]}
+      returnFocusAfterClose={true}
+      role="dialog"
+      scrollable={false}
+      toggle={[Function]}
+      unmountOnClose={true}
+      zIndex={1050}
+    >
+      <ModalHeader
+        charCode={215}
+        closeAriaLabel="Close"
+        tag="h5"
+        toggle={[Function]}
+        wrapTag="div"
+      >
+        Notice
+      </ModalHeader>
+      <ModalBody
+        tag="div"
+      />
+      <ModalFooter
+        tag="div"
+      >
+        <Button
+          className="firebaseui-id-submit firebaseui-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+        >
+          Ok
+        </Button>
+         
+      </ModalFooter>
+    </Modal>
+    <div
+      className="login-form"
+    >
+      <div
+        className="login-options"
+      >
+        <a
+          href="!#"
+          onClick={[Function]}
+        >
+          Create New Account
+        </a>
+      </div>
+      <e
+        firebaseAuth={
+          Object {
+            "apiKey": "AIzaSyBzz9AcmhUB4jGzFG8icMUuIiWHW2WXzIo",
+            "appName": "[DEFAULT]",
+            "authDomain": "cs506-acp.firebaseapp.com",
+            "currentUser": null,
+          }
+        }
+        uiConfig={
+          Object {
+            "privacyPolicyUrl": "/privacy-policy",
+            "signInFlow": "popup",
+            "signInOptions": Array [
+              "password",
+            ],
+            "signInSuccessUrl": "/sample",
+            "tosUrl": "/terms-of-service",
+          }
+        }
+      />
+    </div>
+  </div>
+</Fragment>
+`;

@@ -132,6 +132,7 @@
 .assignment-sidebar {
   width: 20%;
   height: 100%;
+  position: relative;
 }
 
 .assignment-sidebar .row {
@@ -140,10 +141,24 @@
 
 .assignment-sidebar .card {
   height: 50rem;
+  width: 95%;
+}
+
+.assignment-sidebar .card-body {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 0.5rem;
+}
+
+.assignment-sidebar .scroll-area {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .assignment-sidebar .sidebar-card {
-  height: 10rem;
+  height: 11rem;
   top: 0;
   margin-bottom: 5%;
   box-shadow: 5px 5px 12px 0 rgba(0,0,0,0.2);
@@ -154,6 +169,10 @@
 .assignment-sidebar .sidebar-card:hover {
   top: -10px;
   box-shadow: 10px 10px 10px  rgba(0,0,0,0.2);
+}
+
+.assignment-sidebar .sidebar-card .card-body {
+  overflow: hidden;
 }
 
 
@@ -202,6 +221,24 @@
 
 .assignment-info .subtask-card {
   margin-bottom: 5%;
+}
+
+.subtask-card .subtask-item {
+  height: 11rem;
+  top: 0;
+  margin-bottom: 5%;
+  box-shadow: 5px 5px 12px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: top ease 0.5s, box-shadow ease 0.5s;
+}
+
+.subtask-card .subtask-item:hover {
+  top: -10px;
+  box-shadow: 10px 10px 10px  rgba(0,0,0,0.2);
+}
+
+.subtask-card .subtask-item .card-body {
+  overflow: hidden;
 }
 
 .assignment-info .collaborator-card {
