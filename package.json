@@ -12,12 +12,15 @@
     "firebase-functions": "^3.11.0",
     "firebaseui": "^4.6.1",
     "history": "^4.7.2",
+    "moment": "^2.29.1",
     "perfect-scrollbar": "^1.5.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-firebaseui": "^4.1.0",
+    "react-moment": "^1.0.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
+    "react-simple-storage": "^1.4.2",
     "reactstrap": "^8.6.0"
   },
   "scripts": {
@@ -40,5 +43,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jest-enzyme": "^7.1.2"
   }
 }

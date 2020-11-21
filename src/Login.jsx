@@ -117,6 +117,7 @@ class MainLogin extends React.Component {
             email: email,
             display_name: "",
             profile_pic: "student-user.png",
+            active_id: "",
             alert_settings: {
               alerts_on: true,
               comments: true,

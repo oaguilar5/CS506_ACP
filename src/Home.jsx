@@ -57,14 +57,12 @@ class Home extends React.Component {
     //initial auth check
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        user.updateProfile({
-          photoURL: "student-user.png"
-        })
         let email = user.email;
         //update index.js global email
         this.props.updateGlobals(null, email);
         let profilePic = user.photoURL;
-        this.checkForAssignments(email);
+        let assignments = [];
+        this.checkForAssignments(email, assignments, true);
         this.setState({ user: email, isAuthenticated: true })
         //DEBUG
         console.log("profile pic: " + profilePic);
@@ -97,6 +95,7 @@ class Home extends React.Component {
         email: email,
         display_name: displayName,
         profile_pic: "student-user.png",
+        active_id: "",
         alert_settings: {
           alerts_on: true,
           comments: true,
@@ -111,33 +110,44 @@ class Home extends React.Component {
 
   }
 
-  checkForAssignments = user => {
+  checkForAssignments = (user, assignments, firstQuery) => {
     try {
-      let assignments = [];
-      firebase.firestore().collection('assignments').where('created_by', '==', user).where('is_complete', '==', false).orderBy('create_date', 'desc').get()
+      let thisQuery;
+      if (firstQuery) {
+        thisQuery = firebase.firestore().collection('assignments').where('created_by', '==', user).where('is_complete', '==', false).orderBy('create_date', 'desc');
+      } else {
+        thisQuery = firebase.firestore().collection('assignments').where('collaborators', 'array-contains', user).where('is_complete', '==', false).orderBy('create_date', 'desc');
+      }
+      thisQuery.get()
         .then(query => {
-          //since forEach is async, keep count and update state once all have been traversed
-          let count = 0;
-          query.forEach(doc => {
-            count++;
-            let title = doc.get('title');
-            let dueDate = doc.get('due_date').toDate().toLocaleString();
-            let description = doc.get('description');
-            let status = doc.get('status')
-            let createdBy = doc.get('created_by');
-            let thisObj = {
-              id: doc.id,
-              title: title,
-              dueDate: dueDate,
-              description: description,
-              status: status,
-              createdBy: createdBy
-            };
-            assignments.push(thisObj)
-            if (count >= query.size) {
-              this.setState({ assignments })
-            }
-          })
+          if (query.size > 0) {
+            //since forEach is async, keep count and update state once all have been traversed
+            let count = 0;
+            query.forEach(doc => {
+              count++;
+              let title = doc.get('title');
+              let dueDate = doc.get('due_date').toDate().toLocaleString();
+              let description = doc.get('description');
+              let status = doc.get('status')
+              let createdBy = doc.get('created_by');
+              let thisObj = {
+                id: doc.id,
+                title: title,
+                dueDate: dueDate,
+                description: description,
+                status: status,
+                createdBy: createdBy
+              };
+              assignments.push(thisObj)
+              if (count >= query.size && firstQuery) {
+                this.checkForAssignments(user, assignments, false)
+              } else {
+                this.setState({ assignments })
+              }
+            })
+          } else if (firstQuery) {
+            this.checkForAssignments(user, assignments, false)
+          }
         });
     } catch (err) {
       console.log("Caught exception in checkForAssignments(): " + err)
@@ -188,6 +198,9 @@ class Home extends React.Component {
   selectAssignment = id => {
     //first update the index.js global var for assignmentId
     this.props.updateGlobals(id, null);
+    //save the active assignmentId to the user's doc for reference
+    let user = this.state.user;
+    firebase.firestore().collection('acp_users').doc(user).update({active_id: id});
     //then redirect the user to the assignment page
     this.props.history.push("/assignment");
   }

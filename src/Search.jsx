@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
@@ -41,9 +40,6 @@ class Search extends React.Component {
         //initial auth check
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                user.updateProfile({
-                    photoURL: "student-user.png"
-                })
                 let email = user.email;
                 //update index.js global email
                 this.props.updateGlobals(null, email);

@@ -129,6 +129,10 @@
   text-align: center;
 }
 
+.assignment-content .card-body p {
+  margin-bottom: 3%;
+}
+
 .assignment-sidebar {
   width: 20%;
   height: 100%;
@@ -158,7 +162,8 @@
 }
 
 .assignment-sidebar .sidebar-card {
-  height: 11rem;
+  height: 7rem;
+  font-size: 0.75rem;
   top: 0;
   margin-bottom: 5%;
   box-shadow: 5px 5px 12px 0 rgba(0,0,0,0.2);
@@ -224,7 +229,8 @@
 }
 
 .subtask-card .subtask-item {
-  height: 11rem;
+  height: 7rem;
+  font-size: 0.70rem;
   top: 0;
   margin-bottom: 5%;
   box-shadow: 5px 5px 12px 0 rgba(0,0,0,0.2);
@@ -245,6 +251,95 @@
   margin-bottom: 5%;
 }
 
+.collaborator-card .collaborator-item {
+  height: 5rem;
+  width: 95%;
+  font-size: 0.70rem;
+  top: 0;
+  margin-bottom: 5%;
+  box-shadow: 5px 5px 12px 0 rgba(0,0,0,0.2);
+  
+}
+
+.collaborator-card .collaborator-item .card-body {
+  display: inline-flex;
+  position: relative;
+  padding: 4%;
+}
+
+.collaborator-card .collaborator-item .avatar {
+  height: 100%;
+  width: 20%;
+  position: relative;
+  
+}
+
+.collaborator-card .collaborator-item .info {
+  height: 100%;
+  width: 60%;
+  position: relative;
+}
+
+.collaborator-card .collaborator-item .options {
+  height: 100%;
+  width: 20%;
+  position: relative;
+}
+
+.collaborator-card .collaborator-item .options a {
+  top: 25%;
+  position: relative;
+}
+
+
+/* COMMENTS SECTION */
+
+.assignment-comments {
+  position: relative;
+  height: 18rem;
+}
+
+.assignment-comments .scroll-comments {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  margin-bottom: 1%;
+  padding: 2%;
+  text-align: center;
+}
+
+.assignment-comments .scroll-comments h5 {
+  position: relative;
+  top: 40%;
+}
+
+
+.assignment-comments .comment-item {
+  width: 100%;
+  height: 5rem;
+  margin-bottom: 1%;
+  text-align: left;
+}
+
+.assignment-comments .comment-item .card-body {
+  display: inline-flex;
+  padding: 1%;
+}
+
+.assignment-comments .comment-item .avatar {
+  width: 20%;
+  height: 100%;
+  display: inline-flex;
+}
+
+.assignment-comments .comment-item .avatar .user-photo {
+  margin-top: 5%;
+}
+
+.assignment-comments .comment-item .content {
+  width: 80%;
+  height: 100%;
+}
 
 /* HOME PAGE */
 

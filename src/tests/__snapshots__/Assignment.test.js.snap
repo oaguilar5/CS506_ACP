@@ -678,7 +678,7 @@ exports[`should test Assignment component 1`] = `
                             disabled={true}
                             name="createDate"
                             type="datetime-locale"
-                            value="11/13/2020"
+                            value="11/16/2020"
                           />
                         </Col>
                       </Row>
@@ -1053,7 +1053,7 @@ exports[`should test Assignment component 1`] = `
                             disabled={true}
                             name="sub_createDate"
                             type="datetime-locale"
-                            value="11/13/2020"
+                            value="11/16/2020"
                           />
                         </Col>
                       </Row>
@@ -2584,7 +2584,7 @@ exports[`should test Assignment component 1`] = `
                 disabled={true}
                 name="createDate"
                 type="datetime-locale"
-                value="11/13/2020"
+                value="11/16/2020"
               />
             </Col>
           </Row>
@@ -2959,7 +2959,7 @@ exports[`should test Assignment component 1`] = `
                 disabled={true}
                 name="sub_createDate"
                 type="datetime-locale"
-                value="11/13/2020"
+                value="11/16/2020"
               />
             </Col>
           </Row>
