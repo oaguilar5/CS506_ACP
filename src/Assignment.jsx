@@ -1,5 +1,6 @@
 import React from 'react';
 import Comments from './Comments.jsx'
+import Files from './Files.jsx'
 
 
 import firebase from "firebase/app";
@@ -9,7 +10,6 @@ import "firebase/storage";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import classnames from 'classnames';
-import SimpleStorage from "react-simple-storage";
 
 //Reactstrap library (with a few sample components)
 //https://reactstrap.github.io/components/
@@ -19,7 +19,6 @@ import {
     CardHeader,
     CardBody,
     CardFooter,
-    CardText,
     Col,
     CustomInput,
     DropdownToggle,
@@ -37,7 +36,6 @@ import {
     Navbar,
     NavItem,
     NavbarToggler,
-    NavbarText,
     Collapse,
     NavLink,
     Progress,
@@ -57,6 +55,7 @@ class Assignment extends React.Component {
         this.state = {
             avatar: "",
             user: this.props.user,
+            userName: "",
             assignmentId: this.props.assignmentId,
             defaultAvatar: "",
             infoModal: false,
@@ -71,6 +70,8 @@ class Assignment extends React.Component {
             assignments: [],
             subtasks: [],
             subtasksComplete: 0,
+            creator: "",
+            created: "",
             assignmentTitle: "",
             title: "",
             due_date: "",
@@ -95,9 +96,6 @@ class Assignment extends React.Component {
 
     componentDidMount() {
 
-        //DEBUG
-        console.log(`Assignment: props: ${this.props.assignmentId}, state: ${this.state.assignmentId}`)
-
         //initial auth check
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
@@ -108,8 +106,15 @@ class Assignment extends React.Component {
                 let assignments = []
                 this.checkForAssignments(email, assignments, true);
                 this.setState({user: email, isAuthenticated: true})
-                //DEBUG
-                console.log("profile pic: " + profilePic);
+                //retrieve the display name for the user
+                firebase.firestore().collection('acp_users').doc(email).get()
+                .then(user => {
+                    let userName = user.get('display_name');
+                    if (typeof userName === 'undefined' || userName === "") {
+                        userName = email;
+                    }
+                    this.setState({userName})
+                })
                 //retrieve profile pic
                 if (profilePic === "") {
                     //default if not set
@@ -128,6 +133,7 @@ class Assignment extends React.Component {
                 if (typeof assignmentId !== 'undefined') {
                     this.props.updateGlobals(assignmentId, null);
                     this.selectAssignment(assignmentId);
+                    this.setState({assignmentId})
                 } else {
                     //retrieve the activeId from the user
                     firebase.firestore().collection('acp_users').doc(email).get()
@@ -136,6 +142,7 @@ class Assignment extends React.Component {
                             if (assignmentId !== "") {
                                 this.selectAssignment(assignmentId);
                                 this.props.updateGlobals(assignmentId, null);
+                                this.setState({assignmentId})
                             }
                         })
                 }
@@ -180,8 +187,10 @@ class Assignment extends React.Component {
         
         firebase.firestore().collection('assignments').doc(id).get()
             .then(doc =>{
+                let creator = doc.get('created_by');
+                let created = this.toDateFormat(doc.get('create_date'));
+                let due_date = this.toDateFormat(doc.get('due_date'));
                 let title = doc.get('title');
-                let due_date = doc.get('due_date').toDate().toLocaleString();
                 let description = doc.get('description');
                 let status = doc.get('status')
                 let is_private =  doc.get('is_private');
@@ -191,7 +200,21 @@ class Assignment extends React.Component {
                 let collabs = doc.get('collaborators');
                 this.retrieveCollaborators(collabs);
                 let infoDisabled =  false;
-                this.setState({assignmentTitle: title, title, due_date, description, status, is_private, dod, is_complete, progress, assignmentProgress: progress, infoDisabled})
+                this.setState({
+                    creator,
+                    created,
+                    assignmentTitle: title, 
+                    title, due_date, 
+                    description, 
+                    status, 
+                    is_private, 
+                    dod, 
+                    is_complete, 
+                    progress, 
+                    assignmentProgress: progress, 
+                    infoDisabled,
+                    sub_assignee: ""
+                })
             })
       }
 
@@ -200,8 +223,10 @@ class Assignment extends React.Component {
         let assignmentId = this.state.assignmentId;
         firebase.firestore().collection('assignments').doc(assignmentId).collection('subtasks').doc(id).get()
             .then(doc =>{
+                let creator = doc.get('sub_created_by');
+                let created = this.toDateFormat(doc.get('sub_create_date'));
+                let due_date = this.toDateFormat(doc.get('sub_due_date'));
                 let title = doc.get('sub_title');
-                let due_date = doc.get('sub_due_date').toDate().toLocaleString();
                 let description = doc.get('sub_description');
                 let status = doc.get('sub_status')
                 let dod =  doc.get('sub_dod');
@@ -209,18 +234,21 @@ class Assignment extends React.Component {
                 let progress =  doc.get('sub_progress');
                 let sub_assignee = doc.get('sub_assignee')
                 let infoDisabled =  false;
-                this.setState({assignmentView: false, subtaskId: id, title, due_date, description, status, dod, is_complete, progress, sub_assignee, infoDisabled})
+                this.setState({assignmentView: false, subtaskId: id, creator, created, title, due_date, description, status, dod, is_complete, progress, sub_assignee, infoDisabled})
             })
       }
 
       retrieveCollaborators = async collabs => {
         let collaborators = [];
         let commentCollabs = {};
+        //start by adding this user's info to the map
+        let commentObj = {[this.state.user]: {displayName: this.state.userName, avatar: this.state.avatar}}
+        Object.assign(commentCollabs, commentObj)
         //traverse the collabs email array to retrieve the user details
         for (let i=0;i<collabs.length;i++) {
             try {
                 let thisObj = {id: collabs[i], displayName: "Unconfirmed User", avatar: this.state.defaultAvatar};
-                
+                commentObj = {[collabs[i]]: {displayName: collabs[i], avatar: this.state.defaultAvatar}}
                 let userDoc = await firebase.firestore().collection('acp_users').doc(collabs[i]).get();
                 if (userDoc.exists) {
                     let displayName = userDoc.get('display_name');
@@ -229,14 +257,13 @@ class Assignment extends React.Component {
                     thisObj.id = userDoc.id;
                     thisObj.displayName = displayName;
                     thisObj.avatar = avatar;
-                    let commentObj = {[userDoc.id]: {displayName: displayName, avatar: avatar}}
-                    Object.assign(commentCollabs, commentObj)
+                    commentObj.displayName = displayName;
+                    commentObj.avatar = avatar;
                 }
                 collaborators.push(thisObj);
-                
+                Object.assign(commentCollabs, commentObj)
             } catch (err) {
-                console.log("Caught exception in retrieveCollaborators(), iteration: " + i + ",item: " + collabs[i])
-                console.log("error: " + err)
+                console.log("Caught exception in retrieveCollaborators(), iteration: " + i + ",item: " + collabs[i] + " ,err: " + err)
             }
         }
         this.setState({collabs, collaborators, commentCollabs})
@@ -364,33 +391,38 @@ class Assignment extends React.Component {
       createNewSubtask = async evt => {
         evt.preventDefault();
         try {
-            let title = evt.target.elements.namedItem("sub_title").value;
-            let description = evt.target.elements.namedItem("sub_description").value;
-            let dod = evt.target.elements.namedItem("sub_dod").value;
-            let dueDate = new Date(evt.target.elements.namedItem("sub_dueDate").value);
-            let assignee = evt.target.elements.namedItem("sub_assignee").value;
-            let creator = this.state.user;
-            let createDate = new Date();
-            console.log(dueDate)
-            let body = {
-              sub_title: title,
-              sub_description: description,
-              sub_dod: dod,
-              sub_status: "Pending",
-              sub_due_date: dueDate,
-              sub_create_date: createDate,
-              sub_created_by: creator,
-              sub_assignee: assignee,
-              sub_is_complete: false,
-              sub_progress: 0
+            let subtasks = this.state.subtasks;
+            if (subtasks.length < 10) {
+                let title = evt.target.elements.namedItem("sub_title").value;
+                let description = evt.target.elements.namedItem("sub_description").value;
+                let dod = evt.target.elements.namedItem("sub_dod").value;
+                let dueDate = new Date(evt.target.elements.namedItem("sub_dueDate").value);
+                let assignee = evt.target.elements.namedItem("sub_assignee").value;
+                let creator = this.state.user;
+                let createDate = new Date();
+                console.log(dueDate)
+                let body = {
+                sub_title: title,
+                sub_description: description,
+                sub_dod: dod,
+                sub_status: "Pending",
+                sub_due_date: dueDate,
+                sub_create_date: createDate,
+                sub_created_by: creator,
+                sub_assignee: assignee,
+                sub_is_complete: false,
+                sub_progress: 0
+                }
+                let id = this.state.assignmentId;
+                let doc = await firebase.firestore().collection('assignments').doc(id).collection('subtasks').add(body);
+                this.toggleModal('subModal');
+                this.retrieveSubtaskDetails(doc.id);
+                let assignmentId = this.state.assignmentId;
+                this.checkForSubtasks(assignmentId);
+                this.setState({infoModal: true, infoMsg: "Successfully created Subtask!"})
+            } else {
+                this.setState({infoModal: true, infoMsg: "Unable to create subtask: Maximum number of subtasks per assignment reached"})
             }
-            let id = this.state.assignmentId;
-            let doc = await firebase.firestore().collection('assignments').doc(id).collection('subtasks').add(body);
-            this.toggleModal('subModal');
-            this.retrieveSubtaskDetails(doc.id);
-            let assignmentId = this.state.assignmentId;
-            this.checkForSubtasks(assignmentId);
-            this.setState({infoModal: true, infoMsg: "Successfully created Subtask!"})
         } catch(err) {
             console.log("Caught exception in createNewSubtask(): " + err);
             this.setState({subModal: false, infoModal: true, infoMsg: "Failed to create new subtask. Please try again later."})
@@ -400,6 +432,9 @@ class Assignment extends React.Component {
       selectAssignment = id => {
         //update the index.js global var for assignmentId which will push down the prop
         this.props.updateGlobals(id, null);
+        //save the active assignmentId to the user's doc for reference
+        let user = this.state.user;
+        firebase.firestore().collection('acp_users').doc(user).update({active_id: id});
         this.setState({assignmentView: true, assignmentId: id, subtasks: []})
         //reload the assignment page
         this.retrieveAssignmentDetails(id);
@@ -462,6 +497,8 @@ class Assignment extends React.Component {
                 //sanitize the value if number type
                 if (dataType === 'number') {
                     newVal = parseInt(newVal);
+                } else if (dataType === 'datetime-local') {
+                    newVal = new Date(newVal);
                 }
                 //create a reference to the assignment doc
                 let id = this.state.assignmentId;
@@ -472,7 +509,7 @@ class Assignment extends React.Component {
                     doc.update({[fieldId]: newVal});
                 } else {
                     //retrieve the subtask field name and save to subtask
-                    fieldId = subtaskFields(fieldId);
+                    fieldId = this.subtaskFields(fieldId);
                     let subtaskId = this.state.subtaskId;
                     doc.collection('subtasks').doc(subtaskId).update({[fieldId]: newVal});
                 }
@@ -481,30 +518,30 @@ class Assignment extends React.Component {
         } catch (err) {
             console.log("Caught exception in inputOnBlur(): " + err)
         }
+    }
 
-        function subtaskFields (name) {
-            let field = name;
-            switch(name) {
-                case 'title':
-                    field = 'sub_title';
-                    break;
-                case 'due_date':
-                    field = 'sub_due_date';
-                    break;
-                case 'dod':
-                    field = 'sub_dod';
-                    break;
-                case 'description':
-                    field = 'sub_description';
-                    break;
-                case 'status':
-                    field = 'sub_status';
-                    break;
-                default:
-                    break
-            }
-            return field;
+    subtaskFields = name => {
+        let field = name;
+        switch(name) {
+            case 'title':
+                field = 'sub_title';
+                break;
+            case 'due_date':
+                field = 'sub_due_date';
+                break;
+            case 'dod':
+                field = 'sub_dod';
+                break;
+            case 'description':
+                field = 'sub_description';
+                break;
+            case 'status':
+                field = 'sub_status';
+                break;
+            default:
+                break
         }
+        return field;
     }
 
     updatePrivacy = () => {
@@ -566,19 +603,25 @@ class Assignment extends React.Component {
         try {
             evt.preventDefault();
             let email = evt.target.elements.namedItem("student-email").value;
+            evt.target.elements.namedItem("student-email").value = "";
             let collabs = this.state.collabs;
-            if (!collabs.includes(email)) {
-                collabs.push(email);
-                this.retrieveCollaborators(collabs);
-                //save to assignment doc
-                let assignmentId = this.state.assignmentId;
-                firebase.firestore().collection('assignments').doc(assignmentId).update({collaborators: collabs})
-                    .then(() => {
-                        this.setState({collabs, infoModal: true, infoMsg: "Successfully added collaborator: " + email})
-                    })
+            if (collabs.length < 10) {
+                if (!collabs.includes(email)) {
+                    collabs.push(email);
+                    this.retrieveCollaborators(collabs);
+                    //save to assignment doc
+                    let assignmentId = this.state.assignmentId;
+                    firebase.firestore().collection('assignments').doc(assignmentId).update({collaborators: collabs})
+                        .then(() => {
+                            this.setState({collabs, infoModal: true, infoMsg: "Successfully added collaborator: " + email})
+                        })
+                } else {
+                    this.setState({infoModal: true, infoMsg: email + " is already a collaborator for this assignment"})
+                }
             } else {
-                this.setState({infoModal: true, infoMsg: email + " is already a collaborator for this assignment"})
+                this.setState({infoModal: true, infoMsg: "Unable to add collaborator: Maximmum number of collaborators reached."})
             }
+            
         } catch (err) {
             console.log("Caught exception in inviteCollaborator(): " + err)
         }
@@ -604,6 +647,18 @@ class Assignment extends React.Component {
 
     }
 
+    toDateFormat = timestamp => {
+        let string = "";
+        try {
+            let thisDate = timestamp.toDate();
+            string = thisDate.toISOString().substring(0, 11) + thisDate.getHours().toString().padStart(2, "0") + ":" + thisDate.getMinutes().toString().padStart(2, "0");
+
+        } catch (err) {
+            //no output for this method
+        }
+        return string
+    }
+
     userLogout = () => {
         firebase.auth().signOut().then(() => {
             console.log("successfully logged out")
@@ -617,10 +672,6 @@ class Assignment extends React.Component {
     render() {
         return (
             <>
-                <SimpleStorage
-                    parent={this}
-                    prefix={ 'assignment-page_' }
-                />
                 <div className="assignment-page" ref="mainPanel">
                     <div>
                         <Navbar color="light" light expand="lg">
@@ -793,7 +844,7 @@ class Assignment extends React.Component {
                     <div className="assignment-content">
                         <div className="assignment-sidebar">
                             <Card>
-                                <CardHeader>My Open Assignments</CardHeader>
+                                <CardHeader>{"My Open Assignments [" + this.state.assignments.length + "]"}</CardHeader>
                                 <CardBody>
                                     <div className="scroll-area">
                                         <Row>
@@ -831,7 +882,7 @@ class Assignment extends React.Component {
                             
                             <div className="assignment-general">
                                 <Row>
-                                    <Col md="12">
+                                    <Col md="5">
                                         <Label>Title</Label>
                                         <Input 
                                             type="text" 
@@ -842,33 +893,38 @@ class Assignment extends React.Component {
                                             onBlur={this.inputOnBlur}
                                             disabled={this.state.infoDisabled}/>
                                     </Col>
-                                    
+                                    <Col md="3">
+                                        <Label>Created By</Label>
+                                        <Input 
+                                            type="text" 
+                                            id="creator"  
+                                            value={this.state.creator} 
+                                            disabled
+                                            />
+                                    </Col>
+                                    <Col md="4">
+                                        <Label>Create Date</Label>
+                                        <Input 
+                                            type="datetime-local" 
+                                            id="create_date"  
+                                            value={this.state.created}
+                                            disabled
+                                            />
+                                    </Col>
                                 </Row>
                                 <Row>
-                                    <Col md="8">
+                                    <Col md="5">
                                         <Label>Due Date</Label>
                                         <Input 
                                             type="datetime-local" 
                                             id="due_date"  
-                                            value={this.state.due_date} 
+                                            value={this.state.due_date}
                                             onChange={this.inputOnChange} 
                                             onFocus={this.inputOnFocus}
                                             onBlur={this.inputOnBlur}
                                             disabled={this.state.infoDisabled}/>
                                     </Col>
-                                    {this.state.assignmentView && 
-                                        <Col md="4">
-                                            <CustomInput 
-                                                type="switch" 
-                                                id="is_private"  
-                                                label="Private" 
-                                                checked={this.state.is_private} 
-                                                onChange={this.updatePrivacy} 
-                                                disabled={this.state.infoDisabled}/>
-                                        </Col>
-                                    }
-                                    {!this.state.assignmentView && 
-                                        <Col md="4">
+                                    <Col md="3">
                                             <Label>Assignee</Label>
                                             <Input 
                                                 type="select" 
@@ -877,14 +933,23 @@ class Assignment extends React.Component {
                                                 onChange={this.inputOnChange} 
                                                 onFocus={this.inputOnFocus}
                                                 onBlur={this.inputOnBlur}
-                                                disabled={this.state.infoDisabled}>
+                                                disabled={this.state.assignmentView || this.state.infoDisabled}>
                                                 <option />
                                                 {[...this.state.collabs].map(email => (
                                                     <option key={email}>{email}</option>
                                                 ))}
                                             </Input>
                                         </Col>
-                                    }
+                                        <Col md="4">
+                                            <CustomInput 
+                                                type="switch" 
+                                                id="is_private"  
+                                                label="Private" 
+                                                checked={this.state.is_private} 
+                                                onChange={this.updatePrivacy} 
+                                                disabled={!this.state.assignmentView || this.state.infoDisabled}/>
+                                        </Col>
+
                                 </Row>
                                 <Row>
                                     <Col md="12">
@@ -944,20 +1009,10 @@ class Assignment extends React.Component {
                                     />
                                 </TabPane>
                                 <TabPane tabId="2">
-                                <Row>
-                                    <Col sm="6">
-                                    <Card body>
-                                        <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                                        <Button>Go somewhere</Button>
-                                    </Card>
-                                    </Col>
-                                    <Col sm="6">
-                                    <Card body>
-                                        <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                                        <Button>Go somewhere</Button>
-                                    </Card>
-                                    </Col>
-                                </Row>
+                                    <Files 
+                                        assignmentId={this.state.assignmentId}
+                                        user={this.state.user}
+                                    />
                                 </TabPane>
                             </TabContent>
                             </div>
@@ -1013,7 +1068,7 @@ class Assignment extends React.Component {
                                     </CardBody>
                                 </Card>
                                 <Card className="subtask-card">
-                                    <CardHeader onClick={() => this.toggleInfoCards('subtaskVisible')}>Subtasks</CardHeader>
+                                    <CardHeader onClick={() => this.toggleInfoCards('subtaskVisible')}>{"Subtasks [" + this.state.subtasks.length + "]"}</CardHeader>
                                     <CardBody style={{display: this.state.subtaskVisible}}>
                                         <Row>
                                             <Col sm="12" md={{ size: 6, offset: 4 }}>
@@ -1050,7 +1105,7 @@ class Assignment extends React.Component {
                                     </CardBody>
                                 </Card>
                                 <Card className="collaborator-card">
-                                    <CardHeader onClick={() => this.toggleInfoCards('collabVisible')}>Collaborators</CardHeader>
+                                    <CardHeader onClick={() => this.toggleInfoCards('collabVisible')}>{"Collaborators [" + this.state.collabs.length + "]"}</CardHeader>
                                     <CardBody style={{display: this.state.collabVisible}}>
                                         <Form onSubmit={this.inviteCollaborator}>
                                         <Row>

@@ -216,8 +216,14 @@
   overflow: hidden;
 }
 
+.assignment-info .card-header {
+  position: relative;
+  transition-delay: 1s;
+}
+
 .assignment-info .card-header:hover {
   cursor: pointer;
+  background: linear-gradient(to left, #0F56A5 20%,  #3ECE90 100%)
 }
 
 .assignment-info .status-card {
@@ -339,6 +345,90 @@
 .assignment-comments .comment-item .content {
   width: 80%;
   height: 100%;
+}
+
+/* FILES SECTION */
+
+
+.assignment-files {
+  position: relative;
+  height: 18rem;
+  padding: 1%;
+}
+
+.assignment-files .row {
+  padding: 3%;
+}
+
+.assignment-files .btn {
+  margin-right: 1%;
+}
+
+.assignment-files .content {
+  height: 21rem;
+  width: 100%;
+  padding: 2%;
+  position: relative;
+  box-shadow: 4px 4px 10px 4px rgba(0, 0, 0, 0.1) inset;
+}
+
+.assignment-files .content h5 {
+  position: relative;
+  top: 40%;
+  text-align: center;
+  cursor: pointer;
+  transition: color ease 1s;
+}
+
+.assignment-files .content h5:hover {
+  color: #e14eca !important;
+}
+
+.assignment-files .content .file-item {
+  display: inline-block;
+  width: 8rem;
+  font-size: 0.8rem;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+  margin-top: 2%;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.assignment-files .content .new-file {
+  font-weight: 800;
+  color: cornflowerblue;
+  cursor: pointer;
+}
+
+
+.assignment-files .content img {
+  height: 5rem;
+  width: 5rem;
+  margin-left: 20%;
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  display: block;
+  filter: drop-shadow(10px 10px 4px lightgrey);
+  transition: top ease 0.5s, filter ease 0.5s
+}
+
+
+.assignment-files .content img:hover {
+  top: -5px;
+  filter: drop-shadow(15px 15px 4px lightgrey);
+}
+
+.assignment-files .content label {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.assignment-files .content .upload-spinner {
+  position: relative;
+  bottom: 30%;
 }
 
 /* HOME PAGE */

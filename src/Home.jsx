@@ -12,7 +12,6 @@ import {
   CardHeader,
   CardBody,
   CardFooter,
-  CardText,
   Col,
   DropdownToggle,
   DropdownMenu,
@@ -30,11 +29,9 @@ import {
   Jumbotron,
   Container,
   Navbar,
-  NavbarBrand,
   NavbarToggler,
   Nav,
   NavItem,
-  NavbarText,
   Collapse,
 } from "reactstrap";
 
@@ -64,8 +61,6 @@ class Home extends React.Component {
         let assignments = [];
         this.checkForAssignments(email, assignments, true);
         this.setState({ user: email, isAuthenticated: true })
-        //DEBUG
-        console.log("profile pic: " + profilePic);
         //retrieve profile pic
         if (profilePic === null) {
           //this is a new user created through the firestoreui, create the user doc
@@ -353,7 +348,7 @@ class Home extends React.Component {
               <Card className="assignment-card create-new" onClick={() => this.toggleModal()}>
                 <CardBody>
                   Create New
-                          <img src="/images/plus-sign.jpg" />
+                          <img src="/images/plus-sign.jpg" alt="Add New"/>
                 </CardBody>
               </Card>
             </div>

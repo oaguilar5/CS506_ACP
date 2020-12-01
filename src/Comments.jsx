@@ -16,8 +16,7 @@ import {
     CardBody,
     Col,
     Input,
-    Row,
-    UncontrolledTooltip
+    Row
 } from "reactstrap";
 
 var className = "assignment-comments"
@@ -91,11 +90,6 @@ class Comments extends React.Component {
     componentDidUpdate() {
         if (this.state.update) {
             try {
-                //delete the previous observer
-                let observer = this.state.observer;
-                if (observer.active) {
-                    observer.sub()
-                }
                 //re-render: gather the first 10 comments
                 let assignmentId = this.state.assignmentId;
                 this.retrieveComments(assignmentId)
@@ -144,9 +138,9 @@ class Comments extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         if (typeof props.assignmentId !== 'undefined' && props.assignmentId !== state.assignmentId) {
-            //DEBUG
-            console.log(`updating assignmentId props: ${props.assignmentId}, state: ${state.assignmentId}`)
             return {update: true, assignmentId: props.assignmentId, checkedOlder: false}
+        } else if (Object.keys(props.commentCollabs).length > Object.keys(state.commentCollabs).length) {
+            return {update: true, commentCollabs: props.commentCollabs, checkedOlder: false}
         }
         return null;
     }
@@ -158,8 +152,6 @@ class Comments extends React.Component {
                 let commentCollabs = this.state.commentCollabs;
                 firebase.firestore().collection('assignments').doc(assignmentId).collection('comments').orderBy('msg_create', 'desc').limit(10).get()
                 .then(query => {
-                    //DEBUG
-                    console.log("comments: " + query.size)
                     if (query.size > 0) {
                         let msgs = 0
                         query.forEach(msg => {
@@ -377,6 +369,7 @@ class Comments extends React.Component {
                     <Col md="2">
                         <Button
                             color="primary"
+                            size="md"
                             onClick={this.postNewComment}
                             >
                                 Post
