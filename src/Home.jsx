@@ -49,7 +49,9 @@ class Home extends React.Component {
       modal: false,
       infoMsg: "",
       buttonColor: "primary",
-      assignments: []
+      assignments: [],
+      open_assignments: 0,
+      completed_assignments: 0
     }
   }
 
@@ -138,6 +140,7 @@ class Home extends React.Component {
                 status: status,
                 createdBy: createdBy
               };
+              
               assignments.push(thisObj)
               if (count >= query.size && firstQuery) {
                 this.checkForAssignments(user, assignments, false)
@@ -145,10 +148,19 @@ class Home extends React.Component {
                 this.setState({ assignments })
               }
             })
+            this.setState({ open_assignments: count })
+            console.log(count)
           } else if (firstQuery) {
             this.checkForAssignments(user, assignments, false)
           }
         });
+
+        let query = firebase.firestore().collection('assignments').where('created_by', '==', user).where('status', '==', 'Done');
+        query.get()
+        .then(q => {
+          this.setState({ completed_assignments: q.size })
+        });
+
     } catch (err) {
       console.log("Caught exception in checkForAssignments(): " + err)
     }
@@ -192,6 +204,7 @@ class Home extends React.Component {
       status: "Pending",
     }
     let doc = await firebase.firestore().collection('assignments').add(body);
+    this.state.open_assignments += 1
     this.selectAssignment(doc.id);
   }
 
@@ -366,15 +379,15 @@ class Home extends React.Component {
               </Container>
               <Container fluid style={{ display: "inline-block", textAlign: "left" }}>
                 <h5>Number of Open Assignments</h5>
-                <h6>1</h6>
+              <h6 id="num_assignments">{this.state.open_assignments}</h6>
               </Container>
               <Container fluid style={{ display: "inline-block", textAlign: "center" }}>
                 <h5>Number of Completed Assignments</h5>
-                <h6>0</h6>
+              <h6 id="completed_assignments">{this.state.completed_assignments}</h6>
               </Container>
               <Container fluid style={{ display: "inline-block", textAlign: "right" }}>
                 <h5>Average Collaborators</h5>
-                <h6>0</h6>
+                <h6 id="completed_assignments">0</h6>
               </Container>
             </Jumbotron>
           </div>
