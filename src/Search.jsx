@@ -6,6 +6,7 @@ import "firebase/storage";
 import {
     Button,
     Navbar,
+    NavbarBrand,
     NavbarToggler,
     Collapse,
     Nav,
@@ -15,9 +16,20 @@ import {
     UncontrolledDropdown,
     DropdownMenu,
     DropdownToggle,
+    Form,
     Table,
     Jumbotron,
-    Container
+    Container,
+    FormGroup,
+    Label,
+    Input,
+    Card,
+    CardBody,
+    CardHeader,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter
 } from "reactstrap"
 
 class Search extends React.Component {
@@ -30,7 +42,13 @@ class Search extends React.Component {
             infoMsg: "",
             buttonColor: "primary",
             assignments: [],
-            query_table_info: []
+            query_table_info: [],
+            custom_title: "",
+            custom_date: "",
+            custom_progress: "",
+            custom_user: "",
+            custom_status: "",
+            collab_assignment_id: ""
         }
     }
 
@@ -119,13 +137,130 @@ class Search extends React.Component {
                         };
                         query_results.push(thisObj);
                         this.setState({ query_table_info: query_results });
-                        console.log(this.state.query_table_info);
                     })
                 });
         }
         catch (err) {
             console.log("Caught exception in getUserAssignments(): " + err)
         }
+    }
+
+    toggleModal = () => {
+        this.setState(prevState => { return { modal: !prevState.modal } })
+    }
+
+    requestCollab = () => {
+        try {
+            let assignmentId = this.state.collab_assignment_id
+            let thisUser = this.state.user
+            let docRef = firebase.firestore().collection('assignments').doc(assignmentId);
+            console.log(assignmentId)
+            //check to see if the assignment already has max # of collaborators
+            firebase.firestore().collection('assignments').doc(assignmentId).get()
+                .then(doc => {
+                    let creator = doc.get('created_by')
+                    if (thisUser !== creator) {
+                        let collaborators = doc.get('collaborators');
+                        if (collaborators.length < 10) {
+                            if (!doc.get('is_complete')) {
+                                //create new request under this assignment
+                                let requestBody = {
+                                    request_date: new Date(),
+                                    requestor: thisUser,
+                                    ack: false,
+                                    accepted: false
+                                }
+                                docRef.collection('requests').add(requestBody)
+                                    .then(() => {
+                                        this.setState({ modal: true, infoMsg: "Requested to be added as a collaborator!" })
+                                        //generate a success message to the user through your modal
+                                });
+                            } else {
+                                this.setState({ modal: true, infoMsg: "Assignment has already been completed." })
+                            }
+                        } else {
+                            this.setState({ modal: true, infoMsg: "Assignment already has max number of collaborators." })
+                            //use your modal to present a msg to the user to let them know
+                            //that max collaborators has been reached for this assignment
+                        }
+                    } else {
+                        this.setState({ modal: true, infoMsg: "You already have access to this assignment." })
+                    }
+                });
+        }
+        catch (err) {
+            console.log("Caught exception in requestCollab(): " + err)
+        }
+    }
+
+    customSearch = () => {
+        try {
+            let user = this.state.custom_user
+            let progress = this.state.custom_progress
+            let status = this.state.custom_status
+            let title = this.state.custom_title
+            let date = this.state.custom_date
+
+            let query_results = [];
+            let query = firebase.firestore().collection("assignments")
+
+            if (user != "") {
+                query = query.where('created_by', '==', user)
+            }
+            if (progress != "") {
+                query = query.where('progress', '==', progress)
+            }
+            if (status != "") {
+                query = query.where('status', '==', status)
+            }
+            if (title != "") {
+                query = query.where('title', '==', title)
+            }
+
+            query.get().then(q => {
+                q.forEach(doc => {
+                    let thisObj = {
+                        id: doc.id,
+                        title: doc.get('title'),
+                        dueDate: doc.get('due_date').toDate().toString(),
+                        description: doc.get('description'),
+                        status: doc.get('status'),
+                        createdBy: doc.get('created_by'),
+                        progress: doc.get('progress'),
+                    };
+
+                    if (date != "") {
+                        if (Date.parse(doc.get('due_date').toDate()) <= Date.parse(date)) {
+                            query_results.push(thisObj);
+                        }
+                    }
+                    else {
+                        query_results.push(thisObj);
+                    }
+                })
+                this.setState({ query_table_info: query_results });
+            });
+
+        }
+        catch (err) {
+            console.log("Caught exception in customSearch(): " + err)
+        }
+    }
+
+    inputOnChange = evt => {
+        var value = evt.target.value;
+        try {
+            let dataType = evt.target.type;
+            //sanitize the value if number type
+            if (dataType === 'number')
+                value = parseInt(value);
+
+            let id = evt.target.id;
+            this.setState({ [id]: value })
+        } catch (err) {
+            console.log("Caught exception in inputOnChange(): " + err)
+        }
+
     }
 
     userLogout = () => {
@@ -141,6 +276,15 @@ class Search extends React.Component {
     render() {
         return (
             <>
+                <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
+                    <ModalHeader toggle={() => this.toggleModal('infoModal')}>Notice</ModalHeader>
+                    <ModalBody>
+                        {this.state.infoMsg}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color={this.state.buttonColor} onClick={() => this.toggleModal('infoModal')}>Ok</Button>{' '}
+                    </ModalFooter>
+                </Modal>
                 <div>
                     <Navbar color="light" light expand="lg">
                         <div className="logo">
@@ -153,7 +297,7 @@ class Search extends React.Component {
                                     <NavLink href="/components/">Home</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink href="">Assignments</NavLink>
+                                    <NavLink href="/home/">Assignments</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink href="">Collaborators</NavLink>
@@ -188,8 +332,28 @@ class Search extends React.Component {
                     </Navbar>
                 </div>
                 <div style={{ textAlign: "center", paddingTop: '5%' }}>
-                    <Button color="primary" onClick={this.getUserAssignments}>My Assignments</Button>
+                    <Button color="primary" onClick={this.getUserAssignments}>Show My Assignments</Button>
                 </div>
+                <div style={{ textAlign: "center", paddingTop: '5%' }}>
+                    <Button color="primary" onClick={this.requestCollab}>Request To Collaborate (Select Assignment First)</Button>
+                </div>
+                <Card className="sample-card">
+                    <CardHeader>Custom Search</CardHeader>
+                    <CardBody className="add-scrollbar">
+                        <h5>User</h5>
+                        <Input type="text" id="custom_user" placeholder="me2@me.com" onChange={this.inputOnChange}></Input>
+                        <h5>Title</h5>
+                        <Input type="text" id="custom_title" placeholder="Assignment" onChange={this.inputOnChange}></Input>
+                        <h5>Status</h5>
+                        <Input type="text" id="custom_status" placeholder="Pending" onChange={this.inputOnChange}></Input>
+                        <h5>Progress</h5>
+                        <Input type="text" id="custom_progress" placeholder="0" onChange={this.inputOnChange}></Input>
+                        <h5>Due Date</h5>
+                        <Input name="custom_date" id="custom_date" type="datetime-local" onChange={this.inputOnChange}></Input>
+
+                        <Button color="primary" onClick={this.customSearch}>Search</Button>
+                    </CardBody>
+                </Card>
                 <div className="query-table" style={{ paddingTop: "5%", paddingLeft: '5%', paddingRight: '5%' }}>
                     <Jumbotron>
                         <Container fluid style={{ textAlign: "left", paddingBottom: '2%' }}>
@@ -201,12 +365,12 @@ class Search extends React.Component {
                                         <th>Created By</th>
                                         <th>Status</th>
                                         <th>Progress</th>
-                                        <th>Due Date</th>
+                                        <th>Due Date (on or before)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {[...this.state.query_table_info].map(item => (
-                                        <tr key={item.id}>
+                                        <tr key={item.id} onClick={() => this.setState({ collab_assignment_id: item.id })}>
                                             <td scope="row">{item.title}</td>
                                             <td scope="row">{item.description}</td>
                                             <td scope="row">{item.createdBy}</td>
@@ -219,30 +383,11 @@ class Search extends React.Component {
 
                             </Table>
                         </Container>
-
                     </Jumbotron>
 
-
                 </div>
-                {/*
-                <div style={{ textAlign: "center", paddingTop: '5%' }}>
-                    <Form>
-                        <input type="text" placeholder="Search" className="mr-sm-2" />
-                        <Button color="primary">Search Assignment</Button>
-                    </Form>
-
-                </div>
-                <div style={{ textAlign: "center", paddingTop: '5%' }}>
-                    <Form>
-                        <input type="text" placeholder="Search" className="mr-sm-2" />
-                        <Button color="primary">Search Student</Button>
-                    </Form>
-
-                </div>
-                */}
             </>
         );
     }
 }
-
 export default Search;
