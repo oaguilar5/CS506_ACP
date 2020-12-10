@@ -195,6 +195,9 @@
   height: 100%;
   padding: 1%;
 }
+.assignment-middle .title {
+  overflow: hidden;
+}
 
 .assignment-middle button {
   margin-left: 2%;
@@ -623,7 +626,58 @@
   text-align: center;
 }
 
+/* SEARCH PAGE */
 
+.search-page {
+  padding-top: 1%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.search-page .search-card {
+  margin-bottom: 2%;
+  box-shadow: 5px 5px 12px 0 rgba(0,0,0,0.2);
+}
+
+.search-page .search-card .col-button {
+  text-align: center;
+}
+
+.search-page .search-card .col-button button {
+  position: relative;
+  top: 40%;
+}
+
+.search-page .query-table {
+  position: relative;
+}
+
+.search-page .query-table .jumbotron {
+  margin-top: 1%;
+  max-height: 30rem;
+  position: relative;
+  overflow: hidden;
+  background-color: #3c6ca3;
+}
+
+.search-page .query-table .container-fluid {
+  background-color: aliceblue;
+}
+
+
+
+.search-page .query-table tr {
+  cursor: pointer;
+}
+
+.search-page .query-table td {
+  max-width: 5rem;
+  overflow: hidden;
+}
+
+.search-page .query-table .row-selected {
+  background-color: lightseagreen;
+}
 
 
 /* HOME PAGE */

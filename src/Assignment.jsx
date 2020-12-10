@@ -383,6 +383,8 @@ class Assignment extends React.Component {
                 })
               } else if (firstQuery) {
                 this.checkForAssignments(user, assignments, false)
+              } else {
+                this.setState({ assignments })
               }
             });
         } catch (err) {
@@ -984,8 +986,8 @@ class Assignment extends React.Component {
         return (
             <>
                 <div className="assignment-page" ref="mainPanel">
-                <div>
-                    <Navbar color="light" light expand="lg">
+                    <div>
+                        <Navbar color="light" light expand="lg">
                         <div className="logo">
                             <a href="/home"><img src="/images/logo_1.png" alt="ACP" /></a>
                         </div>
@@ -1196,23 +1198,23 @@ class Assignment extends React.Component {
                             
                         </div>
                         <div className="assignment-middle">
-                                <span>
-                                {this.state.assignmentView && <h5>{this.state.assignmentTitle}</h5>}
-                                {!this.state.assignmentView && 
-                                    <h5><a 
-                                        href="#!" 
-                                        onClick={() => {
-                                            let assignmentId = this.state.assignmentId;
-                                            this.setState({assignmentView: true, assignmentId: assignmentId, subtaskId: ""});
-                                            //reload the assignment page
-                                            this.retrieveAssignmentDetails(assignmentId);
-                                        }}>
-                                            {this.state.assignmentTitle}
-                                        </a>
-                                        <span> / {this.state.title}</span>
-                                        
-                                    </h5>
-                                }
+                                <div className="title">
+                                    {this.state.assignmentView && <h5>{this.state.assignmentTitle}</h5>}
+                                    {!this.state.assignmentView && 
+                                        <h5><a 
+                                            href="#!" 
+                                            onClick={() => {
+                                                let assignmentId = this.state.assignmentId;
+                                                this.setState({assignmentView: true, assignmentId: assignmentId, subtaskId: ""});
+                                                //reload the assignment page
+                                                this.retrieveAssignmentDetails(assignmentId);
+                                            }}>
+                                                {this.state.assignmentTitle}
+                                            </a>
+                                            <span> / {this.state.title}</span>
+                                            
+                                        </h5>
+                                    }
                                     {!this.state.canView && 
                                         <p className="text-muted">This assignment is private</p>
                                     }
@@ -1227,7 +1229,7 @@ class Assignment extends React.Component {
                                             </Button>
                                         </span>
                                     }
-                                </span>
+                                </div>
                                 
                             {this.state.canView && 
                                 <div>

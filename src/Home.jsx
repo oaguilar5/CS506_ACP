@@ -46,7 +46,10 @@ class Home extends React.Component {
       modal: false,
       infoMsg: "",
       buttonColor: "primary",
-      assignments: []
+      assignments: [],
+      open_assignments: 0,
+      completed_assignments: 0,
+      average_subtasks: 0
     }
   }
 
@@ -107,6 +110,7 @@ class Home extends React.Component {
 
   checkForAssignments = (user, assignments, firstQuery) => {
     try {
+      let num_subtasks = 0
       let thisQuery;
       if (firstQuery) {
         thisQuery = firebase.firestore().collection('assignments').where('created_by', '==', user).where('is_complete', '==', false).orderBy('create_date', 'desc');
@@ -117,8 +121,15 @@ class Home extends React.Component {
         .then(query => {
           if (query.size > 0) {
             //since forEach is async, keep count and update state once all have been traversed
+
             let count = 0;
             query.forEach(doc => {
+              firebase.firestore().collection('assignments').doc(doc.id).collection('subtasks').get()
+              .then(q => {
+                console.log(num_subtasks)
+                num_subtasks += q.size
+              });
+
               count++;
               let title = doc.get('title');
               let dueDate = doc.get('due_date').toDate().toLocaleString();
@@ -140,10 +151,29 @@ class Home extends React.Component {
                 this.setState({ assignments })
               }
             })
+            this.setState({ open_assignments: count })
           } else if (firstQuery) {
             this.checkForAssignments(user, assignments, false)
+          } else {
+            this.setState({ assignments })
           }
         });
+
+      let query = firebase.firestore().collection('assignments').where('created_by', '==', user).where('is_complete', '==', true);
+      query.get()
+        .then(q => {
+          this.setState({ completed_assignments: q.size })
+          q.forEach(doc => {
+            firebase.firestore().collection('assignments').doc(doc.id).collection('subtasks').get()
+              .then(sub_q => {
+                num_subtasks += sub_q.size
+              });
+          })
+          
+        });
+      console.log("4 "+num_subtasks)
+      //this.setState({ average_subtasks: num_subtasks / (this.state.open_assignments+this.state.completed_assignments) })
+      
     } catch (err) {
       console.log("Caught exception in checkForAssignments(): " + err)
     }
@@ -187,6 +217,7 @@ class Home extends React.Component {
       status: "Pending",
     }
     let doc = await firebase.firestore().collection('assignments').add(body);
+    this.setState({ open_assignments: this.state.open_assignments += 1 })
     this.selectAssignment(doc.id);
   }
 
@@ -195,7 +226,7 @@ class Home extends React.Component {
     this.props.updateGlobals(id, null, null);
     //save the active assignmentId to the user's doc for reference
     let user = this.state.user;
-    firebase.firestore().collection('acp_users').doc(user).update({active_id: id});
+    firebase.firestore().collection('acp_users').doc(user).update({ active_id: id });
     //then redirect the user to the assignment page
     this.props.history.push("/assignment");
   }
@@ -217,52 +248,52 @@ class Home extends React.Component {
         
         <div className="home-page" ref="mainPanel">
         <div>
-          <Navbar color="light" light expand="lg">
-          <div className="logo">
-            <a href="/home"><img src="/images/logo_1.png" alt="ACP" /></a>
+        <Navbar color="light" light expand="lg">
+                        <div className="logo">
+                            <a href="/home"><img src="/images/logo_1.png" alt="ACP" /></a>
+                        </div>
+                            <NavbarToggler />
+                            <Collapse navbar>
+                            <Nav className="mr-auto" navbar>
+                                <NavItem>
+                                <NavLink href="/home">Home</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                <NavLink href="/assignment">Assignments</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                <NavLink href="#!" onClick={() => {this.props.updateGlobals(null, null, "Notifications"); this.props.history.push("/profile")}}>Notifications</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                <NavLink href="/search">Search</NavLink>
+                                </NavItem>
+                            </Nav>
+                            <div className="account-link">
+                                <UncontrolledDropdown>
+                                <DropdownToggle
+                                    color="default"
+                                    data-toggle="dropdown"
+                                    caret
+                                >
+                                    <div className="user-photo">
+                                    <img alt="..." src={this.state.avatar} />
+                                    </div>
+                                </DropdownToggle>
+                                <DropdownMenu className="dropdown-navbar" right tag="ul">
+                                    <DropdownItem header >{this.state.user}</DropdownItem>
+                                    <DropdownItem divider tag="li" />
+                                    <NavLink tag="li"  >
+                                    <DropdownItem className="nav-item"  onClick={() => {this.props.updateGlobals(null, null, "Profile"); this.props.history.push("/profile")}}>Profile</DropdownItem>
+                                    </NavLink>
+                                    <NavLink tag="li" >
+                                    <DropdownItem className="nav-item" onClick={this.userLogout}>Log out</DropdownItem>
+                                    </NavLink>
+                                </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </div>
+                            </Collapse>
+                        </Navbar>
           </div>
-            <NavbarToggler />
-            <Collapse navbar>
-              <Nav className="mr-auto" navbar>
-                <NavItem>
-                  <NavLink href="/home">Home</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="/assignment">Assignments</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="#!" onClick={() => {this.props.updateGlobals(null, null, "Notifications"); this.props.history.push("/profile")}}>Notifications</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="/search">Search</NavLink>
-                </NavItem>
-              </Nav>
-              <div className="account-link">
-                <UncontrolledDropdown>
-                  <DropdownToggle
-                    color="default"
-                    data-toggle="dropdown"
-                    caret
-                  >
-                    <div className="user-photo">
-                      <img alt="..." src={this.state.avatar} />
-                    </div>
-                  </DropdownToggle>
-                  <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    <DropdownItem header >{this.state.user}</DropdownItem>
-                    <DropdownItem divider tag="li" />
-                    <NavLink tag="li"  >
-                      <DropdownItem className="nav-item"  onClick={() => {this.props.updateGlobals(null, null, "Profile"); this.props.history.push("/profile")}}>Profile</DropdownItem>
-                    </NavLink>
-                    <NavLink tag="li" >
-                      <DropdownItem className="nav-item" onClick={this.userLogout}>Log out</DropdownItem>
-                    </NavLink>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
-              </div>
-            </Collapse>
-          </Navbar>
-        </div>
 
 
           <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
@@ -356,21 +387,26 @@ class Home extends React.Component {
           </div>
           <div style={{ paddingLeft: '5%', paddingRight: '5%', paddingTop: '5%' }}>
             <Jumbotron>
-              <Container fluid style={{ textAlign: "left", paddingBottom: '2%' }}>
+              <Container fluid style={{ paddingBottom: '2%' }}>
                 <h1>User Statistics</h1>
-
               </Container>
-              <Container fluid style={{ display: "inline-block", textAlign: "left" }}>
-                <h5>Number of Open Assignments</h5>
-                <h6>1</h6>
+              <Container fluid style={{ paddingBottom: "2%" }}>
+                <Row>
+                  <h5>Number of Open Assignments: </h5>
+                  <h5 id="open_assignments" style={{ paddingLeft: "2%" }}>{this.state.open_assignments}</h5>
+                </Row>
               </Container>
-              <Container fluid style={{ display: "inline-block", textAlign: "center" }}>
-                <h5>Number of Completed Assignments</h5>
-                <h6>0</h6>
+              <Container fluid style={{ paddingBottom: "2%" }}>
+                <Row>
+                  <h5>Number of Completed Assignments: </h5>
+                  <h5 id="completed_assignments" style={{ paddingLeft: "2%" }}>{this.state.completed_assignments}</h5>
+                </Row>
               </Container>
-              <Container fluid style={{ display: "inline-block", textAlign: "right" }}>
-                <h5>Average Collaborators</h5>
-                <h6>0</h6>
+              <Container fluid style={{ paddingBottom: "2%" }}>
+                <Row>
+                  <h5>Average Subtasks: </h5>
+                  <h5 id="average_subtasks" style={{ paddingLeft: "2%" }}>{this.state.average_subtasks}</h5>
+                </Row>
               </Container>
             </Jumbotron>
           </div>

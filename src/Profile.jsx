@@ -353,6 +353,7 @@ class Profile extends React.Component {
                 let doc = await firebase.firestore().collection('assignments').doc(assignmentId).get();
                 if (doc.exists) {
                     let collabs = doc.get('collaborators');
+                    let creator = doc.get('creator');
                     let infoMsg = "";
                     //create the notification body
                     let body = {
@@ -368,10 +369,16 @@ class Profile extends React.Component {
                     //determine if there is room for a collaborator
                     if (collabs.length < 10) {
                         if (accepted) {
-                            //add this user as a collaborator
-                            collabs.push(requestor);
-                            doc.ref.update({collaborators: collabs})
-                            infoMsg = "Successfully added collaborator";
+                            //add this user as a collaborator if not already present
+                            if (requestor !== creator && !collabs.includes(requestor)) {
+                                collabs.push(requestor);
+                                doc.ref.update({collaborators: collabs})
+                                infoMsg = "Successfully added collaborator";
+                            } else {
+                                body.alert_type = "could not approve";
+                                body.alert_msg = `You aready have access to this assignment. Comment: ${comment}`;
+                                infoMsg = `Could not add collaborator: this user already has access to this assignment`;
+                            }
                         } else {
                             body.alert_type = "declined";
                         }
