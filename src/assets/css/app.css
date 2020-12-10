@@ -53,7 +53,7 @@
 }
 
 .logo img {
-  height: 5rem;
+  height: 4rem;
   
 }
 
@@ -118,6 +118,11 @@
   overflow: hidden;
 }
 
+.assignment-content .centered-button {
+  text-align: center;
+  padding: 3%;
+}
+
 .assignment-content a:hover {
   cursor: pointer;
 }
@@ -144,7 +149,7 @@
 }
 
 .assignment-sidebar .card {
-  height: 50rem;
+  height: 51rem;
   width: 95%;
 }
 
@@ -171,6 +176,10 @@
   transition: top ease 0.5s, box-shadow ease 0.5s;
 }
 
+.assignment-sidebar .item-selected {
+  box-shadow: 4px 6px 15px 4px rgba(34, 62, 223, 0.3);
+}
+
 .assignment-sidebar .sidebar-card:hover {
   top: -10px;
   box-shadow: 10px 10px 10px  rgba(0,0,0,0.2);
@@ -187,6 +196,10 @@
   padding: 1%;
 }
 
+.assignment-middle button {
+  margin-left: 2%;
+}
+
 .assignment-general {
   width: 100%;
   height: 60%;
@@ -201,9 +214,10 @@
 
 .assignment-info {
   width: 25%;
-  height: 53rem;
+  height: 100%;
   padding: 1%;
   position: relative;
+  overflow: hidden;
 }
 
 .assignment-info .row {
@@ -211,7 +225,7 @@
 }
 
 .assignment-info .scroll-area {
-  height: 100%;
+  height: 51rem;
   position: relative;
   overflow: hidden;
 }
@@ -223,7 +237,10 @@
 
 .assignment-info .card-header:hover {
   cursor: pointer;
-  background: linear-gradient(to left, #0F56A5 20%,  #3ECE90 100%)
+  background: #0F56A5;
+  background: -moz-linear-gradient(top, #a3d1bd 0%, #0F56A5 100%);
+  background: -webkit-linear-gradient(top, #a3d1bd 0%, #0F56A5 100%);
+  background: linear-gradient(to bottom, #a3d1bd 0%, #0F56A5 100%);
 }
 
 .assignment-info .status-card {
@@ -232,7 +249,9 @@
 
 .assignment-info .subtask-card {
   margin-bottom: 5%;
+  position: relative;
 }
+
 
 .subtask-card .subtask-item {
   height: 7rem;
@@ -244,18 +263,30 @@
   transition: top ease 0.5s, box-shadow ease 0.5s;
 }
 
+.subtask-card .item-selected {
+  box-shadow: 4px 6px 15px 4px rgba(141, 21, 115, 0.3);
+}
+
 .subtask-card .subtask-item:hover {
   top: -10px;
   box-shadow: 10px 10px 10px  rgba(0,0,0,0.2);
+  
+}
+
+.subtask-card .subtask-item .card-header:hover {
+  background: none;
 }
 
 .subtask-card .subtask-item .card-body {
   overflow: hidden;
 }
 
+
+
 .assignment-info .collaborator-card {
   margin-bottom: 5%;
 }
+
 
 .collaborator-card .collaborator-item {
   height: 5rem;
@@ -292,23 +323,25 @@
   position: relative;
 }
 
-.collaborator-card .collaborator-item .options a {
+.collaborator-card .collaborator-item .options span {
   top: 25%;
   position: relative;
 }
+
 
 
 /* COMMENTS SECTION */
 
 .assignment-comments {
   position: relative;
-  height: 18rem;
+  overflow: hidden;
+  height: 100%;;
 }
 
 .assignment-comments .scroll-comments {
   position: relative;
   overflow: hidden;
-  height: 100%;
+  height: 18rem;
   margin-bottom: 1%;
   padding: 2%;
   text-align: center;
@@ -322,9 +355,12 @@
 
 .assignment-comments .comment-item {
   width: 100%;
-  height: 5rem;
   margin-bottom: 1%;
   text-align: left;
+}
+
+.assignment-comments .comment-item label {
+  font-size: 0.8rem;
 }
 
 .assignment-comments .comment-item .card-body {
@@ -333,7 +369,7 @@
 }
 
 .assignment-comments .comment-item .avatar {
-  width: 20%;
+  width: 10%;
   height: 100%;
   display: inline-flex;
 }
@@ -343,8 +379,30 @@
 }
 
 .assignment-comments .comment-item .content {
-  width: 80%;
+  width: 70%;
   height: 100%;
+}
+
+.assignment-comments .comment-item .options {
+  width: 20%;
+  height: 100%;
+}
+
+.assignment-comments .comment-item .options .button-icons {
+  text-align: center;
+}
+
+.assignment-comments .comment-item .options .button-icons img {
+  height: 25px;
+  width: 25px;
+  margin-left: 10%;
+  margin-top: 15%;
+  cursor: pointer;
+}
+
+.assignment-comments button {
+  position: relative;
+  top: 20%;
 }
 
 /* FILES SECTION */
@@ -431,7 +489,145 @@
   bottom: 30%;
 }
 
+/* PROFILE PAGE */
+
+.profile-page {
+  display: inline-flex;
+  height: 100%;
+  width: 100%;
+}
+
+.profile-page .sidenav {
+  width: 15%;
+  height: 45rem;
+  position: relative;
+  background: #eee;
+  overflow-x: hidden;
+  padding: 8px 0;
+}
+
+.profile-page .sidenav a {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #2196F3;
+  display: block;
+}
+
+.profile-page .sidenav a:hover {
+  color: #064579;
+}
+
+.profile-page .content {
+  height: 45rem;
+  width: 100%;
+  position: relative;
+  padding: 2%;
+  box-shadow: 4px 4px 10px 4px rgba(0, 0, 0, 0.1) inset;
+}
+
+.profile-page .profile .update-photo {
+  height: 80px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.profile-page .profile .upload-spinner {
+  position: relative;
+  text-align: center;
+  right: 20%;
+}
+
+.col-photo {
+  text-align: center;
+}
+
+.profile-page .notifications {
+  position: relative
+}
+
+
+.profile-page .notifications .requests .scroll-area {
+  height: 15rem;
+  padding: 2%;
+  position: relative;
+  overflow: hidden;
+  margin-right: 40%;
+  margin-bottom: 3%;
+}
+
+.profile-page .notifications .notification-area .scroll-area {
+  height: 20rem;
+  padding: 2%;
+  position: relative;
+  overflow: hidden;
+  margin-right: 40%;
+}
+
+.profile-page .notifications .request-card {
+  border-left: none;
+  border-right: none;
+}
+
+.profile-page .notifications .request-card .card-body {
+  display: inline-flex;
+  padding: 1%;
+
+}
+
+.profile-page .notifications .request-card .request-content {
+  width: 75%;
+  position: relative;
+  top: 20%;
+}
+
+.profile-page .notifications .request-card .request-content p {
+  margin-top: 1%;
+}
+
+.profile-page .notifications .request-card .options {
+  width: 20%;
+  margin-left: 5%;
+}
+
+.profile-page .notifications .request-card .options button {
+  position: relative;
+  top: 40%;
+  margin: 1%;
+}
+
+.profile-page .notifications .notification-card {
+  margin-bottom: 2%;
+}
+
+.profile-page .notifications .notification-card .card-header span {
+  position: absolute;
+  right: 2%;
+}
+
+.profile-page .notifications .notification-card .card-body {
+  display: inline-flex;
+  padding: 1%;
+
+}
+
+.profile-page .notifications .notification-card .notification-content {
+  width: 80%;
+  position: relative;
+  top: 20%;
+  margin-left: 5%;
+}
+
+.profile-page .notifications .notification-card .options {
+  width: 15%;
+  text-align: center;
+}
+
+
+
+
 /* HOME PAGE */
+
 
 .q1-label {
   margin-left: 10%;
@@ -442,7 +638,11 @@
   height: 23rem;
   margin-left: 10%;
   margin-right: 10%;
-  box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.1) inset;
+  /* background: #0F56A5;
+  background: -moz-linear-gradient(to right, #a3d1bd 0%, #2e72be 100%);
+  background: -webkit-linear-gradient(to right, #a3d1bd 0%, #2e72be 100%);
+  background: linear-gradient(to right, #a3d1bd 0%, #2e72be 100%); */
+  box-shadow: 5px 5px 10px 5px rgba(6, 104, 185, 0.1) inset;
   position: relative;
   display: inline-flex;
 }
@@ -486,10 +686,10 @@
   top: 0;
   box-shadow: 8px 8px 15px 0 rgba(0,0,0,0.2);
   color: white;
-  background: #3ECE90;
-  background: -moz-linear-gradient(top, #3ECE90 0%, #0F56A5 100%);
-  background: -webkit-linear-gradient(top, #3ECE90 0%, #0F56A5 100%);
-  background: linear-gradient(to bottom, #3ECE90 0%, #0F56A5 100%);
+  background: #0F56A5;
+  background: -moz-linear-gradient(top, #a3d1bd 0%, #0F56A5 100%);
+  background: -webkit-linear-gradient(top, #a3d1bd 0%, #0F56A5 100%);
+  background: linear-gradient(to bottom, #a3d1bd 0%, #0F56A5 100%);
   cursor: pointer;
   transition: top ease 0.5s, box-shadow ease 0.5s;
 }
@@ -509,15 +709,15 @@
 
 .new-assignment {
   display: inline-flex;
-  height: 100%;
-  margin-top: 2%;
+  height: 90%;
+  position: relative;
 }
 
 .create-new {
   text-align: center;
   font: small-caps bold 14px/30px Arial, sans-serif;
   margin-left: 2%;
-  
+  margin-top: 8%;
 }
 
 

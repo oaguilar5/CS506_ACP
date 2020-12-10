@@ -19,6 +19,7 @@ import Assignment from './Assignment.jsx'
 import TOS from './TOS.jsx'
 import PP from './PP.jsx'
 import Search from './Search.jsx'
+import Profile from './Profile.jsx'
 
 //Firebase Web SDK
 import firebase from "firebase/app";
@@ -43,11 +44,13 @@ const hist = createBrowserHistory();
 //GLOBAL PROPS
 var assignmentId;
 var user;
+var profileView;
 
 //function to update our global props
-function updateGlobals (id, email) {
+function updateGlobals (id, email, view) {
   if (id !== null) assignmentId = id;
   if (email !== null) user = email;
+  if (view !== null) profileView = view;
 }
 
 ReactDOM.render(
@@ -59,6 +62,7 @@ ReactDOM.render(
       <Route path="/privacy-policy" render={props => <PP {...props}/>}/>
       <Route path="/assignment" render={props => <Assignment {...props} assignmentId={assignmentId} user={user} updateGlobals={updateGlobals}  />} />
       <Route path="/search" render={props => <Search {...props} updateGlobals={updateGlobals}/>}/>
+      <Route path="/profile" render={props => <Profile {...props} view={profileView} updateGlobals={updateGlobals} />}/>
       <Redirect from="/" to="/login"/>
     </Switch>
   </Router>,

@@ -40,7 +40,7 @@ class Search extends React.Component {
             if (user) {
                 let email = user.email;
                 //update index.js global email
-                this.props.updateGlobals(null, email);
+                this.props.updateGlobals(null, email, null);
                 let profilePic = user.photoURL;
                 this.checkForAssignments(email);
                 this.setState({ user: email, isAuthenticated: true })
@@ -148,42 +148,43 @@ class Search extends React.Component {
                         </div>
                         <NavbarToggler />
                         <Collapse navbar>
-                            <Nav className="mr-auto" navbar>
-                                <NavItem>
-                                    <NavLink href="/components/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink href="">Assignments</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink href="">Collaborators</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink href="/search/">Search</NavLink>
-                                </NavItem>
-
-                            </Nav>
-                            <div className="account-link">
-                                <UncontrolledDropdown>
-                                    <DropdownToggle
-                                        color="default"
-                                        data-toggle="dropdown"
-                                        caret
-                                    >
-                                        <div className="user-photo">
-                                            <img alt="..." src={this.state.avatar} />
-                                        </div>
-                                        <p className="d-lg-none">Log out</p>
-                                    </DropdownToggle>
-                                    <DropdownMenu className="dropdown-navbar" right tag="ul">
-                                        <DropdownItem header >{this.state.user}</DropdownItem>
-                                        <DropdownItem divider tag="li" />
-                                        <NavLink tag="li" >
-                                            <DropdownItem className="nav-item" onClick={this.userLogout}>Log out</DropdownItem>
-                                        </NavLink>
-                                    </DropdownMenu>
-                                </UncontrolledDropdown>
-                            </div>
+                        <Nav className="mr-auto" navbar>
+                            <NavItem>
+                            <NavLink href="/home">Home</NavLink>
+                            </NavItem>
+                            <NavItem>
+                            <NavLink href="/assignment">Assignments</NavLink>
+                            </NavItem>
+                            <NavItem>
+                            <NavLink href="#!" onClick={() => {this.props.updateGlobals(null, null, "Notifications"); this.props.history.push("/profile")}}>Notifications</NavLink>
+                            </NavItem>
+                            <NavItem>
+                            <NavLink href="/search">Search</NavLink>
+                            </NavItem>
+                        </Nav>
+                        <div className="account-link">
+                            <UncontrolledDropdown>
+                            <DropdownToggle
+                                color="default"
+                                data-toggle="dropdown"
+                                caret
+                            >
+                                <div className="user-photo">
+                                <img alt="..." src={this.state.avatar} />
+                                </div>
+                            </DropdownToggle>
+                            <DropdownMenu className="dropdown-navbar" right tag="ul">
+                                <DropdownItem header >{this.state.user}</DropdownItem>
+                                <DropdownItem divider tag="li" />
+                                <NavLink tag="li"  >
+                                <DropdownItem className="nav-item"  onClick={() => {this.props.updateGlobals(null, null, "Profile"); this.props.history.push("/profile")}}>Profile</DropdownItem>
+                                </NavLink>
+                                <NavLink tag="li" >
+                                <DropdownItem className="nav-item" onClick={this.userLogout}>Log out</DropdownItem>
+                                </NavLink>
+                            </DropdownMenu>
+                            </UncontrolledDropdown>
+                        </div>
                         </Collapse>
                     </Navbar>
                 </div>

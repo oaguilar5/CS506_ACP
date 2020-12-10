@@ -6,7 +6,7 @@ import "firebase/storage";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import moment from 'moment'
-import SimpleStorage from "react-simple-storage";
+import Hotkeys from 'react-hot-keys';
 
 //Reactstrap library (with a few sample components)
 //https://reactstrap.github.io/components/
@@ -16,6 +16,7 @@ import {
     CardBody,
     Col,
     Input,
+    Label,
     Row
 } from "reactstrap";
 
@@ -34,10 +35,15 @@ class Comments extends React.Component {
             defaultAvatar: this.props.defaultAvatar,
             comments: [],
             observer: {active: false, sub: null},
+            firstRetrieve: false,
             newText: "",
             update: false,
             olderMessages: true,
-            checkedOlder: false
+            checkedOlder: false,
+            editing: false,
+            editId: "",
+            editText: "",
+            confirmDelete: false
         }
     }
 
@@ -92,11 +98,16 @@ class Comments extends React.Component {
             try {
                 //re-render: gather the first 10 comments
                 let assignmentId = this.state.assignmentId;
-                this.retrieveComments(assignmentId)
-                .then(() => {
-                    //configure the message observer
-                    this.configureCommentObserver(assignmentId)
-                })
+                if (assignmentId) {
+                    this.retrieveComments(assignmentId)
+                    .then(() => {
+                        //configure the message observer
+                        this.configureCommentObserver(assignmentId)
+                    })
+                } else {
+                    this.setState({comments: []})
+                }
+                    
                 this.setState({update: false})
             } catch (err) {
                 console.log("Caught exception in componentDidUpdate(): " + err)  
@@ -107,8 +118,10 @@ class Comments extends React.Component {
             let tables = document.querySelectorAll(".scroll-comments");
             for (let i = 0; i < tables.length; i++) {
               ps = new PerfectScrollbar(tables[i]);
-              if (!this.state.checkedOlder && tables[i].scrollTop < tables[i].scrollHeight-300) {
+              //&& !this.state.editing && !this.state.confirmDelete && tables[i].scrollTop < tables[i].scrollHeight-300
+              if (this.state.firstRetrieve) {
                 tables[i].scrollTop = tables[i].scrollHeight;
+                this.setState({firstRetrieve: false})
               }
                 
             }
@@ -139,7 +152,7 @@ class Comments extends React.Component {
     static getDerivedStateFromProps(props, state) {
         if (typeof props.assignmentId !== 'undefined' && props.assignmentId !== state.assignmentId) {
             return {update: true, assignmentId: props.assignmentId, checkedOlder: false}
-        } else if (Object.keys(props.commentCollabs).length > Object.keys(state.commentCollabs).length) {
+        } else if (typeof props.commentCollabs !== 'undefined' && Object.keys(props.commentCollabs).length > Object.keys(state.commentCollabs).length) {
             return {update: true, commentCollabs: props.commentCollabs, checkedOlder: false}
         }
         return null;
@@ -149,7 +162,7 @@ class Comments extends React.Component {
         return new Promise((resolve) => {
             let comments = [];
             try {
-                let commentCollabs = this.state.commentCollabs;
+                let commentCollabs = this.props.commentCollabs;
                 firebase.firestore().collection('assignments').doc(assignmentId).collection('comments').orderBy('msg_create', 'desc').limit(10).get()
                 .then(query => {
                     if (query.size > 0) {
@@ -168,22 +181,23 @@ class Comments extends React.Component {
                             }
                             let text = msg.get('msg_text');
                             let timestamp = msg.get('msg_create').toDate();
-                            let newComment = { id: msg.id, displayName: display, avatar: avatar, timestamp: timestamp, text: text }
+                            let edited = msg.get('msg_edited');
+                            let newComment = { id: msg.id, user: user, displayName: display, avatar: avatar, timestamp: timestamp, text: text, edited: edited }
                             comments.push(newComment);
                             if (msgs >= query.size) {
                                 comments.reverse()
-                                this.setState({comments})
+                                this.setState({comments, olderMessages: true, firstRetrieve: true})
                                 resolve()
                             }
                         })
                     } else {
-                        this.setState({comments})
+                        this.setState({comments, olderMessages: true, firstRetrieve: true})
                         resolve()
                     }
                 })
             } catch (err) {
                 console.log("Caught exception in retrieveComments(): " + err)
-                this.setState({comments})
+                this.setState({comments, olderMessages: true, firstRetrieve: true})
                 resolve()
             }
         })
@@ -195,7 +209,7 @@ class Comments extends React.Component {
               observer.sub = firebase.firestore().collection('assignments').doc(assignmentId).collection('comments')
             .where('msg_create', '>', (new Date())).orderBy('msg_create').onSnapshot(query => {
                 let comments = this.state.comments;
-                let commentCollabs = this.state.commentCollabs;
+                let commentCollabs = this.props.commentCollabs;
                 let msgs = 0
                 query.forEach(msg => {
                     msgs++
@@ -219,11 +233,16 @@ class Comments extends React.Component {
                         }
                         let text = msg.get('msg_text');
                         let timestamp = msg.get('msg_create').toDate();
-                        let newComment = { id: msg.id, displayName: display, avatar: avatar, timestamp: timestamp, text: text }
+                        let edited = msg.get('msg_edited');
+                        let newComment = { id: msg.id, user: user, displayName: display, avatar: avatar, timestamp: timestamp, text: text, edited: edited }
                         comments.push(newComment);
                     }
                     if (msgs >= query.size) {
                         this.setState({comments})
+                        let section = document.querySelectorAll(".scroll-comments");
+                        for (let i = 0; i < section.length; i++) {
+                            section[i].scrollTop = section[i].scrollHeight;
+                        }
                     }
                 })
             });
@@ -242,7 +261,7 @@ class Comments extends React.Component {
             let olderMessages = this.state.olderMessages;
             if (olderMessages && comments.length >= 10) {
                 let assignmentId = this.state.assignmentId;
-                let commentCollabs = this.state.commentCollabs;
+                let commentCollabs = this.props.commentCollabs;
                 //retrieve the date of the oldest visible chat
                 let oldestDate = comments[0].timestamp;
                 let tempComments = [];
@@ -265,7 +284,8 @@ class Comments extends React.Component {
                                 }
                                 let text = msg.get('msg_text');
                                 let timestamp = msg.get('msg_create').toDate();
-                                let newComment = { id: msg.id, displayName: display, avatar: avatar, timestamp: timestamp, text: text }
+                                let edited = msg.get('msg_edited');
+                                let newComment = { id: msg.id, user: user, displayName: display, avatar: avatar, timestamp: timestamp, text: text, edited: edited }
                                 tempComments.push(newComment);
                                 if (msgs >= query.size) {
                                     //push comments content into tempComments
@@ -302,26 +322,94 @@ class Comments extends React.Component {
     inputOnChange = evt => {
         try {
             let value = evt.target.value;
-            this.setState({ newText: value })
+            let id = evt.target.id;
+            this.setState({ [id]: value })
         } catch (err) {
             console.log("Caught exception in inputOnChange(): " + err)
         }
     }
 
+    handleKeyDown = evt => {
+        if(evt.charCode === 13){
+            this.postNewComment();    
+          } 
+      }
+
       postNewComment = () => {
-        let text = this.state.newText;
-        let user = this.state.user;
-        let comment = {
-            msg_user: user,
-            msg_create: new Date(),
-            msg_text: text
-        }
-        let assignmentId = this.state.assignmentId;
-        firebase.firestore().collection('assignments').doc(assignmentId).collection('comments').add(comment);
-        this.setState({newText: ""});
-        let section = document.querySelectorAll(".scroll-comments");
-        for (let i = 0; i < section.length; i++) {
-            section[i].scrollTop = section[i].scrollHeight;
+          try {
+            let text = this.state.newText;
+            if (text !== "") {
+                let user = this.state.user;
+                let comment = {
+                    msg_user: user,
+                    msg_create: new Date(),
+                    msg_text: text
+                }
+                let assignmentId = this.state.assignmentId;
+                firebase.firestore().collection('assignments').doc(assignmentId).collection('comments').add(comment);
+                this.setState({newText: ""});
+                //notify collaborators
+                this.props.notifyCollaborators("comments", "", "added", text)
+            }
+          } catch (err) {
+            console.log("Caught exception in postNewComment(): " + err)
+          }
+        
+      }
+
+      initiateEdit = (id, text) => {
+          this.setState({editing: true, editId: id, editText: text})
+      }
+
+      saveEdit = oldText => {
+          try {
+            let editText = this.state.editText;
+            let comments = this.state.comments;
+            if (editText !== oldText) {
+                let assignmentId = this.state.assignmentId;
+                let editId = this.state.editId;
+                
+                //save to the db
+                firebase.firestore().collection('assignments').doc(assignmentId).collection('comments')
+                    .doc(editId).update({msg_text: editText, msg_edited: true});
+                
+                //update the current comments object
+                for (let i=0;i<comments.length;i++) {
+                    if (comments[i].id === editId) {
+                        comments[i].text = editText;
+                        comments[i].edited = true;
+                        break;
+                    }
+                }
+                //notify collaborators
+                this.props.notifyCollaborators("comments", "", "edited", editText)
+            }
+            this.setState({editing: false, editId: "", editTexts: "", comments})
+          } catch (err) {
+            console.log("Caught exception in saveEdit(): " + err)
+          }
+        
+      }
+
+      deleteComment = id => {
+        try {
+            let assignmentId = this.state.assignmentId;
+            //save to the db
+            firebase.firestore().collection('assignments').doc(assignmentId).collection('comments')
+                .doc(id).delete();
+            
+            //update the current comments object
+            let comments = this.state.comments;
+            comments = comments.filter(item => {
+                if (item.id !== id) {
+                    return item
+                } else {
+                    return null
+                }
+            })
+            this.setState({confirmDelete: false, comments})
+        } catch (err) {
+            console.log("Caught exception in deleteComment(): " + err)
         }
       }
 
@@ -329,10 +417,10 @@ class Comments extends React.Component {
     render() {
         return (
             <>
-            <SimpleStorage
-                parent={this}
-                prefix={ 'comments-page_' }
-            />
+            <Hotkeys 
+                keyName="enter" 
+                onKeyDown={this.postNewComment.bind(this)}
+            ></Hotkeys>
             <div className={className}>
                 <div className="scroll-comments">
                     {Object.keys(this.state.comments).length === 0 && 
@@ -353,10 +441,79 @@ class Comments extends React.Component {
                                 <div className="content">
                                     <p>
                                         <b>{item.displayName}</b>
-                                        <span className="text-muted" title={this.retrieveDate(item.timestamp)}>{" commented " + this.retrieveMoment(item.timestamp)}</span>
+                                        <span 
+                                            className="text-muted" 
+                                            title={this.retrieveDate(item.timestamp)}
+                                        >
+                                            {" commented " + this.retrieveMoment(item.timestamp)}
+                                            {item.edited ? " [edited]" : ""}
+                                        </span>
                                     </p>
-                                    <p>{item.text}</p>
+                                    {(item.id !== this.state.editId || this.state.confirmDelete) &&
+                                        <p>{item.text}</p>
+                                    }
+                                    {this.state.editing && item.id === this.state.editId && 
+                                    <Row>
+                                        <Col md="8">
+                                            <Input type="textarea" id="editText" value={this.state.editText} onChange={this.inputOnChange}/>
+                                        </Col>
+                                        <Col md="1">
+                                            <Button
+                                                color="success"
+                                                size="sm"
+                                                onClick={() => this.saveEdit(item.text)}
+                                                >
+                                                    Save
+                                            </Button>
+                                        </Col>
+                                        <Col md="1">
+                                            <Button
+                                                color="secondary"
+                                                size="sm"
+                                                onClick={() => this.setState({editing: false, editId: "", editTexts: ""})}
+                                                >
+                                                    Cancel
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                    }
                                 </div>
+                                {item.user === this.state.user && !this.state.editing && 
+                                <div className="options">
+                                    {item.id !== this.state.editId && 
+                                        <div className="button-icons">
+                                        <img alt="Edit" title="Edit" src="/images/edit-icon.png" onClick={() => this.initiateEdit(item.id, item.text)}/>
+                                        <img alt="Delete" title="Delete" src="/images/delete-icon.png" onClick={() => {this.setState({editId: item.id, confirmDelete: true})}} />
+                                        </div>
+                                    }
+                                    {this.state.confirmDelete && item.id === this.state.editId && 
+                                    <div>
+                                    <Row><Label>Delete Comment?</Label></Row>
+                                    <Row>
+                                        
+                                        <Col md="4">
+                                            <Button
+                                                color="danger"
+                                                size="sm"
+                                                onClick={() => this.deleteComment(item.id)}
+                                                >
+                                                    Yes
+                                            </Button>
+                                        </Col>
+                                        <Col md="4">
+                                            <Button
+                                                color="primary"
+                                                size="sm"
+                                                onClick={() => {this.setState({ editId: "", confirmDelete: false})}}
+                                                >
+                                                    No
+                                            </Button>
+                                        </Col>
+                                    </Row>
+                                    </div>
+                                    }
+                                </div>
+                                }
                                 </CardBody>
                             </Card>
                         ))
@@ -364,13 +521,21 @@ class Comments extends React.Component {
                 </div>
                 <Row>
                     <Col md="10">
-                        <Input type="textarea" value={this.state.newText} onChange={this.inputOnChange}/>
+                        <Input 
+                            type="textarea" 
+                            id="newText" 
+                            value={this.state.newText} 
+                            onChange={this.inputOnChange} 
+                            onKeyPress={this.handleKeyDown}
+                            disabled={!this.state.assignmentId || !this.props.canEdit}/>
                     </Col>
                     <Col md="2">
                         <Button
+                            className="post-button"
                             color="primary"
                             size="md"
                             onClick={this.postNewComment}
+                            disabled={!this.state.assignmentId || !this.props.canEdit}
                             >
                                 Post
                         </Button>

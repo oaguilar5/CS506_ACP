@@ -63,7 +63,12 @@ class Files extends React.Component {
         if (this.state.update) {
             try {
                 //re-render: gather the first 10 comments
-                this.retrieveFiles()
+                if (this.state.assignmentId) {
+                    this.retrieveFiles()
+                    this.setState({update: false})
+                } else {
+                    this.setState({files: []})
+                }
                 this.setState({update: false})
             } catch (err) {
                 console.log("Caught exception in componentDidUpdate(): " + err)  
@@ -273,6 +278,9 @@ class Files extends React.Component {
                 proceed = true;
             }
             if (proceed) {
+                let notifyType = "edited";
+                let notifyMsg = `File: ${filePath}. Description: ${fileDescription}`;
+                let notifyTitle = fileName;
                 //save file properties to doc
                 let doc = {
                     file_name: fileName,
@@ -295,14 +303,20 @@ class Files extends React.Component {
                     //if there is a new file replacing the old one, proceed to delete the old one from storage
                     if (upload) {
                         firebase.storage().ref().child("files/" + oldFilePath).delete();
+                        notifyType = "replaced";
+                        notifyMsg = `New File: ${filePath}. Description: ${fileDescription}`;
+                        notifyTitle = oldFilePath;
                     }
                 } else {
+                    notifyType = "added"
                     let newFile = await docRef.add(doc);
                     let fileExt = this.getFileExt(filePath);
                     let thisFile = {id: newFile.id, fileName: fileName, filePath: filePath, fileExt: fileExt, uploadDate: uploadDate, uploader: uploader, fileDescription: fileDescription};
                     files.push(thisFile);
                 }
                 this.setState({infoModal: true, hasInfo : true, infoMsg: "Successfully saved file!", files});
+                //notify collaborators
+                this.props.notifyCollaborators("files", notifyTitle, notifyType, notifyMsg)
             } else {
                 this.setState({infoModal: true, hasInfo : true, infoMsg: "Error saving your file, please try again"});
             }
@@ -354,6 +368,8 @@ class Files extends React.Component {
                 }
             })
             this.setState({infoModal: true, hasInfo : true, infoMsg: "Successfully deleted file '" + fileName + "'", files});
+            //notify collaborators
+            this.props.notifyCollaborators("files", fileName, "deleted", "")
         } catch (err) {
             console.log("Caught exception in deleteFile(): " + err)
         }
@@ -370,7 +386,7 @@ class Files extends React.Component {
                     <Row>
                         <Col md="8">
                             <Label>File Name</Label>
-                            <Input type="text" id="fileName" value={this.state.fileName} onChange={this.inputOnChange} />                    
+                            <Input type="text" id="fileName" value={this.state.fileName} onChange={this.inputOnChange} disabled={!this.props.canEdit}/>                    
                         </Col>
                         <Col md="4">
                             <Label>File Type</Label>
@@ -390,7 +406,7 @@ class Files extends React.Component {
                     <Row>
                         <Col md="12">
                             <Label>Description</Label>
-                            <Input type="textarea" id="fileDescription" value={this.state.fileDescription} onChange={this.inputOnChange} />                    
+                            <Input type="textarea" id="fileDescription" disabled={!this.props.canEdit} value={this.state.fileDescription} onChange={this.inputOnChange} />                    
                         </Col>
                     </Row>
                     <Row></Row>
@@ -398,7 +414,7 @@ class Files extends React.Component {
                         
                         <Col md="6">
                             <Label>Replace File</Label>
-                            <Input type="file" accept=".txt, .pdf, .doc, .docx, .xls, .xlsx, .csv" onChange={evt => {this.setState({processing: true}); this.processFileUpload(evt)}}/>                    
+                            <Input type="file" accept=".txt, .pdf, .doc, .docx, .xls, .xlsx, .csv" disabled={!this.props.canEdit} onChange={evt => {this.setState({processing: true}); this.processFileUpload(evt)}}/>                    
                         </Col>
                         {this.state.processing && 
                             <Col md="4">
@@ -426,7 +442,7 @@ class Files extends React.Component {
                         <>
                         <Button color="primary" onClick={this.saveFile} disabled={!this.state.saveEnabled}>Save</Button>
                         <Button color="success" onClick={this.downloadFile} size="md" disabled={!this.state.existingFile}>Download</Button>
-                        <Button color="danger" onClick={this.deleteFile} size="md" disabled={!this.state.existingFile}>Delete</Button>
+                        <Button color="danger" onClick={this.deleteFile} size="md" disabled={!this.state.existingFile || !this.props.canEdit}>Delete</Button>
                         </>
                         )}
                     <Button color="secondary" size="md" onClick={this.toggleModal}>{this.state.hasInfo ? "Ok" : "Cancel"}</Button>{' '}
@@ -434,7 +450,7 @@ class Files extends React.Component {
             </Modal>
             <div className={className}>
                 <div className="content">
-                    {this.state.files.length === 0 &&
+                    {this.props.canEdit && this.state.assignmentId && this.state.files.length === 0 &&
                         <h5 className="text-muted" onClick={this.toggleModal}>Click Here to Upload a File</h5>
                     }
                     {this.state.files.length > 0 &&
@@ -448,7 +464,7 @@ class Files extends React.Component {
                                     <Label>{file.fileName}</Label>
                             </div>
                     ))}
-                    {this.state.files.length > 0 && this.state.files.length < 10 &&
+                    {this.props.canEdit && this.state.assignmentId && this.state.files.length > 0 && this.state.files.length < 10 &&
                         <div className="file-item new-file" >
                             <img className="file-icon"  src={"/images/add-icon.png"} alt="New File" onClick={this.toggleModal}/> 
                             <Label>{"Add New"}</Label>

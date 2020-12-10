@@ -56,7 +56,7 @@ class Home extends React.Component {
       if (user) {
         let email = user.email;
         //update index.js global email
-        this.props.updateGlobals(null, email);
+        this.props.updateGlobals(null, email, null);
         let profilePic = user.photoURL;
         let assignments = [];
         this.checkForAssignments(email, assignments, true);
@@ -192,7 +192,7 @@ class Home extends React.Component {
 
   selectAssignment = id => {
     //first update the index.js global var for assignmentId
-    this.props.updateGlobals(id, null);
+    this.props.updateGlobals(id, null, null);
     //save the active assignmentId to the user's doc for reference
     let user = this.state.user;
     firebase.firestore().collection('acp_users').doc(user).update({active_id: id});
@@ -225,18 +225,17 @@ class Home extends React.Component {
             <Collapse navbar>
               <Nav className="mr-auto" navbar>
                 <NavItem>
-                  <NavLink href="/components/">Home</NavLink>
+                  <NavLink href="/home">Home</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="">Assignments</NavLink>
+                  <NavLink href="/assignment">Assignments</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="">Collaborators</NavLink>
+                  <NavLink href="#!" onClick={() => {this.props.updateGlobals(null, null, "Notifications"); this.props.history.push("/profile")}}>Notifications</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink href="/search/">Search</NavLink>
+                  <NavLink href="/search">Search</NavLink>
                 </NavItem>
-
               </Nav>
               <div className="account-link">
                 <UncontrolledDropdown>
@@ -248,11 +247,13 @@ class Home extends React.Component {
                     <div className="user-photo">
                       <img alt="..." src={this.state.avatar} />
                     </div>
-                    <p className="d-lg-none">Log out</p>
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     <DropdownItem header >{this.state.user}</DropdownItem>
                     <DropdownItem divider tag="li" />
+                    <NavLink tag="li"  >
+                      <DropdownItem className="nav-item"  onClick={() => {this.props.updateGlobals(null, null, "Profile"); this.props.history.push("/profile")}}>Profile</DropdownItem>
+                    </NavLink>
                     <NavLink tag="li" >
                       <DropdownItem className="nav-item" onClick={this.userLogout}>Log out</DropdownItem>
                     </NavLink>
@@ -348,7 +349,7 @@ class Home extends React.Component {
               <Card className="assignment-card create-new" onClick={() => this.toggleModal()}>
                 <CardBody>
                   Create New
-                          <img src="/images/plus-sign.jpg" alt="Add New"/>
+                          <img src="/images/plus-sign.png" alt="Add New"/>
                 </CardBody>
               </Card>
             </div>
