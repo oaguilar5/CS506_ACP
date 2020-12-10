@@ -322,7 +322,7 @@ class Home extends React.Component {
                 <Row>
                   <Col md="12">
                     <Label>Due Date</Label>
-                    <Input name="dueDate" type="datetime-local" required />
+                    <Input name="dueDate" type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} required />
                   </Col>
                 </Row>
                 <Row style={{ marginTop: '5%', marginBottom: '5%' }}>
@@ -340,7 +340,7 @@ class Home extends React.Component {
                   </Col>
                   <Col md="6">
                     <Label>Create Date</Label>
-                    <Input name="createDate" type="datetime-locale" disabled value={new Date().toLocaleDateString()} />
+                    <Input name="createDate" type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} disabled value={new Date().toLocaleDateString()} />
                   </Col>
                 </Row>
 

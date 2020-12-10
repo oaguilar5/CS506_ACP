@@ -162,34 +162,30 @@ class Assignment extends React.Component {
             }
         });
 
-        if (this.state.authenticated && navigator.platform.indexOf("Win") > -1) {
-            document.documentElement.className += " perfect-scrollbar-on";
-            document.documentElement.classList.remove("perfect-scrollbar-off");
-            let tables = document.querySelectorAll(".scroll-area");
-            for (let i = 0; i < tables.length; i++) {
-              ps = new PerfectScrollbar(tables[i], {
-                suppressScrollX: true
-              });
-            }
-          }
+        document.documentElement.className += " perfect-scrollbar-on";
+        document.documentElement.classList.remove("perfect-scrollbar-off");
+        let tables = document.querySelectorAll(".scroll-area");
+        for (let i = 0; i < tables.length; i++) {
+            ps = new PerfectScrollbar(tables[i], {
+            suppressScrollX: true
+            });
+        }
 
     }
 
     componentDidUpdate(e) {
         if (e.history.action === "PUSH" || e.history.action === "POP") {
-          if (navigator.platform.indexOf("Win") > -1) {
             let tables = document.querySelectorAll(".scroll-area");
             for (let i = 0; i < tables.length; i++) {
                 ps = new PerfectScrollbar(tables[i], {
                     suppressScrollX: true
                   });
             }
-          }
         }
       }
 
     componentWillUnmount() {
-        if (ps && navigator.platform.indexOf("Win") > -1) {
+        if (ps) {
           ps.destroy();
           document.documentElement.className += " perfect-scrollbar-off";
           document.documentElement.classList.remove("perfect-scrollbar-on");
@@ -203,8 +199,15 @@ class Assignment extends React.Component {
                 if (doc.exists) {
                     let creator = doc.get('created_by');
                     let assignmentCreator = creator;
-                    let created = this.toDateFormat(doc.get('create_date'));
-                    let due_date = this.toDateFormat(doc.get('due_date'));
+                    let created = doc.get('create_date');
+                    let due_date = doc.get('due_date');
+                    if (navigator.userAgent.indexOf("Firefox") !== -1) {
+                        created = created.toDate().toISOString().split('T')[0];
+                        due_date = due_date.toDate().toISOString().split('T')[0];
+                    } else {
+                        created = this.toDateFormat(created);
+                        due_date = this.toDateFormat(due_date);
+                    }
                     let title = doc.get('title');
                     let description = doc.get('description');
                     let status = doc.get('status')
@@ -266,8 +269,15 @@ class Assignment extends React.Component {
                 firebase.firestore().collection('assignments').doc(assignmentId).collection('subtasks').doc(id).get()
                 .then(doc =>{
                     let creator = doc.get('sub_created_by');
-                    let created = this.toDateFormat(doc.get('sub_create_date'));
-                    let due_date = this.toDateFormat(doc.get('sub_due_date'));
+                    let created = doc.get('sub_create_date');
+                    let due_date = doc.get('sub_due_date');
+                    if (navigator.userAgent.indexOf("Firefox") !== -1) {
+                        created = created.toDate().toISOString().split('T')[0];
+                        due_date = due_date.toDate().toISOString().split('T')[0];
+                    } else {
+                        created = this.toDateFormat(created);
+                        due_date = this.toDateFormat(due_date);
+                    }
                     let title = doc.get('sub_title');
                     let description = doc.get('sub_description');
                     let status = doc.get('sub_status')
@@ -501,6 +511,10 @@ class Assignment extends React.Component {
                 //send notifications for this change
                 let msg = `Due on ${dueDate}`
                 this.notifyCollaborators("tasks", title, "added", msg);
+                //recalculate progress
+                let subtasksComplete = this.state.subtasksComplete;
+                let subtaskCount = this.state.subtasks.length+1;
+                this.calculateProgressPercent(subtaskCount, subtasksComplete)
             } else {
                 this.setState({infoModal: true, infoMsg: "Unable to create subtask: Maximum number of subtasks per assignment reached"})
             }
@@ -578,7 +592,7 @@ class Assignment extends React.Component {
                 //sanitize the value if number type
                 if (dataType === 'number') {
                     newVal = parseInt(newVal);
-                } else if (dataType === 'datetime-local') {
+                } else if (dataType === 'datetime-local' || "date") {
                     newVal = new Date(newVal);
                 }
                 //create a reference to the assignment doc
@@ -665,12 +679,14 @@ class Assignment extends React.Component {
             } else {
                 let subtaskId = this.state.subtaskId;
                 doc.collection('subtasks').doc(subtaskId).update({sub_is_complete: true, sub_status: "Done", sub_progress: 100});
-                this.calculateProgressPercent();
-                //refresh the subtask sidebar
-                this.checkForSubtasks(assignmentId);
+                let subtaskCount = this.state.subtasks.length;
+                let subtasksComplete = this.state.subtasksComplete+1;
+                this.calculateProgressPercent(subtaskCount, subtasksComplete);
                 //send notifications for this change
                 let title = this.state.title;
                 this.notifyCollaborators("tasks", title, "completed", "");
+                //refresh the subtask sidebar
+                this.checkForSubtasks(assignmentId);
             }
             //mark our state var complete
             this.setState({is_complete: true, status: "Done", progress: 100})
@@ -681,23 +697,11 @@ class Assignment extends React.Component {
     }
 
     //TODO: add calculation for when a new subtask is created to recalculate the percent which would be greater
-    calculateProgressPercent = () => {
-        //only proceed to calculate if progress not manually set by the user
-        if (!this.state.progressLocked) {
-            //check to see if the progress was indicative of tasks completed or was set by the user
-            let assignmentProgress = this.state.assignmentProgress;
-            let subtaskCount = this.state.subtasks.length;
-            let subtasksComplete = this.state.subtasksComplete;
-            let previousCalc = (subtasksComplete/subtaskCount)*100;
-            if (assignmentProgress === previousCalc) {
-                //since these are equal, the user has not set the progress manually. Continue to update
-                let actualCalc = ((subtasksComplete+1)/subtaskCount)*100;
-                let assignmentId = this.state.assignmentId;
-                firebase.firestore().collection('assignments').doc(assignmentId).update({progress: actualCalc});
-                this.setState({assignmentProgress: actualCalc})
-            }
-        }
-        
+    calculateProgressPercent = (subtaskCount, subtasksComplete) => {
+        let calc = (subtasksComplete/subtaskCount)*100;
+        let assignmentId = this.state.assignmentId;
+        firebase.firestore().collection('assignments').doc(assignmentId).update({progress: calc});
+        this.setState({assignmentProgress: calc, subtasksComplete})
         
     }
 
@@ -891,6 +895,14 @@ class Assignment extends React.Component {
                 let title = this.state.title;
                 ref.collection('subtasks').doc(subtaskId).delete()
                     .then(() => {
+                        //recalculate progress
+                        let isComplete = this.state.isComplete;
+                        let subtasksComplete = this.state.subtasksComplete;
+                        let subtaskCount = this.state.subtasks.length-1;
+                        if (isComplete) {
+                            subtasksComplete--;
+                        }
+                        this.calculateProgressPercent(subtaskCount, subtasksComplete)
                         this.notifyCollaborators("tasks", title, "deleted", "");
                         this.setState({
                             infoModal: true, 
@@ -902,6 +914,7 @@ class Assignment extends React.Component {
                         console.log(`Error deleting subtask ${subtaskId}. Err: ${err}`)
                         this.setState({infoModal: true, infoMsg: `Error deleting subtask. Please try again later`})
                     })
+                
             }
         } catch (err) {
             console.log("Caught exception in deleteItem(): " + err)
@@ -1077,7 +1090,7 @@ class Assignment extends React.Component {
                             <Row>
                             <Col md="12">
                                 <Label>Due Date</Label>
-                                <Input name="dueDate" type="datetime-local" required />
+                                <Input name="dueDate" type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} required />
                             </Col>
                             </Row>
                             <Row style={{ marginTop: '5%', marginBottom: '5%' }}>
@@ -1095,7 +1108,7 @@ class Assignment extends React.Component {
                             </Col>
                             <Col md="6">
                                 <Label>Create Date</Label>
-                                <Input name="createDate" type="datetime-locale" disabled value={new Date().toLocaleDateString()} />
+                                <Input name="createDate" type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} disabled value={new Date().toLocaleDateString()} />
                             </Col>
                             </Row>
 
@@ -1132,7 +1145,7 @@ class Assignment extends React.Component {
                             <Row>
                             <Col md="12">
                                 <Label>Due Date</Label>
-                                <Input name="sub_dueDate" type="datetime-local" required />
+                                <Input name="sub_dueDate" type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} required />
                             </Col>
                             </Row>
                             <Row>
@@ -1153,7 +1166,7 @@ class Assignment extends React.Component {
                             </Col>
                             <Col md="6">
                                 <Label>Create Date</Label>
-                                <Input name="sub_createDate" type="datetime-locale" disabled value={new Date().toLocaleDateString()} />
+                                <Input name="sub_createDate" type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} disabled value={new Date().toLocaleDateString()} />
                             </Col>
                             </Row>
 
@@ -1258,7 +1271,7 @@ class Assignment extends React.Component {
                                             <Col md="4">
                                                 <Label>Create Date</Label>
                                                 <Input 
-                                                    type="datetime-local" 
+                                                    type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} 
                                                     id="create_date"  
                                                     value={this.state.created}
                                                     disabled
@@ -1269,7 +1282,7 @@ class Assignment extends React.Component {
                                             <Col md="5">
                                                 <Label>Due Date</Label>
                                                 <Input 
-                                                    type="datetime-local" 
+                                                    type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"}
                                                     id="due_date"  
                                                     value={this.state.due_date}
                                                     onChange={this.inputOnChange} 

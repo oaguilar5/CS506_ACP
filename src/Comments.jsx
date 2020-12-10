@@ -82,7 +82,6 @@ class Comments extends React.Component {
         }
         
         this.setState({newText: "",  olderMessages: true})
-        if (this.state.authenticated && navigator.platform.indexOf("Win") > -1) {
             document.documentElement.className += " perfect-scrollbar-on";
             document.documentElement.classList.remove("perfect-scrollbar-off");
             let tables = document.querySelectorAll(".scroll-comments");
@@ -90,7 +89,6 @@ class Comments extends React.Component {
               ps = new PerfectScrollbar(tables[i]);
               tables[i].scrollTop = tables[i].scrollHeight;
             }
-          }
     }
 
     componentDidUpdate() {
@@ -114,7 +112,7 @@ class Comments extends React.Component {
             }
            
         }
-        if (this.state.comments.length > 0 && navigator.platform.indexOf("Win") > -1) {
+        if (this.state.comments.length > 0) {
             let tables = document.querySelectorAll(".scroll-comments");
             for (let i = 0; i < tables.length; i++) {
               ps = new PerfectScrollbar(tables[i]);
@@ -137,7 +135,7 @@ class Comments extends React.Component {
         try {
             let observer = this.state.observer;
             //destroy perfect scrollbar
-            if (ps && navigator.platform.indexOf("Win") > -1 && ps) {
+            if (ps) {
               ps.destroy();
             }
             if (observer.active) {

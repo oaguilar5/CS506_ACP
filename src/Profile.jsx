@@ -95,30 +95,26 @@ class Profile extends React.Component {
             }
         });
 
-        if (this.state.authenticated && navigator.platform.indexOf("Win") > -1) {
             document.documentElement.className += " perfect-scrollbar-on";
             document.documentElement.classList.remove("perfect-scrollbar-off");
             let tables = document.querySelectorAll(".scroll-area");
             for (let i = 0; i < tables.length; i++) {
               ps = new PerfectScrollbar(tables[i]);
             }
-          }
     }
 
 
     componentDidUpdate(e) {
         if (e.history.action === "PUSH" || e.history.action === "POP") {
-          if (navigator.platform.indexOf("Win") > -1) {
             let tables = document.querySelectorAll(".scroll-area");
             for (let i = 0; i < tables.length; i++) {
               ps = new PerfectScrollbar(tables[i]);
             }
-          }
         }
       }
 
     componentWillUnmount() {
-        if (ps && navigator.platform.indexOf("Win") > -1) {
+        if (ps) {
           ps.destroy();
           document.documentElement.className += " perfect-scrollbar-off";
           document.documentElement.classList.remove("perfect-scrollbar-on");

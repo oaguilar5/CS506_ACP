@@ -88,8 +88,6 @@ class Search extends React.Component {
             }
         });
 
-
-        if (this.state.authenticated && navigator.platform.indexOf("Win") > -1) {
             document.documentElement.className += " perfect-scrollbar-on";
             document.documentElement.classList.remove("perfect-scrollbar-off");
             let tables = document.querySelectorAll(".jumbotron");
@@ -98,25 +96,22 @@ class Search extends React.Component {
                 suppressScrollX: true
               });
             }
-          }
 
     }
 
     componentDidUpdate(e) {
         if (e.history.action === "PUSH" || e.history.action === "POP") {
-          if (navigator.platform.indexOf("Win") > -1) {
             let tables = document.querySelectorAll(".jumbotron");
             for (let i = 0; i < tables.length; i++) {
                 ps = new PerfectScrollbar(tables[i], {
                     suppressScrollX: true
                   });
             }
-          }
         }
       }
 
     componentWillUnmount() {
-        if (ps && navigator.platform.indexOf("Win") > -1) {
+        if (ps) {
           ps.destroy();
           document.documentElement.className += " perfect-scrollbar-off";
           document.documentElement.classList.remove("perfect-scrollbar-on");
@@ -391,7 +386,7 @@ class Search extends React.Component {
                                 </Col>
                                 <Col md="4">
                                     <Label>Due Date</Label>
-                                    <Input name="custom_date" id="custom_date" type="datetime-local" onChange={this.inputOnChange}></Input>
+                                    <Input name="custom_date" id="custom_date" type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} onChange={this.inputOnChange}></Input>
                                 </Col>
                                 <Col className="col-button" md="2">
                                     <Button color="info" onClick={this.customSearch}>Search</Button>
