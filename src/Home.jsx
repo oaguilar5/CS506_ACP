@@ -88,6 +88,11 @@ class Home extends React.Component {
 
   createUserDoc = (email, displayName) => {
     try {
+      var user = firebase.auth().currentUser;
+      user.updateProfile({
+        photoURL: "student-user.png"
+      })
+
       //create a new blank user doc
       let newUser = {
         email: email,

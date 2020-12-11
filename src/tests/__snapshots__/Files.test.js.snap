@@ -1,0 +1,361 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test Files component 1`] = `
+<Fragment>
+  <Modal
+    autoFocus={true}
+    backdrop={true}
+    backdropTransition={
+      Object {
+        "mountOnEnter": true,
+        "timeout": 150,
+      }
+    }
+    centered={false}
+    container="body"
+    fade={true}
+    isOpen={false}
+    keyboard={true}
+    modalTransition={
+      Object {
+        "timeout": 300,
+      }
+    }
+    onClosed={[Function]}
+    onOpened={[Function]}
+    returnFocusAfterClose={true}
+    role="dialog"
+    scrollable={false}
+    toggle={[Function]}
+    unmountOnClose={true}
+    zIndex={1050}
+  >
+    <ModalHeader
+      charCode={215}
+      closeAriaLabel="Close"
+      tag="h5"
+      toggle={[Function]}
+      wrapTag="div"
+    >
+      File
+    </ModalHeader>
+    <ModalBody
+      tag="div"
+    >
+      <Row
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Col
+          md="8"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <Label
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            File Name
+          </Label>
+          <Input
+            disabled={true}
+            id="fileName"
+            onChange={[Function]}
+            type="text"
+            value=""
+          />
+        </Col>
+        <Col
+          md="4"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <Label
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            File Type
+          </Label>
+          <Input
+            disabled={true}
+            type="text"
+            value=""
+          />
+        </Col>
+      </Row>
+      <Row
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Col
+          md="8"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <Label
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Upload Date
+          </Label>
+          <Input
+            disabled={true}
+            type="datetime-local"
+            value=""
+          />
+        </Col>
+        <Col
+          md="4"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <Label
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Uploaded By
+          </Label>
+          <Input
+            disabled={true}
+            type="text"
+            value=""
+          />
+        </Col>
+      </Row>
+      <Row
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Col
+          md="12"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <Label
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Description
+          </Label>
+          <Input
+            disabled={true}
+            id="fileDescription"
+            onChange={[Function]}
+            type="textarea"
+            value=""
+          />
+        </Col>
+      </Row>
+      <Row
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      />
+      <Row
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Col
+          md="6"
+          tag="div"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          <Label
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Replace File
+          </Label>
+          <Input
+            accept=".txt, .pdf, .doc, .docx, .xls, .xlsx, .csv"
+            disabled={true}
+            onChange={[Function]}
+            type="file"
+          />
+        </Col>
+      </Row>
+    </ModalBody>
+    <ModalFooter
+      tag="div"
+    >
+      <Button
+        color="primary"
+        disabled={true}
+        onClick={[Function]}
+        tag="button"
+      >
+        Save
+      </Button>
+      <Button
+        color="success"
+        disabled={true}
+        onClick={[Function]}
+        size="md"
+        tag="button"
+      >
+        Download
+      </Button>
+      <Button
+        color="danger"
+        disabled={true}
+        onClick={[Function]}
+        size="md"
+        tag="button"
+      >
+        Delete
+      </Button>
+      <Button
+        color="secondary"
+        onClick={[Function]}
+        size="md"
+        tag="button"
+      >
+        Cancel
+      </Button>
+       
+    </ModalFooter>
+  </Modal>
+  <div
+    className="assignment-files"
+  >
+    <div
+      className="content"
+    />
+  </div>
+</Fragment>
+`;

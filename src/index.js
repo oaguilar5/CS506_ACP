@@ -51,10 +51,14 @@ function updateGlobals (id, email, view) {
   if (id !== null) assignmentId = id;
   if (email !== null) user = email;
   if (view !== null) profileView = view;
+  //notify({alert_position: "tr", alert_type: "info", alert_message: "Hi there!", alert_icon: "/images/notify.png", alert_duration: 5})
 }
 
+
+
 ReactDOM.render(
-  <Router history={hist}>
+    
+    <Router history={hist}>
     <Switch>
       <Route path="/login" render={props => <Login {...props}  />} />
       <Route path="/home" render={props => <Home {...props} updateGlobals={updateGlobals}  />} />
@@ -65,9 +69,12 @@ ReactDOM.render(
       <Route path="/profile" render={props => <Profile {...props} view={profileView} updateGlobals={updateGlobals} />}/>
       <Redirect from="/" to="/login"/>
     </Switch>
-  </Router>,
+  </Router>
+  ,
   document.getElementById("root") || document.createElement('div')
 );
+
+
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

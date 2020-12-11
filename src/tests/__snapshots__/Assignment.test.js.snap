@@ -2,2012 +2,6 @@
 
 exports[`should test Assignment component 1`] = `
 <Fragment>
-  <SimpleStorage
-    parent={
-      Assignment {
-        "calculateProgressPercent": [Function],
-        "checkForAssignments": [Function],
-        "checkForSubtasks": [Function],
-        "context": Object {},
-        "createNewAssignment": [Function],
-        "createNewSubtask": [Function],
-        "inputOnBlur": [Function],
-        "inputOnChange": [Function],
-        "inputOnFocus": [Function],
-        "markComplete": [Function],
-        "props": Object {
-          "assignmentId": "12345",
-          "updateGlobals": [MockFunction],
-          "user": "email@none.com",
-        },
-        "refs": Object {},
-        "retrieveAssignmentDetails": [Function],
-        "retrieveSubtaskDetails": [Function],
-        "selectAssignment": [Function],
-        "setState": [Function],
-        "state": Object {
-          "activeTab": "1",
-          "assignmentId": "12345",
-          "assignmentModal": false,
-          "assignmentProgress": 0,
-          "assignmentTitle": "",
-          "assignmentView": true,
-          "assignments": Array [],
-          "avatar": "",
-          "buttonColor": "primary",
-          "collabVisible": "block",
-          "description": "",
-          "dod": "",
-          "due_date": "",
-          "infoDisabled": true,
-          "infoModal": false,
-          "infoMsg": "",
-          "is_complete": false,
-          "is_private": false,
-          "oldValue": null,
-          "progress": 0,
-          "progressLocked": false,
-          "status": "",
-          "statusVisible": "block",
-          "subModal": false,
-          "subtaskId": "",
-          "subtaskVisible": "block",
-          "subtasks": Array [],
-          "subtasksComplete": 0,
-          "title": "",
-          "user": "",
-        },
-        "toggle": [Function],
-        "toggleInfoCards": [Function],
-        "toggleModal": [Function],
-        "updater": Updater {
-          "_callbacks": Array [],
-          "_renderer": ReactShallowRenderer {
-            "_context": Object {},
-            "_didScheduleRenderPhaseUpdate": false,
-            "_dispatcher": Object {
-              "readContext": [Function],
-              "useCallback": [Function],
-              "useContext": [Function],
-              "useDebugValue": [Function],
-              "useDeferredValue": [Function],
-              "useEffect": [Function],
-              "useImperativeHandle": [Function],
-              "useLayoutEffect": [Function],
-              "useMemo": [Function],
-              "useReducer": [Function],
-              "useRef": [Function],
-              "useResponder": [Function],
-              "useState": [Function],
-              "useTransition": [Function],
-            },
-            "_element": <Assignment
-              assignmentId="12345"
-              updateGlobals={[MockFunction]}
-              user="email@none.com"
-            />,
-            "_firstWorkInProgressHook": null,
-            "_forcedUpdate": false,
-            "_instance": [Circular],
-            "_isReRender": false,
-            "_newState": null,
-            "_numberOfReRenders": 0,
-            "_renderPhaseUpdates": null,
-            "_rendered": <React.Fragment>
-              <SimpleStorage
-                parent={[Circular]}
-                prefix="assignment-page_"
-              />
-              <div
-                className="assignment-page"
-              >
-                <div>
-                  <Navbar
-                    color="light"
-                    expand="lg"
-                    light={true}
-                    tag="nav"
-                  >
-                    <div
-                      className="logo"
-                    >
-                      <a
-                        href="/home"
-                      >
-                        <img
-                          alt="ACP"
-                          src="/images/logo_1.png"
-                        />
-                      </a>
-                    </div>
-                    <NavbarToggler
-                      tag="button"
-                      type="button"
-                    />
-                    <Collapse
-                      appear={false}
-                      enter={true}
-                      exit={true}
-                      in={false}
-                      isOpen={false}
-                      mountOnEnter={false}
-                      navbar={true}
-                      onEnter={[Function]}
-                      onEntered={[Function]}
-                      onEntering={[Function]}
-                      onExit={[Function]}
-                      onExited={[Function]}
-                      onExiting={[Function]}
-                      tag="div"
-                      timeout={350}
-                      unmountOnExit={false}
-                    >
-                      <Nav
-                        className="mr-auto"
-                        navbar={true}
-                        tag="ul"
-                        vertical={false}
-                      >
-                        <NavItem
-                          tag="li"
-                        >
-                          <NavLink
-                            href="/components/"
-                            tag="a"
-                          >
-                            Home
-                          </NavLink>
-                        </NavItem>
-                        <NavItem
-                          tag="li"
-                        >
-                          <NavLink
-                            href=""
-                            tag="a"
-                          >
-                            Assignments
-                          </NavLink>
-                        </NavItem>
-                        <NavItem
-                          tag="li"
-                        >
-                          <NavLink
-                            href=""
-                            tag="a"
-                          >
-                            Collaborators
-                          </NavLink>
-                        </NavItem>
-                        <NavItem
-                          tag="li"
-                        >
-                          <NavLink
-                            href=""
-                            tag="a"
-                          >
-                            Search
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                      <div
-                        className="account-link"
-                      >
-                        <UncontrolledDropdown>
-                          <DropdownToggle
-                            aria-haspopup={true}
-                            caret={true}
-                            color="default"
-                            data-toggle="dropdown"
-                          >
-                            <div
-                              className="user-photo"
-                            >
-                              <img
-                                alt="..."
-                                src=""
-                              />
-                            </div>
-                            <p
-                              className="d-lg-none"
-                            >
-                              Log out
-                            </p>
-                          </DropdownToggle>
-                          <DropdownMenu
-                            className="dropdown-navbar"
-                            flip={true}
-                            right={true}
-                            tag="ul"
-                          >
-                            <DropdownItem
-                              header={true}
-                              tag="button"
-                              toggle={true}
-                            >
-                              
-                            </DropdownItem>
-                            <DropdownItem
-                              divider={true}
-                              tag="li"
-                              toggle={true}
-                            />
-                            <NavLink
-                              tag="li"
-                            >
-                              <DropdownItem
-                                className="nav-item"
-                                onClick={[Function]}
-                                tag="button"
-                                toggle={true}
-                              >
-                                Log out
-                              </DropdownItem>
-                            </NavLink>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                      </div>
-                    </Collapse>
-                  </Navbar>
-                </div>
-                <Modal
-                  autoFocus={true}
-                  backdrop={true}
-                  backdropTransition={
-                    Object {
-                      "mountOnEnter": true,
-                      "timeout": 150,
-                    }
-                  }
-                  centered={false}
-                  container="body"
-                  fade={true}
-                  isOpen={false}
-                  keyboard={true}
-                  modalTransition={
-                    Object {
-                      "timeout": 300,
-                    }
-                  }
-                  onClosed={[Function]}
-                  onOpened={[Function]}
-                  returnFocusAfterClose={true}
-                  role="dialog"
-                  scrollable={false}
-                  toggle={[Function]}
-                  unmountOnClose={true}
-                  zIndex={1050}
-                >
-                  <ModalHeader
-                    charCode={215}
-                    closeAriaLabel="Close"
-                    tag="h5"
-                    toggle={[Function]}
-                    wrapTag="div"
-                  >
-                    Notice
-                  </ModalHeader>
-                  <ModalBody
-                    tag="div"
-                  >
-                    
-                  </ModalBody>
-                  <ModalFooter
-                    tag="div"
-                  >
-                    <Button
-                      color="primary"
-                      onClick={[Function]}
-                      tag="button"
-                    >
-                      Ok
-                    </Button>
-                     
-                  </ModalFooter>
-                </Modal>
-                <Modal
-                  autoFocus={true}
-                  backdrop={true}
-                  backdropTransition={
-                    Object {
-                      "mountOnEnter": true,
-                      "timeout": 150,
-                    }
-                  }
-                  centered={false}
-                  container="body"
-                  fade={true}
-                  isOpen={false}
-                  keyboard={true}
-                  modalTransition={
-                    Object {
-                      "timeout": 300,
-                    }
-                  }
-                  onClosed={[Function]}
-                  onOpened={[Function]}
-                  returnFocusAfterClose={true}
-                  role="dialog"
-                  scrollable={false}
-                  toggle={[Function]}
-                  unmountOnClose={true}
-                  zIndex={1050}
-                >
-                  <Form
-                    onSubmit={[Function]}
-                    tag="form"
-                  >
-                    <ModalHeader
-                      charCode={215}
-                      closeAriaLabel="Close"
-                      tag="h5"
-                      toggle={[Function]}
-                      wrapTag="div"
-                    >
-                      Create New Assignment
-                    </ModalHeader>
-                    <ModalBody
-                      tag="div"
-                    >
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Title
-                          </Label>
-                          <Input
-                            name="title"
-                            required={true}
-                            type="text"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Description
-                          </Label>
-                          <Input
-                            name="description"
-                            type="textarea"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Definition of Done
-                          </Label>
-                          <Input
-                            name="dod"
-                            type="textarea"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Due Date
-                          </Label>
-                          <Input
-                            name="dueDate"
-                            required={true}
-                            type="datetime-local"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        style={
-                          Object {
-                            "marginBottom": "5%",
-                            "marginTop": "5%",
-                          }
-                        }
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md={
-                            Object {
-                              "offset": 3,
-                              "size": 6,
-                            }
-                          }
-                          sm="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Make my Assignment Private
-                          </Label>
-                        </Col>
-                        <Col
-                          md="2"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Input
-                            name="isPrivate"
-                            type="checkbox"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="6"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Created By
-                          </Label>
-                          <Input
-                            disabled={true}
-                            name="creator"
-                            type="text"
-                            value=""
-                          />
-                        </Col>
-                        <Col
-                          md="6"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Create Date
-                          </Label>
-                          <Input
-                            disabled={true}
-                            name="createDate"
-                            type="datetime-locale"
-                            value="11/16/2020"
-                          />
-                        </Col>
-                      </Row>
-                    </ModalBody>
-                    <ModalFooter
-                      tag="div"
-                    >
-                      <Button
-                        color="primary"
-                        tag="button"
-                        type="submit"
-                      >
-                        Ok
-                      </Button>
-                       
-                      <Button
-                        color="primary"
-                        onClick={[Function]}
-                        tag="button"
-                      >
-                        Cancel
-                      </Button>
-                       
-                    </ModalFooter>
-                  </Form>
-                </Modal>
-                <Modal
-                  autoFocus={true}
-                  backdrop={true}
-                  backdropTransition={
-                    Object {
-                      "mountOnEnter": true,
-                      "timeout": 150,
-                    }
-                  }
-                  centered={false}
-                  container="body"
-                  fade={true}
-                  isOpen={false}
-                  keyboard={true}
-                  modalTransition={
-                    Object {
-                      "timeout": 300,
-                    }
-                  }
-                  onClosed={[Function]}
-                  onOpened={[Function]}
-                  returnFocusAfterClose={true}
-                  role="dialog"
-                  scrollable={false}
-                  toggle={[Function]}
-                  unmountOnClose={true}
-                  zIndex={1050}
-                >
-                  <Form
-                    onSubmit={[Function]}
-                    tag="form"
-                  >
-                    <ModalHeader
-                      charCode={215}
-                      closeAriaLabel="Close"
-                      tag="h5"
-                      toggle={[Function]}
-                      wrapTag="div"
-                    >
-                      Create New Subtask
-                    </ModalHeader>
-                    <ModalBody
-                      tag="div"
-                    >
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Title
-                          </Label>
-                          <Input
-                            name="sub_title"
-                            required={true}
-                            type="text"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Description
-                          </Label>
-                          <Input
-                            name="sub_description"
-                            type="textarea"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Definition of Done
-                          </Label>
-                          <Input
-                            name="sub_dod"
-                            type="textarea"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Due Date
-                          </Label>
-                          <Input
-                            name="sub_dueDate"
-                            required={true}
-                            type="datetime-local"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="8"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Assignee
-                          </Label>
-                          <Input
-                            name="sub_assignee"
-                            type="select"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="6"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Created By
-                          </Label>
-                          <Input
-                            disabled={true}
-                            name="sub_creator"
-                            type="text"
-                            value=""
-                          />
-                        </Col>
-                        <Col
-                          md="6"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Create Date
-                          </Label>
-                          <Input
-                            disabled={true}
-                            name="sub_createDate"
-                            type="datetime-locale"
-                            value="11/16/2020"
-                          />
-                        </Col>
-                      </Row>
-                    </ModalBody>
-                    <ModalFooter
-                      tag="div"
-                    >
-                      <Button
-                        color="primary"
-                        tag="button"
-                        type="submit"
-                      >
-                        Ok
-                      </Button>
-                       
-                      <Button
-                        color="primary"
-                        onClick={[Function]}
-                        tag="button"
-                      >
-                        Cancel
-                      </Button>
-                       
-                    </ModalFooter>
-                  </Form>
-                </Modal>
-                <div
-                  className="assignment-content"
-                >
-                  <div
-                    className="assignment-sidebar"
-                  >
-                    <Card
-                      tag="div"
-                    >
-                      <CardHeader
-                        tag="div"
-                      >
-                        My Open Assignments
-                      </CardHeader>
-                      <CardBody
-                        tag="div"
-                      >
-                        <div
-                          className="scroll-area"
-                        >
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              md={
-                                Object {
-                                  "offset": 3,
-                                  "size": 6,
-                                }
-                              }
-                              sm="12"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Button
-                                color="primary"
-                                onClick={[Function]}
-                                tag="button"
-                                type="submit"
-                              >
-                                Create Assignment
-                              </Button>
-                            </Col>
-                          </Row>
-                        </div>
-                      </CardBody>
-                      <CardFooter
-                        tag="div"
-                      />
-                    </Card>
-                  </div>
-                  <div
-                    className="assignment-middle"
-                  >
-                    <h5>
-                      Assignment
-                    </h5>
-                    <div
-                      className="assignment-general"
-                    >
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Title
-                          </Label>
-                          <Input
-                            disabled={true}
-                            id="title"
-                            onBlur={[Function]}
-                            onChange={[Function]}
-                            onFocus={[Function]}
-                            type="text"
-                            value=""
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="8"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Due Date
-                          </Label>
-                          <Input
-                            disabled={true}
-                            id="due_date"
-                            onBlur={[Function]}
-                            onChange={[Function]}
-                            onFocus={[Function]}
-                            type="datetime-local"
-                            value=""
-                          />
-                        </Col>
-                        <Col
-                          md="4"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <CustomInput
-                            checked={false}
-                            disabled={true}
-                            id="is_private"
-                            label="Private"
-                            onBlur={[Function]}
-                            onChange={[Function]}
-                            onFocus={[Function]}
-                            type="switch"
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Definition of Done
-                          </Label>
-                          <Input
-                            disabled={true}
-                            id="dod"
-                            onBlur={[Function]}
-                            onChange={[Function]}
-                            onFocus={[Function]}
-                            type="textarea"
-                            value=""
-                          />
-                        </Col>
-                      </Row>
-                      <Row
-                        tag="div"
-                        widths={
-                          Array [
-                            "xs",
-                            "sm",
-                            "md",
-                            "lg",
-                            "xl",
-                          ]
-                        }
-                      >
-                        <Col
-                          md="12"
-                          tag="div"
-                          widths={
-                            Array [
-                              "xs",
-                              "sm",
-                              "md",
-                              "lg",
-                              "xl",
-                            ]
-                          }
-                        >
-                          <Label
-                            tag="label"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            Description
-                          </Label>
-                          <Input
-                            disabled={true}
-                            id="description"
-                            onBlur={[Function]}
-                            onChange={[Function]}
-                            onFocus={[Function]}
-                            type="textarea"
-                            value=""
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                    <div
-                      className="assignment-comments"
-                    >
-                      <Nav
-                        tabs={true}
-                        tag="ul"
-                        vertical={false}
-                      >
-                        <NavItem
-                          tag="li"
-                        >
-                          <NavLink
-                            className="active"
-                            onClick={[Function]}
-                            tag="a"
-                          >
-                            Comments
-                          </NavLink>
-                        </NavItem>
-                        <NavItem
-                          tag="li"
-                        >
-                          <NavLink
-                            className=""
-                            onClick={[Function]}
-                            tag="a"
-                          >
-                            Files
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                      <TabContent
-                        activeTab="1"
-                        tag="div"
-                      >
-                        <TabPane
-                          tabId="1"
-                          tag="div"
-                        >
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              sm="12"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <h4>
-                                Comments Section TODO
-                              </h4>
-                            </Col>
-                          </Row>
-                        </TabPane>
-                        <TabPane
-                          tabId="2"
-                          tag="div"
-                        >
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              sm="6"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Card
-                                body={true}
-                                tag="div"
-                              >
-                                <CardText
-                                  tag="p"
-                                >
-                                  With supporting text below as a natural lead-in to additional content.
-                                </CardText>
-                                <Button
-                                  color="secondary"
-                                  tag="button"
-                                >
-                                  Go somewhere
-                                </Button>
-                              </Card>
-                            </Col>
-                            <Col
-                              sm="6"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Card
-                                body={true}
-                                tag="div"
-                              >
-                                <CardText
-                                  tag="p"
-                                >
-                                  With supporting text below as a natural lead-in to additional content.
-                                </CardText>
-                                <Button
-                                  color="secondary"
-                                  tag="button"
-                                >
-                                  Go somewhere
-                                </Button>
-                              </Card>
-                            </Col>
-                          </Row>
-                        </TabPane>
-                      </TabContent>
-                    </div>
-                  </div>
-                  <div
-                    className="assignment-info"
-                  >
-                    <div
-                      className="scroll-area"
-                    >
-                      <Card
-                        className="status-card"
-                        tag="div"
-                      >
-                        <CardHeader
-                          onClick={[Function]}
-                          tag="div"
-                        >
-                          Progression
-                        </CardHeader>
-                        <CardBody
-                          style={
-                            Object {
-                              "display": "block",
-                            }
-                          }
-                          tag="div"
-                        >
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              md="2"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Label
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                Status
-                              </Label>
-                            </Col>
-                            <Col
-                              md="10"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Input
-                                disabled={true}
-                                id="status"
-                                onBlur={[Function]}
-                                onChange={[Function]}
-                                onFocus={[Function]}
-                                type="select"
-                                value=""
-                              >
-                                <option>
-                                  Pending
-                                </option>
-                                <option>
-                                  In-Progress
-                                </option>
-                                <option>
-                                  Review
-                                </option>
-                                <option>
-                                  Done
-                                </option>
-                              </Input>
-                            </Col>
-                          </Row>
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              md="2"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Label
-                                style={
-                                  Object {
-                                    "position": "relative",
-                                    "top": "40%",
-                                  }
-                                }
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                Complete
-                              </Label>
-                            </Col>
-                            <Col
-                              md="4"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <CustomInput
-                                checked={false}
-                                disabled={true}
-                                id="is_complete"
-                                label=""
-                                type="switch"
-                              />
-                            </Col>
-                            <Col
-                              md="5"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Button
-                                color="primary"
-                                disabled={true}
-                                onClick={[Function]}
-                                size="sm"
-                                tag="button"
-                                type="submit"
-                              >
-                                Complete Assignment
-                              </Button>
-                            </Col>
-                          </Row>
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              md="12"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Label
-                                tag="label"
-                                widths={
-                                  Array [
-                                    "xs",
-                                    "sm",
-                                    "md",
-                                    "lg",
-                                    "xl",
-                                  ]
-                                }
-                              >
-                                Progress
-                              </Label>
-                              <Progress
-                                animated={true}
-                                color="success"
-                                max={100}
-                                min={0}
-                                style={Object {}}
-                                tag="div"
-                                value={0}
-                              >
-                                0
-                                %
-                              </Progress>
-                            </Col>
-                          </Row>
-                        </CardBody>
-                      </Card>
-                      <Card
-                        className="subtask-card"
-                        tag="div"
-                      >
-                        <CardHeader
-                          onClick={[Function]}
-                          tag="div"
-                        >
-                          Subtasks
-                        </CardHeader>
-                        <CardBody
-                          style={
-                            Object {
-                              "display": "block",
-                            }
-                          }
-                          tag="div"
-                        >
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              md={
-                                Object {
-                                  "offset": 4,
-                                  "size": 6,
-                                }
-                              }
-                              sm="12"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Button
-                                color="primary"
-                                disabled={true}
-                                onClick={[Function]}
-                                tag="button"
-                                type="submit"
-                              >
-                                Create Subtask
-                              </Button>
-                            </Col>
-                          </Row>
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              md={
-                                Object {
-                                  "offset": 3,
-                                  "size": 8,
-                                }
-                              }
-                              sm="12"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <p
-                                className="text-muted"
-                              >
-                                No Subtasks for this Assignment
-                              </p>
-                            </Col>
-                          </Row>
-                        </CardBody>
-                      </Card>
-                      <Card
-                        className="collaborator-card"
-                        tag="div"
-                      >
-                        <CardHeader
-                          onClick={[Function]}
-                          tag="div"
-                        >
-                          Collaborators
-                        </CardHeader>
-                        <CardBody
-                          style={
-                            Object {
-                              "display": "block",
-                            }
-                          }
-                          tag="div"
-                        >
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              md="8"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Input
-                                disabled={true}
-                                placeholder="Search Students"
-                                type="text"
-                              />
-                            </Col>
-                            <Col
-                              md="4"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <Button
-                                color="primary"
-                                disabled={true}
-                                tag="button"
-                                type="submit"
-                              >
-                                Invite
-                              </Button>
-                            </Col>
-                          </Row>
-                          <Row
-                            tag="div"
-                            widths={
-                              Array [
-                                "xs",
-                                "sm",
-                                "md",
-                                "lg",
-                                "xl",
-                              ]
-                            }
-                          >
-                            <Col
-                              md={
-                                Object {
-                                  "offset": 2,
-                                  "size": 9,
-                                }
-                              }
-                              sm="12"
-                              tag="div"
-                              widths={
-                                Array [
-                                  "xs",
-                                  "sm",
-                                  "md",
-                                  "lg",
-                                  "xl",
-                                ]
-                              }
-                            >
-                              <p
-                                className="text-muted"
-                              >
-                                No Collaborators for this Assignment
-                              </p>
-                            </Col>
-                          </Row>
-                        </CardBody>
-                      </Card>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </React.Fragment>,
-            "_rendering": false,
-            "_updater": [Circular],
-            "_workInProgressHook": null,
-          },
-        },
-        "userLogout": [Function],
-      }
-    }
-    prefix="assignment-page_"
-  />
   <div
     className="assignment-page"
   >
@@ -2062,7 +56,7 @@ exports[`should test Assignment component 1`] = `
               tag="li"
             >
               <NavLink
-                href="/components/"
+                href="/home"
                 tag="a"
               >
                 Home
@@ -2072,7 +66,7 @@ exports[`should test Assignment component 1`] = `
               tag="li"
             >
               <NavLink
-                href=""
+                href="/assignment"
                 tag="a"
               >
                 Assignments
@@ -2082,17 +76,18 @@ exports[`should test Assignment component 1`] = `
               tag="li"
             >
               <NavLink
-                href=""
+                href="#!"
+                onClick={[Function]}
                 tag="a"
               >
-                Collaborators
+                Notifications
               </NavLink>
             </NavItem>
             <NavItem
               tag="li"
             >
               <NavLink
-                href=""
+                href="/search"
                 tag="a"
               >
                 Search
@@ -2117,11 +112,6 @@ exports[`should test Assignment component 1`] = `
                     src=""
                   />
                 </div>
-                <p
-                  className="d-lg-none"
-                >
-                  Log out
-                </p>
               </DropdownToggle>
               <DropdownMenu
                 className="dropdown-navbar"
@@ -2133,12 +123,26 @@ exports[`should test Assignment component 1`] = `
                   header={true}
                   tag="button"
                   toggle={true}
-                />
+                >
+                  email@none.com
+                </DropdownItem>
                 <DropdownItem
                   divider={true}
                   tag="li"
                   toggle={true}
                 />
+                <NavLink
+                  tag="li"
+                >
+                  <DropdownItem
+                    className="nav-item"
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    Profile
+                  </DropdownItem>
+                </NavLink>
                 <NavLink
                   tag="li"
                 >
@@ -2207,7 +211,6 @@ exports[`should test Assignment component 1`] = `
         >
           Ok
         </Button>
-         
       </ModalFooter>
     </Modal>
     <Modal
@@ -2550,7 +553,7 @@ exports[`should test Assignment component 1`] = `
                 disabled={true}
                 name="creator"
                 type="text"
-                value=""
+                value="email@none.com"
               />
             </Col>
             <Col
@@ -2583,8 +586,8 @@ exports[`should test Assignment component 1`] = `
               <Input
                 disabled={true}
                 name="createDate"
-                type="datetime-locale"
-                value="11/16/2020"
+                type="datetime-local"
+                value="12/11/2020"
               />
             </Col>
           </Row>
@@ -2879,7 +882,9 @@ exports[`should test Assignment component 1`] = `
               <Input
                 name="sub_assignee"
                 type="select"
-              />
+              >
+                <option />
+              </Input>
             </Col>
           </Row>
           <Row
@@ -2925,7 +930,7 @@ exports[`should test Assignment component 1`] = `
                 disabled={true}
                 name="sub_creator"
                 type="text"
-                value=""
+                value="email@none.com"
               />
             </Col>
             <Col
@@ -2958,8 +963,8 @@ exports[`should test Assignment component 1`] = `
               <Input
                 disabled={true}
                 name="sub_createDate"
-                type="datetime-locale"
-                value="11/16/2020"
+                type="datetime-local"
+                value="12/11/2020"
               />
             </Col>
           </Row>
@@ -2998,7 +1003,7 @@ exports[`should test Assignment component 1`] = `
           <CardHeader
             tag="div"
           >
-            My Open Assignments
+            My Open Assignments [0]
           </CardHeader>
           <CardBody
             tag="div"
@@ -3006,47 +1011,18 @@ exports[`should test Assignment component 1`] = `
             <div
               className="scroll-area"
             >
-              <Row
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <div
+                className="centered-button"
               >
-                <Col
-                  md={
-                    Object {
-                      "offset": 3,
-                      "size": 6,
-                    }
-                  }
-                  sm="12"
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
+                <Button
+                  color="primary"
+                  onClick={[Function]}
+                  tag="button"
+                  type="submit"
                 >
-                  <Button
-                    color="primary"
-                    onClick={[Function]}
-                    tag="button"
-                    type="submit"
-                  >
-                    Create Assignment
-                  </Button>
-                </Col>
-              </Row>
+                  Create Assignment
+                </Button>
+              </div>
             </div>
           </CardBody>
           <CardFooter
@@ -3057,277 +1033,29 @@ exports[`should test Assignment component 1`] = `
       <div
         className="assignment-middle"
       >
-        <h5>
-          Assignment
-        </h5>
         <div
-          className="assignment-general"
+          className="title"
         >
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              md="12"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <Label
-                tag="label"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
-              >
-                Title
-              </Label>
-              <Input
-                disabled={true}
-                id="title"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                type="text"
-                value=""
-              />
-            </Col>
-          </Row>
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              md="8"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <Label
-                tag="label"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
-              >
-                Due Date
-              </Label>
-              <Input
-                disabled={true}
-                id="due_date"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                type="datetime-local"
-                value=""
-              />
-            </Col>
-            <Col
-              md="4"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <CustomInput
-                checked={false}
-                disabled={true}
-                id="is_private"
-                label="Private"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                type="switch"
-              />
-            </Col>
-          </Row>
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              md="12"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <Label
-                tag="label"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
-              >
-                Definition of Done
-              </Label>
-              <Input
-                disabled={true}
-                id="dod"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                type="textarea"
-                value=""
-              />
-            </Col>
-          </Row>
-          <Row
-            tag="div"
-            widths={
-              Array [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
-          >
-            <Col
-              md="12"
-              tag="div"
-              widths={
-                Array [
-                  "xs",
-                  "sm",
-                  "md",
-                  "lg",
-                  "xl",
-                ]
-              }
-            >
-              <Label
-                tag="label"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
-              >
-                Description
-              </Label>
-              <Input
-                disabled={true}
-                id="description"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onFocus={[Function]}
-                type="textarea"
-                value=""
-              />
-            </Col>
-          </Row>
+          <h5 />
         </div>
-        <div
-          className="assignment-comments"
-        >
-          <Nav
-            tabs={true}
-            tag="ul"
-            vertical={false}
+        <div>
+          <div
+            className="assignment-general"
           >
-            <NavItem
-              tag="li"
-            >
-              <NavLink
-                className="active"
-                onClick={[Function]}
-                tag="a"
-              >
-                Comments
-              </NavLink>
-            </NavItem>
-            <NavItem
-              tag="li"
-            >
-              <NavLink
-                className=""
-                onClick={[Function]}
-                tag="a"
-              >
-                Files
-              </NavLink>
-            </NavItem>
-          </Nav>
-          <TabContent
-            activeTab="1"
-            tag="div"
-          >
-            <TabPane
-              tabId="1"
+            <Row
               tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
             >
-              <Row
+              <Col
+                md="5"
                 tag="div"
                 widths={
                   Array [
@@ -3339,9 +1067,8 @@ exports[`should test Assignment component 1`] = `
                   ]
                 }
               >
-                <Col
-                  sm="12"
-                  tag="div"
+                <Label
+                  tag="label"
                   widths={
                     Array [
                       "xs",
@@ -3352,17 +1079,20 @@ exports[`should test Assignment component 1`] = `
                     ]
                   }
                 >
-                  <h4>
-                    Comments Section TODO
-                  </h4>
-                </Col>
-              </Row>
-            </TabPane>
-            <TabPane
-              tabId="2"
-              tag="div"
-            >
-              <Row
+                  Title
+                </Label>
+                <Input
+                  disabled={true}
+                  id="title"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  type="text"
+                  value=""
+                />
+              </Col>
+              <Col
+                md="3"
                 tag="div"
                 widths={
                   Array [
@@ -3374,9 +1104,8 @@ exports[`should test Assignment component 1`] = `
                   ]
                 }
               >
-                <Col
-                  sm="6"
-                  tag="div"
+                <Label
+                  tag="label"
                   widths={
                     Array [
                       "xs",
@@ -3387,26 +1116,30 @@ exports[`should test Assignment component 1`] = `
                     ]
                   }
                 >
-                  <Card
-                    body={true}
-                    tag="div"
-                  >
-                    <CardText
-                      tag="p"
-                    >
-                      With supporting text below as a natural lead-in to additional content.
-                    </CardText>
-                    <Button
-                      color="secondary"
-                      tag="button"
-                    >
-                      Go somewhere
-                    </Button>
-                  </Card>
-                </Col>
-                <Col
-                  sm="6"
-                  tag="div"
+                  Created By
+                </Label>
+                <Input
+                  disabled={true}
+                  id="creator"
+                  type="text"
+                  value=""
+                />
+              </Col>
+              <Col
+                md="4"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <Label
+                  tag="label"
                   widths={
                     Array [
                       "xs",
@@ -3417,26 +1150,289 @@ exports[`should test Assignment component 1`] = `
                     ]
                   }
                 >
-                  <Card
-                    body={true}
-                    tag="div"
-                  >
-                    <CardText
-                      tag="p"
-                    >
-                      With supporting text below as a natural lead-in to additional content.
-                    </CardText>
-                    <Button
-                      color="secondary"
-                      tag="button"
-                    >
-                      Go somewhere
-                    </Button>
-                  </Card>
-                </Col>
-              </Row>
-            </TabPane>
-          </TabContent>
+                  Create Date
+                </Label>
+                <Input
+                  disabled={true}
+                  id="create_date"
+                  type="datetime-local"
+                  value=""
+                />
+              </Col>
+            </Row>
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Col
+                md="5"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <Label
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Due Date
+                </Label>
+                <Input
+                  disabled={true}
+                  id="due_date"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  type="datetime-local"
+                  value=""
+                />
+              </Col>
+              <Col
+                md="3"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <Label
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Assignee
+                </Label>
+                <Input
+                  disabled={true}
+                  id="sub_assignee"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  type="select"
+                  value=""
+                >
+                  <option />
+                </Input>
+              </Col>
+              <Col
+                md="4"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <CustomInput
+                  checked={false}
+                  disabled={true}
+                  id="is_private"
+                  label="Private"
+                  onChange={[Function]}
+                  type="switch"
+                />
+              </Col>
+            </Row>
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Col
+                md="12"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <Label
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Definition of Done
+                </Label>
+                <Input
+                  disabled={true}
+                  id="dod"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  type="textarea"
+                  value=""
+                />
+              </Col>
+            </Row>
+            <Row
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <Col
+                md="12"
+                tag="div"
+                widths={
+                  Array [
+                    "xs",
+                    "sm",
+                    "md",
+                    "lg",
+                    "xl",
+                  ]
+                }
+              >
+                <Label
+                  tag="label"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                >
+                  Description
+                </Label>
+                <Input
+                  disabled={true}
+                  id="description"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  onFocus={[Function]}
+                  type="textarea"
+                  value=""
+                />
+              </Col>
+            </Row>
+          </div>
+          <div
+            className="assignment-comments"
+          >
+            <Nav
+              tabs={true}
+              tag="ul"
+              vertical={false}
+            >
+              <NavItem
+                tag="li"
+              >
+                <NavLink
+                  className="active"
+                  onClick={[Function]}
+                  tag="a"
+                >
+                  Comments
+                </NavLink>
+              </NavItem>
+              <NavItem
+                tag="li"
+              >
+                <NavLink
+                  className=""
+                  onClick={[Function]}
+                  tag="a"
+                >
+                  Files
+                </NavLink>
+              </NavItem>
+            </Nav>
+            <TabContent
+              activeTab="1"
+              tag="div"
+            >
+              <TabPane
+                tabId="1"
+                tag="div"
+              >
+                <Comments
+                  assignmentId="12345"
+                  canEdit={true}
+                  commentCollabs={Object {}}
+                  defaultAvatar=""
+                  notifyCollaborators={[Function]}
+                  user="email@none.com"
+                />
+              </TabPane>
+              <TabPane
+                tabId="2"
+                tag="div"
+              >
+                <Files
+                  assignmentId="12345"
+                  canEdit={true}
+                  notifyCollaborators={[Function]}
+                  user="email@none.com"
+                />
+              </TabPane>
+            </TabContent>
+          </div>
         </div>
       </div>
       <div
@@ -3476,7 +1472,9 @@ exports[`should test Assignment component 1`] = `
                 }
               >
                 <Col
-                  md="2"
+                  lg="3"
+                  md="4"
+                  sm="4"
                   tag="div"
                   widths={
                     Array [
@@ -3487,6 +1485,8 @@ exports[`should test Assignment component 1`] = `
                       "xl",
                     ]
                   }
+                  xl="2"
+                  xs="4"
                 >
                   <Label
                     tag="label"
@@ -3504,7 +1504,9 @@ exports[`should test Assignment component 1`] = `
                   </Label>
                 </Col>
                 <Col
-                  md="10"
+                  lg="9"
+                  md="8"
+                  sm="8"
                   tag="div"
                   widths={
                     Array [
@@ -3515,6 +1517,8 @@ exports[`should test Assignment component 1`] = `
                       "xl",
                     ]
                   }
+                  xl="10"
+                  xs="8"
                 >
                   <Input
                     disabled={true}
@@ -3553,41 +1557,8 @@ exports[`should test Assignment component 1`] = `
                 }
               >
                 <Col
-                  md="2"
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <Label
-                    style={
-                      Object {
-                        "position": "relative",
-                        "top": "40%",
-                      }
-                    }
-                    tag="label"
-                    widths={
-                      Array [
-                        "xs",
-                        "sm",
-                        "md",
-                        "lg",
-                        "xl",
-                      ]
-                    }
-                  >
-                    Complete
-                  </Label>
-                </Col>
-                <Col
-                  md="4"
+                  md="5"
+                  sm="4"
                   tag="div"
                   widths={
                     Array [
@@ -3603,12 +1574,13 @@ exports[`should test Assignment component 1`] = `
                     checked={false}
                     disabled={true}
                     id="is_complete"
-                    label=""
+                    label="Complete"
                     type="switch"
                   />
                 </Col>
                 <Col
-                  md="5"
+                  md="3"
+                  sm="5"
                   tag="div"
                   widths={
                     Array [
@@ -3619,6 +1591,7 @@ exports[`should test Assignment component 1`] = `
                       "xl",
                     ]
                   }
+                  xs="2"
                 >
                   <Button
                     color="primary"
@@ -3626,9 +1599,33 @@ exports[`should test Assignment component 1`] = `
                     onClick={[Function]}
                     size="sm"
                     tag="button"
-                    type="submit"
                   >
-                    Complete Assignment
+                    Complete
+                  </Button>
+                </Col>
+                <Col
+                  md="3"
+                  sm="5"
+                  tag="div"
+                  widths={
+                    Array [
+                      "xs",
+                      "sm",
+                      "md",
+                      "lg",
+                      "xl",
+                    ]
+                  }
+                  xs="2"
+                >
+                  <Button
+                    color="danger"
+                    disabled={true}
+                    onClick={[Function]}
+                    size="sm"
+                    tag="button"
+                  >
+                    Delete
                   </Button>
                 </Col>
               </Row>
@@ -3695,7 +1692,7 @@ exports[`should test Assignment component 1`] = `
               onClick={[Function]}
               tag="div"
             >
-              Subtasks
+              Subtasks [0]
             </CardHeader>
             <CardBody
               style={
@@ -3705,48 +1702,19 @@ exports[`should test Assignment component 1`] = `
               }
               tag="div"
             >
-              <Row
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <div
+                className="centered-button"
               >
-                <Col
-                  md={
-                    Object {
-                      "offset": 4,
-                      "size": 6,
-                    }
-                  }
-                  sm="12"
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
+                <Button
+                  color="primary"
+                  disabled={true}
+                  onClick={[Function]}
+                  tag="button"
+                  type="submit"
                 >
-                  <Button
-                    color="primary"
-                    disabled={true}
-                    onClick={[Function]}
-                    tag="button"
-                    type="submit"
-                  >
-                    Create Subtask
-                  </Button>
-                </Col>
-              </Row>
+                  Create Subtask
+                </Button>
+              </div>
               <Row
                 tag="div"
                 widths={
@@ -3795,7 +1763,7 @@ exports[`should test Assignment component 1`] = `
               onClick={[Function]}
               tag="div"
             >
-              Collaborators
+              Collaborators [0]
             </CardHeader>
             <CardBody
               style={
@@ -3805,20 +1773,11 @@ exports[`should test Assignment component 1`] = `
               }
               tag="div"
             >
-              <Row
-                tag="div"
-                widths={
-                  Array [
-                    "xs",
-                    "sm",
-                    "md",
-                    "lg",
-                    "xl",
-                  ]
-                }
+              <Form
+                onSubmit={[Function]}
+                tag="form"
               >
-                <Col
-                  md="8"
+                <Row
                   tag="div"
                   widths={
                     Array [
@@ -3830,35 +1789,50 @@ exports[`should test Assignment component 1`] = `
                     ]
                   }
                 >
-                  <Input
-                    disabled={true}
-                    placeholder="Search Students"
-                    type="text"
-                  />
-                </Col>
-                <Col
-                  md="4"
-                  tag="div"
-                  widths={
-                    Array [
-                      "xs",
-                      "sm",
-                      "md",
-                      "lg",
-                      "xl",
-                    ]
-                  }
-                >
-                  <Button
-                    color="primary"
-                    disabled={true}
-                    tag="button"
-                    type="submit"
+                  <Col
+                    md="8"
+                    tag="div"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
                   >
-                    Invite
-                  </Button>
-                </Col>
-              </Row>
+                    <Input
+                      disabled={true}
+                      name="student-email"
+                      placeholder="Student Email"
+                      type="email"
+                    />
+                  </Col>
+                  <Col
+                    md="4"
+                    tag="div"
+                    widths={
+                      Array [
+                        "xs",
+                        "sm",
+                        "md",
+                        "lg",
+                        "xl",
+                      ]
+                    }
+                  >
+                    <Button
+                      color="primary"
+                      disabled={true}
+                      tag="button"
+                      type="submit"
+                    >
+                      Invite
+                    </Button>
+                  </Col>
+                </Row>
+              </Form>
               <Row
                 tag="div"
                 widths={

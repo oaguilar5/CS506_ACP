@@ -1,0 +1,220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test Login component 1`] = `
+<Fragment>
+  <div>
+    <Navbar
+      color="light"
+      expand="lg"
+      light={true}
+      tag="nav"
+    >
+      <div
+        className="logo"
+      >
+        <a
+          href="/home"
+        >
+          <img
+            alt="ACP"
+            src="/images/logo_1.png"
+          />
+        </a>
+      </div>
+      <NavbarToggler
+        tag="button"
+        type="button"
+      />
+      <Collapse
+        appear={false}
+        enter={true}
+        exit={true}
+        in={false}
+        isOpen={false}
+        mountOnEnter={false}
+        navbar={true}
+        onEnter={[Function]}
+        onEntered={[Function]}
+        onEntering={[Function]}
+        onExit={[Function]}
+        onExited={[Function]}
+        onExiting={[Function]}
+        tag="div"
+        timeout={350}
+        unmountOnExit={false}
+      >
+        <Nav
+          className="mr-auto"
+          navbar={true}
+          tag="ul"
+          vertical={false}
+        >
+          <NavItem
+            tag="li"
+          >
+            <NavLink
+              href="/components/"
+              tag="a"
+            >
+              Home
+            </NavLink>
+          </NavItem>
+          <NavItem
+            tag="li"
+          >
+            <NavLink
+              href=""
+              tag="a"
+            >
+              Assignments
+            </NavLink>
+          </NavItem>
+          <NavItem
+            tag="li"
+          >
+            <NavLink
+              href=""
+              tag="a"
+            >
+              Collaborators
+            </NavLink>
+          </NavItem>
+          <NavItem
+            tag="li"
+          >
+            <NavLink
+              href="/search/"
+              tag="a"
+            >
+              Search
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <div
+          className="account-link"
+        >
+          <UncontrolledDropdown>
+            <DropdownToggle
+              aria-haspopup={true}
+              caret={true}
+              color="default"
+              data-toggle="dropdown"
+            >
+              <div
+                className="user-photo"
+              >
+                <img
+                  alt="..."
+                  src=""
+                />
+              </div>
+              <p
+                className="d-lg-none"
+              >
+                Log out
+              </p>
+            </DropdownToggle>
+            <DropdownMenu
+              className="dropdown-navbar"
+              flip={true}
+              right={true}
+              tag="ul"
+            >
+              <DropdownItem
+                header={true}
+                tag="button"
+                toggle={true}
+              />
+              <DropdownItem
+                divider={true}
+                tag="li"
+                toggle={true}
+              />
+              <NavLink
+                tag="li"
+              >
+                <DropdownItem
+                  className="nav-item"
+                  tag="button"
+                  toggle={true}
+                >
+                  Log out
+                </DropdownItem>
+              </NavLink>
+            </DropdownMenu>
+          </UncontrolledDropdown>
+        </div>
+      </Collapse>
+    </Navbar>
+  </div>
+  <div
+    style={
+      Object {
+        "paddingTop": "5%",
+        "textAlign": "center",
+      }
+    }
+  >
+    <Button
+      color="primary"
+      tag="button"
+    >
+      My Assignments
+    </Button>
+  </div>
+  <div
+    className="query-table"
+    style={
+      Object {
+        "paddingLeft": "5%",
+        "paddingRight": "5%",
+        "paddingTop": "5%",
+      }
+    }
+  >
+    <Jumbotron
+      tag="div"
+    >
+      <Container
+        fluid={true}
+        style={
+          Object {
+            "paddingBottom": "2%",
+            "textAlign": "left",
+          }
+        }
+        tag="div"
+      >
+        <Table
+          responsiveTag="div"
+          tag="table"
+        >
+          <thead>
+            <tr>
+              <th>
+                Title
+              </th>
+              <th>
+                Description
+              </th>
+              <th>
+                Created By
+              </th>
+              <th>
+                Status
+              </th>
+              <th>
+                Progress
+              </th>
+              <th>
+                Due Date
+              </th>
+            </tr>
+          </thead>
+          <tbody />
+        </Table>
+      </Container>
+    </Jumbotron>
+  </div>
+</Fragment>
+`;

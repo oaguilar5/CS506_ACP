@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should test Comments component 1`] = `
+<Fragment>
+  <ReactHotkeys
+    filter={[Function]}
+    keyName="enter"
+    onKeyDown={[Function]}
+  />
+  <div
+    className="assignment-comments"
+  >
+    <div
+      className="scroll-comments"
+    >
+      <h5
+        className="text-muted"
+      >
+        Be the First to Comment on this Assignment
+      </h5>
+    </div>
+    <Row
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Col
+        md="10"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Input
+          disabled={true}
+          id="newText"
+          onChange={[Function]}
+          onKeyPress={[Function]}
+          type="textarea"
+          value=""
+        />
+      </Col>
+      <Col
+        md="2"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Button
+          className="post-button"
+          color="primary"
+          disabled={true}
+          onClick={[Function]}
+          size="md"
+          tag="button"
+        >
+          Post
+        </Button>
+      </Col>
+    </Row>
+  </div>
+</Fragment>
+`;

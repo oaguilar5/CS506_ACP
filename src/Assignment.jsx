@@ -449,7 +449,6 @@ class Assignment extends React.Component {
             let isPrivate = evt.target.elements.namedItem("isPrivate").checked;
             let creator = this.state.user;
             let createDate = new Date();
-            console.log(dueDate)
             let body = {
               title: title,
               description: description,

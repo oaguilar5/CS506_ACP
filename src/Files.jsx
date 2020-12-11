@@ -166,9 +166,15 @@ class Files extends React.Component {
     toDateFormat = timestamp => {
         let string = "";
         try {
-            let thisDate = timestamp.toDate();
-            string = thisDate.toISOString().substring(0, 11) + thisDate.getHours().toString().padStart(2, "0") + ":" + thisDate.getMinutes().toString().padStart(2, "0");
-
+            if (typeof timestamp.toDate === "function") {
+                timestamp = timestamp.toDate();
+            } 
+            if (navigator.userAgent.indexOf("Firefox") !== -1) {
+                string = timestamp.toISOString().split('T')[0];
+            } else {
+                string = timestamp.toISOString().substring(0, 11) + timestamp.getHours().toString().padStart(2, "0") + ":" + timestamp.getMinutes().toString().padStart(2, "0");
+            }
+            
         } catch (err) {
             //no output for this method
             console.log("Caught exception in Files:toDateFormat(): " + err)
@@ -295,6 +301,9 @@ class Files extends React.Component {
                     for (let i=0;i<files.length;i++) {
                         if (files[i].id === fileId) {
                             files[i].fileName = fileName;
+                            files[i].filePath = filePath;
+                            let fileExt = this.getFileExt(filePath);
+                            files[i].fileExt = fileExt;
                             files[i].uploadDate = uploadDate;
                             files[i].uploader = uploader;
                             files[i].fileDescription = fileDescription;
@@ -396,7 +405,7 @@ class Files extends React.Component {
                     <Row>
                         <Col md="8">
                             <Label>Upload Date</Label>
-                            <Input type="datetime-local" value={this.state.uploadDate ? this.toDateFormat(this.state.uploadDate) : ""} disabled/>                    
+                            <Input type={navigator.userAgent.indexOf("Firefox") !== -1 ? "date" : "datetime-local"} value={this.state.uploadDate ? this.toDateFormat(this.state.uploadDate) : ""} disabled/>                    
                         </Col>
                         <Col md="4">
                             <Label>Uploaded By</Label>

@@ -56,7 +56,7 @@ exports[`should test Home component 1`] = `
               tag="li"
             >
               <NavLink
-                href="/components/"
+                href="/home"
                 tag="a"
               >
                 Home
@@ -66,7 +66,7 @@ exports[`should test Home component 1`] = `
               tag="li"
             >
               <NavLink
-                href=""
+                href="/assignment"
                 tag="a"
               >
                 Assignments
@@ -76,17 +76,18 @@ exports[`should test Home component 1`] = `
               tag="li"
             >
               <NavLink
-                href=""
+                href="#!"
+                onClick={[Function]}
                 tag="a"
               >
-                Collaborators
+                Notifications
               </NavLink>
             </NavItem>
             <NavItem
               tag="li"
             >
               <NavLink
-                href="/search/"
+                href="/search"
                 tag="a"
               >
                 Search
@@ -111,11 +112,6 @@ exports[`should test Home component 1`] = `
                     src=""
                   />
                 </div>
-                <p
-                  className="d-lg-none"
-                >
-                  Log out
-                </p>
               </DropdownToggle>
               <DropdownMenu
                 className="dropdown-navbar"
@@ -133,6 +129,18 @@ exports[`should test Home component 1`] = `
                   tag="li"
                   toggle={true}
                 />
+                <NavLink
+                  tag="li"
+                >
+                  <DropdownItem
+                    className="nav-item"
+                    onClick={[Function]}
+                    tag="button"
+                    toggle={true}
+                  >
+                    Profile
+                  </DropdownItem>
+                </NavLink>
                 <NavLink
                   tag="li"
                 >
@@ -524,8 +532,8 @@ exports[`should test Home component 1`] = `
               <Input
                 disabled={true}
                 name="createDate"
-                type="datetime-locale"
-                value="11/16/2020"
+                type="datetime-local"
+                value="12/11/2020"
               />
             </Col>
           </Row>
@@ -615,7 +623,8 @@ exports[`should test Home component 1`] = `
           >
             Create New
             <img
-              src="/images/plus-sign.jpg"
+              alt="Add New"
+              src="/images/plus-sign.png"
             />
           </CardBody>
         </Card>
@@ -638,7 +647,6 @@ exports[`should test Home component 1`] = `
           style={
             Object {
               "paddingBottom": "2%",
-              "textAlign": "left",
             }
           }
           tag="div"
@@ -651,52 +659,109 @@ exports[`should test Home component 1`] = `
           fluid={true}
           style={
             Object {
-              "display": "inline-block",
-              "textAlign": "left",
+              "paddingBottom": "2%",
             }
           }
           tag="div"
         >
-          <h5>
-            Number of Open Assignments
-          </h5>
-          <h6>
-            1
-          </h6>
+          <Row
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <h5>
+              Number of Open Assignments: 
+            </h5>
+            <h5
+              id="open_assignments"
+              style={
+                Object {
+                  "paddingLeft": "2%",
+                }
+              }
+            >
+              0
+            </h5>
+          </Row>
         </Container>
         <Container
           fluid={true}
           style={
             Object {
-              "display": "inline-block",
-              "textAlign": "center",
+              "paddingBottom": "2%",
             }
           }
           tag="div"
         >
-          <h5>
-            Number of Completed Assignments
-          </h5>
-          <h6>
-            0
-          </h6>
+          <Row
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <h5>
+              Number of Completed Assignments: 
+            </h5>
+            <h5
+              id="completed_assignments"
+              style={
+                Object {
+                  "paddingLeft": "2%",
+                }
+              }
+            >
+              0
+            </h5>
+          </Row>
         </Container>
         <Container
           fluid={true}
           style={
             Object {
-              "display": "inline-block",
-              "textAlign": "right",
+              "paddingBottom": "2%",
             }
           }
           tag="div"
         >
-          <h5>
-            Average Collaborators
-          </h5>
-          <h6>
-            0
-          </h6>
+          <Row
+            tag="div"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            <h5>
+              Average Subtasks: 
+            </h5>
+            <h5
+              id="average_subtasks"
+              style={
+                Object {
+                  "paddingLeft": "2%",
+                }
+              }
+            >
+              0
+            </h5>
+          </Row>
         </Container>
       </Jumbotron>
     </div>
